@@ -1,0 +1,38 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\yarn\bin\yarn.js install
+
+PATH: 
+  C:\Users\camde\AppData\Local\Microsoft\WindowsApps;C:\Users\camde\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\Java\jdk1.8.0_221\bin\javac.exe;C:\Program Files\Java\jdk1.8.0_221\bin;C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Node.js;C:\Program Files\JetBrains\IntelliJ IDEA 2019.1.4\bin;C:\Users\camde\.dotnet\tools;C:\Users\camde\AppData\Local\GitHubDesktop\bin;C:\Users\camde\AppData\Roaming\npm;C:\Users\camde\OneDrive\Desktop\Chrome WebDriver\chromedriver.exe;C:\Program Files\Git\cmd;C:\ffmpeg\bin;C:\ffmpeg-2021-02-07-git-a52b9464e4-full_build\bin;C:\Program Files (x86)\sox-14-4-1\;C:\Program Files\Git\usr\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\swipl\bin;C:\ProgramData\chocolatey;C:\ProgramData\chocolatey\haskell-dev;C:\Users\camde\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\mongosh;C:\Users\camde\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\camde\AppData\Local\Programs\Python\Python39\;C:\Ruby27-x64\bin;C:\Users\camde\AppData\Local\Microsoft\WindowsApps;C:\Users\camde\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\Git\git.exe;C:\Program Files\Java\jdk1.8.0_221\bin\javac.exe;C:\Program Files\Java\jdk1.8.0_221\bin;C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Node.js;C:\Program Files\JetBrains\IntelliJ IDEA 2019.1.4\bin;;C:\Users\camde\.dotnet\tools;C:\Users\camde\AppData\Local\GitHubDesktop\bin;C:\Users\camde\OneDrive\Desktop\Chrome WebDriver\chromedriver.exe;C:\ffmpeg\bin;C:\ffmpeg-2021-02-07-git-a52b9464e4-full_build\bin;C:\Program Files (x86)\sox-14-4-1\;C:\Program Files\heroku\bin;C:\Users\camde\anaconda3;C:\Users\camde\anaconda3\Scripts;C:\Users\camde\anaconda3\Library\bin;C:\Users\camde\AppData\Roaming\cabal\bin;C:\tools\ghc-9.0.1\bin;C:\tools\msys64;C:\Users\camde\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\nodejs;C:\Users\camde\AppData\Local\Programs\mongosh\
+
+Yarn version: 
+  1.22.17
+
+Node version: 
+  14.17.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: getaddrinfo ENOTFOUND registry.yarnpkg.com
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:67:26)
+
+npm manifest: 
+  {
+    "dependencies": {
+      "@react-native-community/masked-view": "^0.1.11",
+      "@react-navigation/bottom-tabs": "^6.3.1",
+      "@react-navigation/native": "^6.0.10",
+      "react-native-elements": "^3.4.2",
+      "react-native-gesture-handler": "^2.4.2",
+      "react-native-reanimated": "^2.8.0",
+      "react-native-safe-area-context": "^4.2.5",
+      "react-native-screens": "^3.13.1"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

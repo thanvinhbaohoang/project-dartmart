@@ -1,7 +1,13 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Dimensions, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import HomePage from '../screens/homePage';
+import CustomTabBar from './customTabBar';
+
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const AboutTab = (props) => {
   return <View style={{ flex: 1, justifyContent: 'center' }}><Text>about</Text></View>;
@@ -16,9 +22,45 @@ const Tab = createBottomTabNavigator();
 const MainTabBar = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Search" component={SearchTab} />
-        <Tab.Screen name="About" component={AboutTab} />
+      <Tab.Navigator 
+      screenOptions={{
+        tabBarStyle:{
+          height: windowHeight * .1,
+          borderRadius: windowHeight * .05,
+          backgroundColor: '#008F74',
+          position: 'absolute'
+        },
+        tabBarActiveTintColor: 'white',
+        tabBarInactiveTintColor: 'black',
+        headerStyle:{
+          backgroundColor: '#FFDD62',
+          height: windowHeight * .15
+        },
+        headerTitleAlign: 'left',
+        headerTitle: 'Dartmart',
+        headerTitleStyle:{
+          marginLeft: 30,
+          fontSize: 30,
+          fontWeight: 'bold',
+        },
+        headerRight: () => (
+          <TextInput placeholder='Search' style={{
+            backgroundColor: 'white',
+            width: 150,
+            height: 30,
+            borderRadius: 15,
+            paddingLeft: 10,
+            fontSize: 15
+          }}/>
+        ),
+        headerRightContainerStyle: {
+          paddingRight: 30
+        }
+      }}>
+        <Tab.Screen name="Home" component={HomePage} />
+        <Tab.Screen name="Cart" component={AboutTab} />
+        <Tab.Screen name="Delivery" component={SearchTab} />
+        <Tab.Screen name="Profile" component={SearchTab} />
       </Tab.Navigator>
     </NavigationContainer>
   );
