@@ -19,6 +19,13 @@ TODO: how to deploy the project
 
 ## Authors
 
-TODO: list of authors
+{
+Camden Hao
+Will McCall
+Harold Than
+Garrett Johnston
+Edmund Aduse Poku
+Burke Jaeger
+}
 
 ## Acknowledgments
