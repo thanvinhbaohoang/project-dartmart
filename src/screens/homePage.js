@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient'
+import React, { useEffect, useState } from 'react';
+import { connect, useSelector } from 'react-redux';
+import { StyleSheet, Text, View, TouchableHighlight, Dimensions, ScrollView, Modal, Pressable } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { addItem } from '../actions/index';
 
 function HomePage(props){
+    const cart = useSelector((state) => state.item.cart);
 
     const [modalVisible, setModalVisible] = useState(false); 
     const [selectedItem, setSelectedItem] = useState(null);
+    const [tempQuantity, setTempQuantity] = useState(1);
+
+    useEffect(() => {
+        setTempQuantity(1);
+    }, [modalVisible])
     return (
         <View>
             <ScrollView contentContainerStyle={styles.container}>
@@ -33,8 +41,20 @@ function HomePage(props){
                 <View style={styles.itemModal}>
                     <Text>{selectedItem?.name}</Text>
                     <Text>{selectedItem?.cost}</Text>
-                    <Pressable style={{position: 'absolute', top: 20, right: 20}}onPress={() => setModalVisible(!modalVisible)}>
+                    <Pressable style={{position: 'absolute', top: 20, right: 20}} onPress={() => setModalVisible(!modalVisible)}>
                         <Text style={{fontSize: 25}}>X</Text>
+                    </Pressable>
+                    <View style={styles.quantityContainer}>
+                        <Pressable onPress={() => setTempQuantity(tempQuantity-1)}>
+                            <Text>-</Text>
+                        </Pressable>
+                        <Text>{tempQuantity}</Text>
+                        <Pressable onPress={() => setTempQuantity(tempQuantity+1)}>
+                            <Text>+</Text>
+                        </Pressable>
+                    </View>
+                    <Pressable onPress={() => {props.addItem(selectedItem, tempQuantity); setModalVisible(!modalVisible)}}>
+                        <Text>Submit</Text>
                     </Pressable>
                 </View>
             </Modal>
@@ -105,65 +125,70 @@ const styles = StyleSheet.create({
         alignItems:'center',
         marginBottom: windowHeight * .25,
         marginTop: windowHeight * .25,
+    },
+    quantityContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%'
     }
 });
 
 const itemData = [
     {
-        name: 'test',
+        name: 'test1',
         cost: '2.99',
     },
     {
-        name: 'test1',
+        name: 'test2',
         cost: '4.99',
     },
     {
-        name: 'test',
+        name: 'test3',
         cost: '2.99',
     },
     {
-        name: 'test',
+        name: 'test4',
         cost: '2.99',
     },
     {
-        name: 'test',
+        name: 'test5',
         cost: '2.99',
     },
     {
-        name: 'test',
+        name: 'test6',
         cost: '2.99',
     },
     {
-        name: 'test',
+        name: 'test7',
         cost: '2.99',
     },
     {
-        name: 'test',
+        name: 'test8',
         cost: '2.99',
     },
     {
-        name: 'test',
+        name: 'test9',
         cost: '2.99',
     },
     {
-        name: 'test',
+        name: 'test10',
         cost: '2.99',
     },
     {
-        name: 'test',
+        name: 'test11',
         cost: '2.99',
     },
     {
-        name: 'test',
+        name: 'test12',
         cost: '2.99',
     },
     {
-        name: 'test',
+        name: 'test13',
         cost: '2.99',
     },
     {
-        name: 'test',
+        name: 'test14',
         cost: '2.99',
     },
 ]
-export default HomePage;
+export default connect(null, { addItem })(HomePage);
