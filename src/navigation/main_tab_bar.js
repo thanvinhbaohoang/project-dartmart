@@ -3,7 +3,7 @@ import { Text, View, Dimensions, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomePage from '../screens/homePage';
-import CustomTabBar from './customTabBar';
+import Splash from '../screens/splash'
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -61,6 +61,8 @@ const MainTabBar = () => {
         <Tab.Screen name="Cart" component={AboutTab} />
         <Tab.Screen name="Delivery" component={SearchTab} />
         <Tab.Screen name="Profile" component={SearchTab} />
+        <Tab.Screen name="SPLASH" component={Splash} />
+
       </Tab.Navigator>
     </NavigationContainer>
   );
