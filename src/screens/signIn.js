@@ -15,13 +15,13 @@ const SignIn = ({navigation}) => {
 
               <View style={styles.checkoutAsGuestSection}>
                 <View style={styles.inputBox} >
-                    <TextInput placeholder="Email" placeholderTextColor='grey' color = 'white' justifyContent = 'center'/>
+                    <TextInput placeholder="Email" placeholderTextColor='white' color = 'white' justifyContent = 'center'/>
                 </View>
                 <View style={styles.inputBox} >
-                <TextInput placeholder="Your Password" placeholderTextColor='grey' color = 'white'/>
+                <TextInput placeholder="Your Password" placeholderTextColor='white' color = 'white'/>
                 </View>
 
-                <TouchableOpacity style={styles.guestButton} onPress={()=>navigation.navigate('SignUp')}>
+                <TouchableOpacity style={styles.signInButton} onPress={()=>navigation.navigate('SignUp')}>
                   <Text style={styles.text1} justifyContent='center' >Sign In</Text>
                 </TouchableOpacity>
 
@@ -29,7 +29,7 @@ const SignIn = ({navigation}) => {
 
               <View style={styles.checkoutAsGuestSection}>
                 <Text style={styles.text2}>Don't Have An Account?</Text>
-                <TouchableOpacity style={styles.guestButton} onPress={()=>navigation.navigate('SignUp')}>
+                <TouchableOpacity style={styles.signUpButton} onPress={()=>navigation.navigate('SignUp')}>
                   <Text style={styles.text1}>Sign Up</Text>
                 </TouchableOpacity>
               </View>
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  guestButton: {
+  signInButton: {
     width: 200,
     marginTop: 10,
     alignContent: 'center',
@@ -110,6 +110,20 @@ const styles = StyleSheet.create({
     opacity: 12,
     borderRadius: 25,
     paddingVertical: 10,
+    paddingHorizontal: 33,
+    backgroundColor: '#01D177',
+    borderColor: 'white',
+    borderWidth: 3,
+  },
+  signUpButton: {
+    width: 200,
+    marginTop: 10,
+    alignContent: 'center',
+    justifyContent: 'center',
+    opacity: 12,
+    borderRadius: 25,
+    paddingVertical: 10,
+    backgroundColor: '#FFD439',
     paddingHorizontal: 33,
     borderColor: 'white',
     borderWidth: 3,
