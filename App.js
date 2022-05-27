@@ -39,8 +39,6 @@ const App = (props) => {
   return(
     <Provider store={store}>
       <MainTabBar />
-      {/* <Splash />  */}
-      {/* <RootStackScreen /> */}
     </Provider>
   ); 
 };
