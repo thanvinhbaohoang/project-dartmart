@@ -3,6 +3,7 @@ import MainTabBar from './src/navigation/main_tab_bar';
 import { LogBox } from "react-native";
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
+import Splash from './src/screens/splash';
 
 import rootReducer from './src/reducers'
 
@@ -11,6 +12,7 @@ const store = configureStore({
 })
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import RootStackScreen from './src/screens/rootStackScreen';
 
 
 // firebase config object
@@ -37,6 +39,8 @@ const App = (props) => {
   return(
     <Provider store={store}>
       <MainTabBar />
+      {/* <Splash />  */}
+      {/* <RootStackScreen /> */}
     </Provider>
   ); 
 };

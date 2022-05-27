@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable } from 'react-native';
+import SignIn from './signIn';
+import SignUp from './signUp';
 
 const Splash  = ({navigation}) => {
-    const navigateToSignIn =() => {
-
-    }
-
     return (
       <View style={styles.container}>
         <View style={styles.logoContainer}>
@@ -17,13 +15,13 @@ const Splash  = ({navigation}) => {
             <View style={styles.modalContainer}>
 
               <TouchableOpacity onPress={()=>navigation.navigate('SignIn')}>
-                <Text style={styles.text1}>Sign In To Your Account</Text>
+                  <Text style={styles.text1}>Sign In To Your Account</Text>
               </TouchableOpacity>
 
               <View style={styles.checkoutAsGuestSection}>
                 <Text style={styles.text2}>Don't Have An Account?</Text>
                 <TouchableOpacity style={styles.guestButton} onPress={()=>navigation.navigate('SignUp')}>
-                  <Text style={styles.text1}>Checkout As Guest</Text>
+                  <Text style={styles.text1}>Sign Up</Text>
                 </TouchableOpacity>
               </View>
 
@@ -68,6 +66,9 @@ text1: {
     color: 'white',
     fontSize: 24,
     fontWeight: 'bold',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
 },
 text2: {
   color: 'white',

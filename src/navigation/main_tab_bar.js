@@ -59,11 +59,15 @@ const MainTabBar = () => {
           paddingRight: 30
         }
       }}>
+        {/* TEMPORARY SIGN IN NAVIGATION */}
+        <Tab.Screen name="Splash" component={Splash} />
+        <Tab.Screen name="SignIn" component={SignIn} />
+        <Tab.Screen name="SignUp" component={SignUp} />
+        {/* =============================================== */}
         <Tab.Screen name="Home" component={HomePage} />
         <Tab.Screen name="Cart" component={AboutTab} />
         <Tab.Screen name="Delivery" component={SearchTab} />
         <Tab.Screen name="Profile" component={SearchTab} />
-        <Tab.Screen name="Splash" component={Splash} />
       </Tab.Navigator>
     </NavigationContainer>
   );
