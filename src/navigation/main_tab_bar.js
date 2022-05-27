@@ -4,6 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomePage from '../screens/homePage';
 import Splash from '../screens/splash'
+import SignIn from '../screens/signIn';
+import SignUp from '../screens/signUp';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -61,8 +63,7 @@ const MainTabBar = () => {
         <Tab.Screen name="Cart" component={AboutTab} />
         <Tab.Screen name="Delivery" component={SearchTab} />
         <Tab.Screen name="Profile" component={SearchTab} />
-        <Tab.Screen name="SPLASH" component={Splash} />
-
+        <Tab.Screen name="Splash" component={Splash} />
       </Tab.Navigator>
     </NavigationContainer>
   );

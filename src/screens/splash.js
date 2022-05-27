@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable } from 'react-native';
 
-class Splash extends Component {
-  render() {
+const Splash  = ({navigation}) => {
+    const navigateToSignIn =() => {
+
+    }
+
     return (
       <View style={styles.container}>
         <View style={styles.logoContainer}>
@@ -12,11 +15,14 @@ class Splash extends Component {
 
         <View style = {styles.footer}>
             <View style={styles.modalContainer}>
-              <Text style={styles.text1}>Sign In To Your Account</Text>
+
+              <TouchableOpacity onPress={()=>navigation.navigate('SignIn')}>
+                <Text style={styles.text1}>Sign In To Your Account</Text>
+              </TouchableOpacity>
 
               <View style={styles.checkoutAsGuestSection}>
                 <Text style={styles.text2}>Don't Have An Account?</Text>
-                <TouchableOpacity style={styles.guestButton} onPress={()=>navigation.navigate('SignInScreen')}>
+                <TouchableOpacity style={styles.guestButton} onPress={()=>navigation.navigate('SignUp')}>
                   <Text style={styles.text1}>Checkout As Guest</Text>
                 </TouchableOpacity>
               </View>
@@ -26,7 +32,6 @@ class Splash extends Component {
       </View>
     );
   }
-}
 
 const styles = StyleSheet.create({
   container: {
