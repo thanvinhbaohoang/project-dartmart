@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   logo1 : {
     fontSize: 24,
-    fontWeight: 'semibold',
+    fontWeight: 'bold',
   },
   logo2 : {
     fontSize: 48,
@@ -73,7 +73,7 @@ text1: {
 text2: {
   color: 'white',
   fontSize: 16,
-  fontWeight: 'medium',
+  fontWeight: 'normal',
 },
 checkoutAsGuestSection : {
   marginTop: 30,

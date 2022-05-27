@@ -1,19 +1,137 @@
-import { StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button} from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable , TextInput} from 'react-native';
 
 function SignUp({ navigation }) {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button style = {styles.button}
-          title="Go to Notifications"
-          onPress={() => navigation.navigate('Notifications')}
-        />
-        <Button title="Go back" onPress={() => navigation.goBack()} />
-      </View>
-    );
-  }
+  return(    
+    <View style={styles.container}>
+    <View style={styles.logoContainer}>
+        <Text style={styles.logo1}> Welcome To </Text>
+        <Text style={styles.logo2}> Dartmart</Text>
+    </View>
+
+    <View style = {styles.footer}>
+        <View style={styles.modalContainer}>
+
+        <Text style={styles.text1}>Sign In To Your Account</Text>
+
+          <View style={styles.checkoutAsGuestSection}>
+
+
+            <View style={styles.inputBox} >
+                <TextInput placeholder="Name" placeholderTextColor='grey' color = 'white' justifyContent = 'center'/>
+            </View>
+            <View style={styles.inputBox} >
+            <TextInput placeholder="Phone Number" placeholderTextColor='grey' color = 'white'/>
+            </View>
+
+
+            <Text style={styles.text1} marginBottom = '10'>Log In Credential</Text>
+            <View style={styles.inputBox} >
+              <TextInput placeholder="Email" placeholderTextColor='grey' color = 'white'/>
+            </View>
+            <View style={styles.inputBox} >
+              <TextInput placeholder="Confirm Email" placeholderTextColor='grey' color = 'white'/>
+            </View>
+            <View style={styles.inputBox} >
+              <TextInput placeholder="Password" placeholderTextColor='grey' color = 'white'/>
+            </View>
+
+
+          </View>
+
+          <View style={styles.checkoutAsGuestSection}>
+            <TouchableOpacity style={styles.guestButton} onPress={()=>navigation.navigate('SignUp')}>
+              <Text style={styles.text1}>Create Account</Text>
+            </TouchableOpacity>
+          </View>
+
+        </View>
+    </View>
+  </View>
+)
+}
+
 
 
 const styles = StyleSheet.create({
-})
+  container: {
+    flex: 1, 
+    backgroundColor: '#FFDD62'
+  },
+  logoContainer: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center'    
+  },
+  logo1 : {
+    fontSize: 24,
+    fontWeight: 'semibold',
+  },
+  logo2 : {
+    fontSize: 48,
+    fontWeight: 'bold',
+  },
+  footer: {
+    flex: 1,
+    backgroundColor: '#02604E',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    alignItems: 'center',
+    paddingVertical: 50,
+    paddingHorizontal: 30
+  },
+  modalContainer : {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  inputBox : {
+      width: 300,
+      marginBottom: 10,
+      borderRadius: 8,
+      paddingVertical: 10,
+      paddingHorizontal: 33,
+      borderColor: 'white',
+      borderWidth: 2,
+      placeholderTextColor: 'white',
+  },
+  inputText : {
+      placeholderTextColor : 'white',
+      color: 'white',
+  },
+text1: {
+    justifyContent: 'center',
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+},
+text2: {
+  color: 'white',
+  fontSize: 16,
+  fontWeight: 'normal',
+},
+signInCredentialSection : {
+  marginTop: 10,
+},
+checkoutAsGuestSection : {
+  display: 'flex',
+  justifyContent: 'center',
+  alignContent: 'center',
+  alignItems: 'center',
+  marginTop: 30,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+guestButton: {
+  width: 250,
+  marginTop: 10,
+  alignContent: 'center',
+  justifyContent: 'center',
+  opacity: 12,
+  backgroundColor:"#FFD439",
+  borderRadius: 25,
+  paddingVertical: 10,
+  paddingHorizontal: 33,
+},
+});
+
   
 export default SignUp;

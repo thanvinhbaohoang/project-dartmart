@@ -15,14 +15,14 @@ const SignIn = ({navigation}) => {
 
               <View style={styles.checkoutAsGuestSection}>
                 <View style={styles.inputBox} >
-                    <TextInput placeholder="Your Email" />
+                    <TextInput placeholder="Email" placeholderTextColor='grey' color = 'white' justifyContent = 'center'/>
                 </View>
                 <View style={styles.inputBox} >
-                    <TextInput placeholder="Your Password" />
+                <TextInput placeholder="Your Password" placeholderTextColor='grey' color = 'white'/>
                 </View>
 
                 <TouchableOpacity style={styles.guestButton} onPress={()=>navigation.navigate('SignUp')}>
-                  <Text style={styles.text1}>Sign In</Text>
+                  <Text style={styles.text1} justifyContent='center' >Sign In</Text>
                 </TouchableOpacity>
 
               </View>
@@ -82,7 +82,12 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         placeholderTextColor: 'white',
     },
+    inputText : {
+        placeholderTextColor : 'white',
+        color: 'white',
+    },
   text1: {
+      justifyContent: 'center',
       color: 'white',
       fontSize: 24,
       fontWeight: 'bold',
@@ -90,7 +95,7 @@ const styles = StyleSheet.create({
   text2: {
     color: 'white',
     fontSize: 16,
-    fontWeight: 'medium',
+    fontWeight: 'normal',
   },
   checkoutAsGuestSection : {
     marginTop: 30,
