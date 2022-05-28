@@ -54,6 +54,9 @@ function CartPage(props){
                     </View>
                 </View>
 
+                <View style={styles.dividerLine}>
+                    <Text style={styles.text1} justifyContent='center' ></Text>
+                </View>
                 <View style={styles.subtotal}>
                     <View style={styles.costLine}>
                         <Text style={styles.text1}>Total</Text>
@@ -84,7 +87,7 @@ const styles = StyleSheet.create({
     },
     text2: {
         color: 'white',
-        fontSize: 16,
+        fontSize: 20,
         fontWeight: 'normal',
       },
     container: {
@@ -161,15 +164,22 @@ const styles = StyleSheet.create({
         borderRadius: 18,
         flexWrap: 'wrap',
         justifyContent: 'center',
-        marginBottom: windowWidth * .45,
-        opacity: 0.8
+        marginBottom: windowWidth * .22,
+        opacity: 0.9,
+        padding: 20,
     },
     subtotal :{
-        marginTop: 20,
         marginBottom: 20,
         padding: 10,
         width: windowWidth* 0.95,
     },  
+    dividerLine : {
+        backgroundColor: 'grey',
+        width: windowWidth* 0.9,
+        height: 3,
+        borderRadius: 10,
+        opacity: 0.5
+    },
     costLine : {
         display: 'flex',
         flexDirection:'row',
