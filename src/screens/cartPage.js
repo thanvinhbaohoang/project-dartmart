@@ -18,7 +18,9 @@ function CartPage(props){
         <View backgroundColor='#FFDD62'>
             {/* SCROLL VIEW FOR ITEMS IN CART */}
             <ScrollView contentContainerStyle={styles.container}>
+
                 <Text style={styles.featuredText}>Shopping Cart</Text>
+
                 <View style={styles.itemsContainer}>
                     {itemData.map((item) => {
                         return (
@@ -116,7 +118,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        marginBottom: windowWidth * .45,
         marginTop: 30
     },
     itemContainer:{

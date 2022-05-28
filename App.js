@@ -2,7 +2,7 @@ import React from 'react';
 import MainTabBar from './src/navigation/main_tab_bar';
 import { LogBox } from "react-native";
 import { Provider } from 'react-redux';
-import { store } from './src/services/datastore';
+import { store } from './src/services/datastore.js';
 
 
 // disable really annoying in app warnings
