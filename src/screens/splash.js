@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable } from 'react-native';
+import SignIn from './signIn';
+import SignUp from './signUp';
 
-class Splash extends Component {
-  render() {
+const Splash  = ({navigation}) => {
     return (
       <View style={styles.container}>
         <View style={styles.logoContainer}>
@@ -12,12 +13,15 @@ class Splash extends Component {
 
         <View style = {styles.footer}>
             <View style={styles.modalContainer}>
-              <Text style={styles.text1}>Sign In To Your Account</Text>
+
+              <TouchableOpacity onPress={()=>navigation.navigate('SignIn')}>
+                  <Text style={styles.text1}>Sign In To Your Account</Text>
+              </TouchableOpacity>
 
               <View style={styles.checkoutAsGuestSection}>
                 <Text style={styles.text2}>Don't Have An Account?</Text>
-                <TouchableOpacity style={styles.guestButton} onPress={()=>navigation.navigate('SignInScreen')}>
-                  <Text style={styles.text1}>Checkout As Guest</Text>
+                <TouchableOpacity style={styles.guestButton} onPress={()=>navigation.navigate('SignUp')}>
+                  <Text style={styles.text1}>Sign Up</Text>
                 </TouchableOpacity>
               </View>
 
@@ -26,7 +30,6 @@ class Splash extends Component {
       </View>
     );
   }
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
   },
   logo1 : {
     fontSize: 24,
-    fontWeight: 'semibold',
+    fontWeight: 'bold',
   },
   logo2 : {
     fontSize: 48,
@@ -63,11 +66,14 @@ text1: {
     color: 'white',
     fontSize: 24,
     fontWeight: 'bold',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
 },
 text2: {
   color: 'white',
   fontSize: 16,
-  fontWeight: 'medium',
+  fontWeight: 'normal',
 },
 checkoutAsGuestSection : {
   marginTop: 30,

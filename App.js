@@ -4,6 +4,7 @@ import { LogBox } from "react-native";
 import { Provider } from 'react-redux';
 import { store } from './src/services/datastore';
 
+
 // disable really annoying in app warnings
 LogBox.ignoreAllLogs();
 const App = (props) => {
