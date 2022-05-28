@@ -1,3 +1,6 @@
+// import * as db from './services/datastore';
+
+
 // keys for actiontypes
 export const ActionTypes = {
     // CART MANAGEMENT
@@ -10,8 +13,12 @@ export const ActionTypes = {
     FETCH_ORDER: "FETCH_ORDER",
     SUBMIT_ORDER: "SUBMIT_ORDER",
     UPDATE_ORDER: "UPDATE_ORDER",
+    // INVENTORY MANAGEMENT
+    FETCH_ITEMS: "FETCH_ITEMS",
+    FETCH_ITEM: "FETCH_ITEM"
   };
   
+  // CART MANAGEMENT
   
   export function addItem(item, quantity) { // edit the quantity of an item in the cart (if the item is new, adds to cart list)
     return {
@@ -19,6 +26,8 @@ export const ActionTypes = {
       payload: {item, quantity},  
     };
   }
+
+  // USER MANAGEMENT
 
   export function createUser(userfields) {
     return {
@@ -34,6 +43,15 @@ export const ActionTypes = {
     }
   }
 
+  // ORDER MANAGEMENT
+
+  export function submitOrder(orderDetails) {
+    return {
+      type: ActionTypes.FETCH_ORDER,
+      payload: {orderDetails}
+    }
+  }
+
   export function fetchOrder(orderId) {
     return {
       type: ActionTypes.FETCH_ORDER,
@@ -45,6 +63,15 @@ export const ActionTypes = {
     return {
       type: ActionTypes.UPDATE_ORDER,
       payload: {orderId, updates}
+    }
+  }
+
+  // INVENTORY ACCESS
+
+  export function fetchItems() {
+    return {
+      type: ActionTypes.UPDATE_ORDER,
+      payload: {}
     }
   }
 
