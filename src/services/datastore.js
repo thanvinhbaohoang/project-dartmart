@@ -32,12 +32,14 @@ export const store = configureStore({
   // INVENTORY FUNCTIONS
 
   // Fetch all items for displaying product options in menu
-  export function fetchItems(callback) {
-    firebase.database().ref('items').on('value', (snapshot) => {
-      const newInventoryState = snapshot.val();
-      callback(newInventoryState);
-    });
+  export async function fetchItems() { 
+      await getDocs(collection(db, "cities"));
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+        });
   }
+
 
   // Decrement the quantity of an item in the inventory (for when an item is ordered)
   export async function updateItemQuantity(itemId, quantityChange) {
@@ -82,6 +84,18 @@ export const store = configureStore({
   // initialize an order in the database
   export async function createOrder(newOrderId, data) {
     await setDoc(doc(db, "orders", newOrderId), data);
+  }
+
+  export async function fetchOrder(orderId, callback) {
+    const docRef = doc(db, "items", orderId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        callback(docSnap.data());
+      } else {
+        console.log("Order not found during fetchOrder");
+      }
+      
   }
 
   // update the status of an order as it is being submitted and fulfilled
