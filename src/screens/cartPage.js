@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { StyleSheet, Text, View, TouchableHighlight, Dimensions, ScrollView, Modal, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { addItem } from '../actions/index';
 
@@ -15,70 +15,85 @@ function CartPage(props){
         setTempQuantity(1);
     }, [modalVisible])
     return (
-        <View>
-
-        
+        <View backgroundColor='#FFDD62'>
+            {/* SCROLL VIEW FOR ITEMS IN CART */}
             <ScrollView contentContainerStyle={styles.container}>
                 <Text style={styles.featuredText}>Shopping Cart</Text>
-
-                <LinearGradient colors={['#78FFC4', '#75D000', '#269C56']} style={styles.featured}>
-                    <Text style={styles.featuredText}>Featured Products</Text>
-                </LinearGradient>
                 <View style={styles.itemsContainer}>
                     {itemData.map((item) => {
                         return (
-                            <TouchableHighlight underlayColor="transparent" onPress={() => {setSelectedItem(item); setModalVisible(!modalVisible)}}>
+                            <TouchableOpacity underlayColor="transparent" onPress={() => {setSelectedItem(item)}}>
                                 <View style={styles.itemContainer}>
                                     <Text style={styles.itemName}>{item.name}</Text>
                                     <Text style={styles.itemCost}>{item.cost}</Text>
                                 </View>
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                         )
                     })}
                 </View>
-            </ScrollView>
 
+                <View style={styles.checkoutInfo}>
+                <View>
+                    <View>
+                        <View style={styles.subtotal}>
+                            <View style={styles.costLine}>
+                                <Text style={styles.text2}>Sign Up</Text>
+                                <Text style={styles.text2}>$69</Text>
+                            </View>
+                            <View style={styles.costLine}>
+                                <Text style={styles.text2}>Tax & Fees</Text>
+                                <Text style={styles.text2}>$31</Text>
+                            </View>
+                            <View style={styles.costLine}>
+                                <Text style={styles.text2}>Tips</Text>
+                                <Text style={styles.text2}>$0</Text>
+                            </View>
 
+                        </View>
 
-            <Modal
-            visible={modalVisible}
-            transparent={true}
-            onRequestClose={() => setModalVisible(!modalVisible)}
-            >
-                <View style={styles.itemModal}>
-                    <Text>{selectedItem?.name}</Text>
-                    <Text>{selectedItem?.cost}</Text>
-                    <Pressable style={{position: 'absolute', top: 20, right: 20}} onPress={() => setModalVisible(!modalVisible)}>
-                        <Text style={{fontSize: 25}}>X</Text>
-                    </Pressable>
-                    <View style={styles.quantityContainer}>
-                        <Pressable onPress={() => setTempQuantity(tempQuantity-1)}>
-                            <Text>-</Text>
-                        </Pressable>
-                        <Text>{tempQuantity}</Text>
-                        <Pressable onPress={() => setTempQuantity(tempQuantity+1)}>
-                            <Text>+</Text>
-                        </Pressable>
                     </View>
-                    <Pressable onPress={() => {props.addItem(selectedItem, tempQuantity); setModalVisible(!modalVisible)}}>
-                        <Text>Submit</Text>
-                    </Pressable>
                 </View>
-            </Modal>
-        </View>
 
+                <View style={styles.subtotal}>
+                    <View style={styles.costLine}>
+                        <Text style={styles.text1}>Total</Text>
+                        <Text style={styles.text1}>$100</Text>
+                    </View>
+                </View>
+                        
+                <TouchableOpacity style={styles.checkOutButton} onPress={()=>navigation.navigate('SignUp')}>
+                  <Text style={styles.text1} justifyContent='center' >Check Out</Text>
+                </TouchableOpacity>
+            </View>
+            
+            </ScrollView>
+        </View>
     );
 }
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+    text1: {
+        color: 'white',
+        fontSize: 24,
+        fontWeight: 'bold',
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    text2: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'normal',
+      },
     container: {
         margin: 0,
         padding: 0,
         alignItems: 'center',
         width: windowWidth,
-        backgroundColor: '#02604E'
+        backgroundColor: '#02604E',
+        borderRadius: 30,
     },
     featured:{
         width: "90%",
@@ -90,7 +105,7 @@ const styles = StyleSheet.create({
     },
     featuredText: {
         color: 'white',
-        fontSize: 50,
+        fontSize: 36,
         fontWeight: 'bold',
         textAlign: 'center'
     },
@@ -102,10 +117,10 @@ const styles = StyleSheet.create({
         marginTop: 30
     },
     itemContainer:{
-        width: windowWidth * .45,
+        width: windowWidth,
         margin: windowWidth * .025,
-        borderRadius: 30,
-        height: windowWidth * .45,
+        borderRadius: 8,
+        height: windowWidth * .35,
         backgroundColor: 'yellow',
         justifyContent: 'flex-end',
     },
@@ -137,7 +152,40 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         width: '100%'
-    }
+    },
+    checkoutInfo : {
+        width: 400,
+        height: 300,
+        backgroundColor: 'black',
+        flexDirection: 'row',
+        borderRadius: 18,
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        marginBottom: windowWidth * .45,
+        opacity: 0.8
+    },
+    subtotal :{
+        marginTop: 20,
+        marginBottom: 20,
+        padding: 10,
+        width: windowWidth* 0.95,
+    },  
+    costLine : {
+        display: 'flex',
+        flexDirection:'row',
+        justifyContent:'space-between',
+    },
+    checkOutButton: {
+        width: windowWidth*.9,
+        marginTop: 10,
+        alignContent: 'center',
+        justifyContent: 'center',
+        opacity: 12,
+        borderRadius: 12,
+        paddingVertical: 10,
+        paddingHorizontal: 33,
+        backgroundColor: '#01D177',
+      },
 });
 
 const itemData = [
@@ -148,6 +196,18 @@ const itemData = [
     {
         name: 'test2',
         cost: '4.99',
+    },
+    {
+        name: 'test1',
+        cost: '2.99',
+    },
+    {
+        name: 'test2',
+        cost: '4.99',
+    },
+    {
+        name: 'test1',
+        cost: '2.99',
     },
 ]
 export default connect(null, { addItem })(CartPage);
