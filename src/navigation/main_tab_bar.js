@@ -26,7 +26,8 @@ const MainTabBar = () => {
       screenOptions={{
         tabBarStyle:{
           height: windowHeight * .1,
-          borderRadius: windowHeight * .05,
+          borderTopRightRadius: windowHeight * .05,
+          borderTopLeftRadius: windowHeight * .05,
           backgroundColor: '#008F74',
           position: 'absolute'
         },
