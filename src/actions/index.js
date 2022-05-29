@@ -15,7 +15,10 @@ export const ActionTypes = {
     UPDATE_ORDER: "UPDATE_ORDER",
     // INVENTORY MANAGEMENT
     FETCH_ITEMS: "FETCH_ITEMS",
-    FETCH_ITEM: "FETCH_ITEM"
+    FETCH_ITEM: "FETCH_ITEM",
+    // CARTPAGE UPDATE
+    INCREMENT_QUANTITY: 'INCREMENT_QUANTITY',
+    DECREMENT_QUANTITY: 'DECREMENT_QUANTITY',
   };
   
   // CART MANAGEMENT
@@ -75,3 +78,17 @@ export const ActionTypes = {
     }
   }
 
+  // CARTPAGE QUANTITY CONTROL FOR EACH ITEM
+  export function increment() {
+    return {
+      type: ActionTypes.INCREMENT,
+      payload: null,
+    };
+  }
+  
+  export function decrement() {
+    return {
+      type: ActionTypes.DECREMENT,
+      payload: null,
+    };
+  }

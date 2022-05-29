@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { addItem } from '../actions/index';
 
@@ -25,11 +25,33 @@ function CartPage(props){
                     {itemData.map((item) => {
                         return (
                             <TouchableOpacity underlayColor="transparent" onPress={() => {setSelectedItem(item)}}>
-                                <View style={styles.itemContainer}>
-                                    <Text style={styles.itemName}>{item.name}</Text>
-                                    <Text style={styles.itemCost}>{item.cost}</Text>
+                                <View style ={styles.itemContainer}>
+                                    <View style={styles.imageContainer}>
+                                        <Text style={styles.text1}>IMAGE</Text>
+                                    </View>
+                                    <View style={styles.itemInfoContainer}>
+                                        <Text style={styles.itemName}>{item.name}</Text>
+
+
+                                        <View style= {styles.costAndQuantity}>
+                                            <View style = {styles.itemCostContainer}>
+                                                <Text style={styles.text1}>${item.cost}</Text>
+                                            </View>
+                                            <View style={styles.quantityContainer}>
+                                                <TouchableOpacity style={styles.quantityButton} onPress={()=>navigation.navigate('SignUp')}>
+                                                    <Text style={styles.quantitySymbol}>-</Text>
+                                                </TouchableOpacity>    
+                                                <Text style={styles.text1}>#</Text>
+                                                <TouchableOpacity style={styles.quantityButton} onPress={()=>navigation.navigate('SignUp')}>
+                                                    <Text style={styles.quantitySymbol}>+</Text>
+                                                </TouchableOpacity> 
+                                            </View>
+                                        </View>
+
+                                    </View>
                                 </View>
                             </TouchableOpacity>
+
                         )
                     })}
                 </View>
@@ -121,19 +143,52 @@ const styles = StyleSheet.create({
         marginTop: 30
     },
     itemContainer:{
+        flexDirection:'row',
+        justifyContent: 'space-between',
         width: windowWidth,
         margin: windowWidth * .025,
         borderRadius: 8,
         height: windowWidth * .35,
-        backgroundColor: 'yellow',
-        justifyContent: 'flex-end',
+        backgroundColor: 'green',
+        padding: 10,
+    },
+    imageContainer:{
+        borderColor: 'white',
+        borderWidth:2,
+        borderRadius: 18,
+        justifyContent: 'center',
+        width: windowWidth * 0.3,
+    },
+    itemInfoContainer:{
+        justifyContent: 'space-between',
+        width: windowWidth*.62,
+        padding:5,
     },
     itemName: {
-        fontSize: 20,
-        position: 'absolute',
-        top: 10,
-        right: 15,
+        color: 'white',
+        fontSize: 24,
+        height: 30,
         fontWeight: 'bold',
+        alignSelf: 'baseline',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden'
+    },
+    costAndQuantity : {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems:'center',
+
+    },
+    itemCostContainer: {
+        borderWidth: 4, 
+        borderColor: 'red', 
+        borderRadius: 22,
+        paddingVertical: 5,
+        paddingHorizontal: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 0
     },
     itemCost: {
         fontSize: 15,
@@ -154,8 +209,24 @@ const styles = StyleSheet.create({
     },
     quantityContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '100%'
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+    },
+    quantityButton : {
+        width: 40,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 50,
+        // borderColor: 'white',
+        // borderWidth: 3,
+        backgroundColor: 'white',
+        margin: 5
+        },
+    quantitySymbol : {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: 'black'
     },
     checkoutInfo : {
         width: 400,
@@ -201,24 +272,31 @@ const styles = StyleSheet.create({
 
 const itemData = [
     {
-        name: 'test1',
+        name: 'FOCO Fries',
         cost: '2.99',
+        imageURL:'',
+        quantity: 1
     },
     {
-        name: 'test2',
-        cost: '4.99',
-    },
-    {
-        name: 'test1',
+        name: 'DASANI WATER(24 Pack) ',
         cost: '2.99',
-    },
-    {
-        name: 'test2',
-        cost: '4.99',
-    },
-    {
-        name: 'test1',
+        imageURL:'',
+        quantity: 1
+    },    {
+        name: 'test3',
         cost: '2.99',
+        imageURL:'',
+        quantity: 1
+    },    {
+        name: 'test4',
+        cost: '2.99',
+        imageURL:'',
+        quantity: 1
+    },    {
+        name: 'test5',
+        cost: '2.99',
+        imageURL:'',
+        quantity: 1
     },
 ]
 export default connect(null, { addItem })(CartPage);
