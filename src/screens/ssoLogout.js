@@ -22,7 +22,13 @@ export default function SSOLogout ({ navigation }) {
                     console.log("onMessage event:", event.nativeEvent, "onMessage data:", event.nativeEvent.data)
                 }}
             />
-            <View>
+            <View
+                style={{
+                    flex: 1,
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                }}
+            >
                 <Button
                     title="SSOLogin"
                     onPress={() => {
