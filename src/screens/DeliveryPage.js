@@ -4,96 +4,44 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal
 import { LinearGradient } from 'expo-linear-gradient';
 import { addItem } from '../actions/index';
 
-function CartPage(props){
-    const cart = useSelector((state) => state.item.cart);
-
-    const [modalVisible, setModalVisible] = useState(false); 
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [tempQuantity, setTempQuantity] = useState(1);
-
-    useEffect(() => {
-        setTempQuantity(1);
-    }, [modalVisible])
+function DeliveryPage(props){
     return (
-        <View backgroundColor='#FFDD62'>
-            {/* SCROLL VIEW FOR ITEMS IN CART */}
-            <ScrollView contentContainerStyle={styles.container}>
+        <View backgroundColor='red' style={styles.container}>
 
-                <Text style={styles.featuredText}>Shopping Cart</Text>
+                <Text style={styles.featuredText}>Order Confirmed</Text>
+                <Text style={styles.text2}>Hey {orderDetail.userName}, Thanks For Your Purchase</Text>
 
-                <View style={styles.itemsContainer}>
-                    {itemData.map((item) => {
-                        return (
-                            <TouchableOpacity underlayColor="transparent" onPress={() => {setSelectedItem(item)}}>
-                                <View style ={styles.itemContainer}>
-                                    <View style={styles.imageContainer}>
-                                        <Text style={styles.text1}>IMAGE</Text>
-                                    </View>
-                                    <View style={styles.itemInfoContainer}>
-                                        <Text style={styles.itemName}>{item.name}</Text>
-
-
-                                        <View style= {styles.costAndQuantity}>
-                                            <View style = {styles.itemCostContainer}>
-                                                <Text style={styles.text1}>${item.cost}</Text>
-                                            </View>
-                                            <View style={styles.quantityContainer}>
-                                                <TouchableOpacity style={styles.quantityButton} onPress={()=>navigation.navigate('SignUp')}>
-                                                    <Text style={styles.quantitySymbol}>-</Text>
-                                                </TouchableOpacity>    
-                                                <Text style={styles.text1}>#</Text>
-                                                <TouchableOpacity style={styles.quantityButton} onPress={()=>navigation.navigate('SignUp')}>
-                                                    <Text style={styles.quantitySymbol}>+</Text>
-                                                </TouchableOpacity> 
-                                            </View>
-                                        </View>
-
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-
-                        )
-                    })}
-                </View>
-
-                <View style={styles.checkoutInfo}>
-                <View>
-                    <View>
-                        <View style={styles.subtotal}>
-                            <View style={styles.costLine}>
-                                <Text style={styles.text2}>Sub Total</Text>
-                                <Text style={styles.text2}>$69</Text>
-                            </View>
-                            <View style={styles.costLine}>
-                                <Text style={styles.text2}>Tax & Fees</Text>
-                                <Text style={styles.text2}>$31</Text>
-                            </View>
-                            <View style={styles.costLine}>
-                                <Text style={styles.text2}>Tips</Text>
-                                <Text style={styles.text2}>$0</Text>
-                            </View>
-
-                        </View>
-
-                    </View>
-                </View>
-
+            <View>
                 <View style={styles.dividerLine}>
                     <Text style={styles.text1} justifyContent='center' ></Text>
                 </View>
                 <View style={styles.subtotal}>
                     <View style={styles.costLine}>
-                        <Text style={styles.text1}>Total</Text>
-                        <Text style={styles.text1}>$100</Text>
+
+                    <View style={styles.orderInfoContainer}>
+                        <View style={styles.orderNumberAndEstimateTime}>
+                            <Text style={styles.text2} alignSelf='baseline'>Order Number</Text>
+                            <Text style={styles.text2}>Estimated Time</Text>
+                        </View>
+
+                        <View style={styles.orderInfo}>
+                            <Text style={styles.text1}>#{orderDetail.orderNumber}</Text>
+                            <Text style={styles.text1}>{orderDetail.estimatedTime}</Text>
+                        </View>
+                        <View style={styles.dividerLine}></View>
+
+                    </View>
+
+
+
                     </View>
                 </View>
                         
                 <TouchableOpacity style={styles.checkOutButton} onPress={()=>navigation.navigate('SignUp')}>
-                  <Text style={styles.text1} justifyContent='center' >Check Out</Text>
+                  <Text style={styles.text1} justifyContent='center' >More Order</Text>
                 </TouchableOpacity>
             </View>
-            
-            </ScrollView>
+
         </View>
     );
 }
@@ -119,6 +67,7 @@ const styles = StyleSheet.create({
         padding: 0,
         alignItems: 'center',
         width: windowWidth,
+        height:windowHeight,
         backgroundColor: '#02604E',
         borderRadius: 30,
     },
@@ -173,6 +122,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden'
+    },
+    orderInfoContainer:{
+
+    },
+    orderNumberAndEstimateTime: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: windowWidth*0.9,
+    },
+    orderInfo :{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: windowWidth*0.9,
     },
     costAndQuantity : {
         flexDirection: 'row',
@@ -257,6 +221,18 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
     },
+    orderNumberContainer : {
+        justifyContent: 'flex-start',
+        alignItems:'baseline'
+    },
+    orderNumber : {
+        alignSelf: 'baseline'
+    },
+    estimatedTimeContainer : {
+    },
+    estimatedTime : {
+        alignSelf: 'baseline'
+    },
     checkOutButton: {
         width: windowWidth*.9,
         marginTop: 10,
@@ -270,33 +246,9 @@ const styles = StyleSheet.create({
       },
 });
 
-const itemData = [
-    {
-        name: 'FOCO Fries',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },
-    {
-        name: 'DASANI WATER(24 Pack) ',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },    {
-        name: 'test3',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },    {
-        name: 'test4',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },    {
-        name: 'test5',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },
-]
-export default connect(null, { addItem })(CartPage);
+const orderDetail = {
+    userName : 'USER',
+    estimatedTime : '4:20 PM',
+    orderNumber : '69',
+}
+export default connect(null, { addItem })(DeliveryPage);
