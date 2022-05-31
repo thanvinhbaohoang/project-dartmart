@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button} from 'react-native';
+import { StyleSheet, Image, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { addItem } from '../actions/index';
+import { addItem, submitOrder } from '../actions/index';
 
 function CartPage(props){
     const cart = useSelector((state) => state.item.cart);
@@ -10,24 +10,40 @@ function CartPage(props){
     const [modalVisible, setModalVisible] = useState(false); 
     const [selectedItem, setSelectedItem] = useState(null);
     const [tempQuantity, setTempQuantity] = useState(1);
-
+    var sum = 0;
+    var fees = 0;
     useEffect(() => {
         setTempQuantity(1);
     }, [modalVisible])
+
+
+    const calcCartSum = () => {
+        sum = 0;
+        cart.forEach(({item, quantity}) => {
+            sum += quantity * item.cost;
+        })
+        return sum;
+    }
+
+    const calcFees = () => {
+        fees = Math.round((sum * .05 + 1.99) * 100) / 100;
+        return fees;
+    }
     return (
-        <View backgroundColor='#BBDDBB'>
+        <View backgroundColor='#02604E' style={{height: windowHeight * .9}}>
             {/* SCROLL VIEW FOR ITEMS IN CART */}
+            <Text style={styles.featuredText}>Shopping Cart</Text>
             <ScrollView contentContainerStyle={styles.container}>
-
-                <Text style={styles.featuredText}>Shopping Cart</Text>
-
                 <View style={styles.itemsContainer}>
-                    {itemData.map((item) => {
+                    {cart.map(({item, quantity}) => {
                         return (
-                            <TouchableOpacity underlayColor="transparent" onPress={() => {setSelectedItem(item)}}>
+                            <TouchableOpacity key={item.name} underlayColor="transparent" onPress={() => {setSelectedItem(item)}}>
                                 <View style ={styles.itemContainer}>
+                                    {/* <View style={styles.imageContainer}>
+                                        <
+                                    </View> */}
                                     <View style={styles.imageContainer}>
-                                        <Text style={styles.text1}>IMAGE</Text>
+                                        <Image source={{uri: item.imageURL}} style={styles.image} />
                                     </View>
                                     <View style={styles.itemInfoContainer}>
                                         <Text style={styles.itemName}>{item.name}</Text>
@@ -35,14 +51,14 @@ function CartPage(props){
 
                                         <View style= {styles.costAndQuantity}>
                                             <View style = {styles.itemCostContainer}>
-                                                <Text style={styles.text1}>${item.cost}</Text>
+                                                <Text style={styles.text1}>${item.cost * quantity}</Text>
                                             </View>
                                             <View style={styles.quantityContainer}>
-                                                <TouchableOpacity style={styles.quantityButton} onPress={()=>navigation.navigate('SignUp')}>
+                                                <TouchableOpacity style={styles.quantityButton} onPress={()=>props.addItem(item, -1)}>
                                                     <Text style={styles.quantitySymbol}>-</Text>
                                                 </TouchableOpacity>    
-                                                <Text style={styles.text1}>#</Text>
-                                                <TouchableOpacity style={styles.quantityButton} onPress={()=>navigation.navigate('SignUp')}>
+                                                <Text style={styles.text1}>{quantity}</Text>
+                                                <TouchableOpacity style={styles.quantityButton} onPress={()=>props.addItem(item, 1)}>
                                                     <Text style={styles.quantitySymbol}>+</Text>
                                                 </TouchableOpacity> 
                                             </View>
@@ -55,26 +71,24 @@ function CartPage(props){
                         )
                     })}
                 </View>
-
-                <View style={styles.checkoutInfo}>
+            </ScrollView>
+            <View style={styles.checkoutInfo}>
                 <View>
                     <View>
                         <View style={styles.subtotal}>
                             <View style={styles.costLine}>
-                                <Text style={styles.text2}>Sub Total</Text>
-                                <Text style={styles.text2}>$69</Text>
+                                <Text style={styles.text2}>Cart total</Text>
+                                <Text style={styles.text2}>${calcCartSum()}</Text>
                             </View>
                             <View style={styles.costLine}>
                                 <Text style={styles.text2}>Tax & Fees</Text>
-                                <Text style={styles.text2}>$31</Text>
+                                <Text style={styles.text2}>${calcFees()}</Text>
                             </View>
                             <View style={styles.costLine}>
                                 <Text style={styles.text2}>Tips</Text>
                                 <Text style={styles.text2}>$0</Text>
                             </View>
-
                         </View>
-
                     </View>
                 </View>
 
@@ -84,7 +98,7 @@ function CartPage(props){
                 <View style={styles.subtotal}>
                     <View style={styles.costLine}>
                         <Text style={styles.text1}>Total</Text>
-                        <Text style={styles.text1}>$100</Text>
+                        <Text style={styles.text1}>${sum + fees}</Text>
                     </View>
                 </View>
                         
@@ -92,8 +106,6 @@ function CartPage(props){
                   <Text style={styles.text1} justifyContent='center' >Check Out</Text>
                 </TouchableOpacity>
             </View>
-            
-            </ScrollView>
         </View>
     );
 }
@@ -134,7 +146,8 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 36,
         fontWeight: 'bold',
-        textAlign: 'center'
+        textAlign: 'center',
+        paddingTop: windowHeight * .05,
     },
     itemsContainer:{
         flexDirection: 'row',
@@ -142,6 +155,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 30
     },
+    image:{
+        width: '100%',
+        height: '100%',
+        borderRadius: 18
+    },  
     itemContainer:{
         flexDirection:'row',
         justifyContent: 'space-between',
@@ -153,11 +171,11 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     imageContainer:{
-        borderColor: 'white',
         borderWidth:2,
         borderRadius: 18,
         justifyContent: 'center',
         width: windowWidth * 0.3,
+        backgroundColor:'white',
     },
     itemInfoContainer:{
         justifyContent: 'space-between',
@@ -181,8 +199,8 @@ const styles = StyleSheet.create({
 
     },
     itemCostContainer: {
-        borderWidth: 4, 
-        borderColor: 'red', 
+        borderWidth: 1, 
+        borderColor: 'white', 
         borderRadius: 22,
         paddingVertical: 5,
         paddingHorizontal: 20,
@@ -229,15 +247,18 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     checkoutInfo : {
-        width: 400,
+        position: 'absolute',
+        bottom: 0,
+        width: windowWidth,
         height: 300,
         backgroundColor: 'black',
         flexDirection: 'row',
-        borderRadius: 18,
+        borderTopRightRadius: 18,
+        borderTopLeftRadius: 18,
         flexWrap: 'wrap',
         justifyContent: 'center',
-        marginBottom: windowWidth * .22,
-        opacity: 0.95,
+        // marginBottom: windowWidth * .22,
+        opacity: 0.9,
         padding: 20,
     },
     subtotal :{
@@ -270,33 +291,4 @@ const styles = StyleSheet.create({
       },
 });
 
-const itemData = [
-    {
-        name: 'FOCO Fries',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },
-    {
-        name: 'DASANI WATER(24 Pack) ',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },    {
-        name: 'test3',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },    {
-        name: 'test4',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },    {
-        name: 'test5',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },
-]
 export default connect(null, { addItem })(CartPage);
