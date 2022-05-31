@@ -108,7 +108,6 @@ import { initializeApp } from "firebase/app";
     });
   }
 
-
   // Fetch all orders in the database
   // Returns a promise; data can be accessed w/ querySnapshot.docs.map(doc => doc.data())
   export async function fetchAllOrders() { 
