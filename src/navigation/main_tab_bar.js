@@ -45,7 +45,7 @@ const MainTabBar = () => {
       screenOptions={{
         tabBarStyle:{
           height: windowHeight * .1,
-          backgroundColor: '#008F74',
+          backgroundColor: '#02604E',
           position: 'absolute'
         },
         tabBarActiveTintColor: 'white',
