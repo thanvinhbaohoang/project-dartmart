@@ -8,6 +8,7 @@ import SignIn from '../screens/signIn';
 import SignUp from '../screens/signUp';
 import CartPage from '../screens/cartPage';
 import SSOLogin from '../screens/sso-login';
+import DeliveryPage from '../screens/DeliveryPage';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -69,7 +70,7 @@ const MainTabBar = () => {
         {/* =============================================== */}
         <Tab.Screen name="Home" component={HomePage} />
         <Tab.Screen name="Cart" component={CartPage} />
-        <Tab.Screen name="Delivery" component={SearchTab} />
+        <Tab.Screen name="Delivery" component={DeliveryPage} />
         <Tab.Screen name="Profile" component={SearchTab} />
       </Tab.Navigator>
     </NavigationContainer>
