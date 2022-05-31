@@ -7,6 +7,7 @@ import Splash from '../screens/splash'
 import SignIn from '../screens/signIn';
 import SignUp from '../screens/signUp';
 import CartPage from '../screens/cartPage';
+import Shop from '../screens/shop';
 import SSOLogin from '../screens/sso-login';
 import DeliveryPage from '../screens/DeliveryPage';
 
@@ -31,7 +32,6 @@ const MainTabBar = () => {
       screenOptions={{
         tabBarStyle:{
           height: windowHeight * .1,
-          borderRadius: windowHeight * .05,
           backgroundColor: '#008F74',
           position: 'absolute'
         },
@@ -68,9 +68,9 @@ const MainTabBar = () => {
         <Tab.Screen name="SignUp" component={SignUp} />
         <Tab.Screen name="SSOLogin" component={SSOLogin} />
         {/* =============================================== */}
-        <Tab.Screen name="Home" component={HomePage} />
-        <Tab.Screen name="Cart" component={CartPage} />
-        <Tab.Screen name="Delivery" component={DeliveryPage} />
+        <Tab.Screen name="Home" options={{headerShown: false}} component={Shop} />
+        <Tab.Screen name="Cart" options={{headerShown: false}} component={CartPage} />
+        <Tab.Screen name="Delivery" component={SearchTab} />
         <Tab.Screen name="Profile" component={SearchTab} />
       </Tab.Navigator>
     </NavigationContainer>

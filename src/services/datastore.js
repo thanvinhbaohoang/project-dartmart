@@ -1,14 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
-import rootReducer from '../reducers/index'
-import { doc, setDoc, updateDoc, getDoc, getFirestore } from "firebase/firestore"; 
+import { doc, setDoc, updateDoc, getDoc, getFirestore, getDocs, collection } from "firebase/firestore"; 
 import { initializeApp } from "firebase/app";
 
 
 // FIREBASE CONFIGURATION
-
-export const store = configureStore({
-    reducer: rootReducer
-})
 
   // firebase config object
   const firebaseConfig = {
@@ -33,11 +27,12 @@ export const store = configureStore({
 
   // Fetch all items for displaying product options in menu
   export async function fetchItems() { 
-      await getDocs(collection(db, "cities"));
-        querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-        });
+      const querySnapshot = await getDocs(collection(db, "items"));
+      return(querySnapshot.docs.map(doc => doc.data()));
+        // querySnapshot.forEach((doc) => {
+        //     // doc.data() is never undefined for query doc snapshots
+        //     // console.log(doc.id, " => ", doc.data());
+        // });
   }
 
 
