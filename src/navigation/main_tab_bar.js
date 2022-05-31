@@ -30,8 +30,6 @@ const MainTabBar = () => {
       screenOptions={{
         tabBarStyle:{
           height: windowHeight * .1,
-          borderTopRightRadius: windowHeight * .05,
-          borderTopLeftRadius: windowHeight * .05,
           backgroundColor: '#008F74',
           position: 'absolute'
         },
@@ -68,7 +66,7 @@ const MainTabBar = () => {
         <Tab.Screen name="SignUp" component={SignUp} />
         {/* =============================================== */}
         <Tab.Screen name="Home" options={{headerShown: false}} component={Shop} />
-        <Tab.Screen name="Cart" component={CartPage} />
+        <Tab.Screen name="Cart" options={{headerShown: false}} component={CartPage} />
         <Tab.Screen name="Delivery" component={SearchTab} />
         <Tab.Screen name="Profile" component={SearchTab} />
       </Tab.Navigator>

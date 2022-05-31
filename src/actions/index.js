@@ -18,6 +18,9 @@ export const ActionTypes = {
     FETCH_ITEM: "FETCH_ITEM",
     // FOR WHAT CATEGORY TO DISPLAY
     SET_CATEGORY: "SET_CATEGORY",
+    // CARTPAGE UPDATE
+    INCREMENT_QUANTITY: 'INCREMENT_QUANTITY',
+    DECREMENT_QUANTITY: 'DECREMENT_QUANTITY',
   };
   
   // CART MANAGEMENT
@@ -91,3 +94,17 @@ export const ActionTypes = {
     // }
   }
 
+  // CARTPAGE QUANTITY CONTROL FOR EACH ITEM
+  export function increment() {
+    return {
+      type: ActionTypes.INCREMENT,
+      payload: null,
+    };
+  }
+  
+  export function decrement() {
+    return {
+      type: ActionTypes.DECREMENT,
+      payload: null,
+    };
+  }

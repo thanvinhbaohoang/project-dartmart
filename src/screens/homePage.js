@@ -5,7 +5,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { addItem, fetchItems, setCategory } from '../actions/index';
 
 function HomePage(props){
-    const cart = useSelector((state) => state.item.cart);
     const allItems = useSelector((state) => state.item.allItems);
     const [modalVisible, setModalVisible] = useState(false); 
     const [selectedItem, setSelectedItem] = useState(null);
@@ -66,42 +65,45 @@ function HomePage(props){
                     })}
                 </View>
             </ScrollView>
-            <Modal
-            visible={modalVisible}
-            transparent={true}
-            onRequestClose={() => setModalVisible(!modalVisible)}
-            >
-                <View style={styles.itemModal}>
-                    <Text style={styles.itemModalName}>{selectedItem?.name}</Text>
-                    <Text style={styles.itemModalCost}>{selectedItem?.cost}</Text>
-                    <Image style={styles.modalImage} source={{uri: selectedItem?.imageURL}}/>
-                    <Pressable style={{position: 'absolute', top: 20, right: 20}} onPress={() => setModalVisible(!modalVisible)}>
-                        <Text style={{fontSize: 25}}>X</Text>
-                    </Pressable>
-                    <View style={styles.controlContainer}>
-                        <View style={styles.quantityContainer}>
-                            <Pressable onPress={() => setTempQuantity(tempQuantity-1)}>
-                                <View style={tempQuantity === 1 ? {display: 'none'} : styles.quantityControl}>
-                                    <Text style={styles.quantityControlText}>-</Text>
+            <View style={{width: windowWidth, height: windowHeight, backgroundColor: modalVisible ? 'rgba(0,0,0,.5)' : 'transparent'}}>
+                <Modal
+                visible={modalVisible}
+                transparent={true}
+                onRequestClose={() => setModalVisible(!modalVisible)}
+                >
+                    <View style={styles.itemModal}>
+                        <Text style={styles.itemModalName}>{selectedItem?.name}</Text>
+                        <Text style={styles.itemModalCost}>{selectedItem?.cost}</Text>
+                        <Image style={styles.modalImage} source={{uri: selectedItem?.imageURL}}/>
+                        <Pressable style={{position: 'absolute', top: 20, right: 20}} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={{fontSize: 25}}>X</Text>
+                        </Pressable>
+                        <View style={styles.controlContainer}>
+                            <View style={styles.quantityContainer}>
+                                <Pressable onPress={() => setTempQuantity(tempQuantity-1)}>
+                                    <View style={tempQuantity === 1 ? {display: 'none'} : styles.quantityControl}>
+                                        <Text style={styles.quantityControlText}>-</Text>
+                                    </View>
+                                </Pressable>
+                                <View style={styles.quantity}>
+                                    <Text>{tempQuantity}</Text>
                                 </View>
-                            </Pressable>
-                            <View style={styles.quantity}>
-                                <Text>{tempQuantity}</Text>
+                                <Pressable onPress={() => setTempQuantity(tempQuantity+1)}>
+                                <View style={styles.quantityControl}>
+                                        <Text style={styles.quantityControlText}>+</Text>
+                                    </View>
+                                </Pressable>
                             </View>
-                            <Pressable onPress={() => setTempQuantity(tempQuantity+1)}>
-                            <View style={styles.quantityControl}>
-                                    <Text style={styles.quantityControlText}>+</Text>
+                            <Pressable onPress={() => {props.addItem(selectedItem, tempQuantity); setModalVisible(!modalVisible)}}>
+                                <View style={styles.submitButton}>
+                                    <Text style={styles.submitButtonText}>Submit</Text>
                                 </View>
                             </Pressable>
                         </View>
-                        <Pressable onPress={() => {props.addItem(selectedItem, tempQuantity); setModalVisible(!modalVisible)}}>
-                            <View style={styles.submitButton}>
-                                <Text style={styles.submitButtonText}>Submit</Text>
-                            </View>
-                        </Pressable>
                     </View>
-                </View>
-            </Modal>
+                </Modal>
+            </View>
+
         </View>
 
     );
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
         padding: 0,
         alignItems: 'center',
         width: windowWidth,
-        backgroundColor: '#02604E'
+        backgroundColor: '#02604E',
     },
     categoryHeaderContainer:{
         height: windowHeight * .05,
@@ -206,7 +208,8 @@ const styles = StyleSheet.create({
         alignItems:'center',
         marginBottom: windowHeight * .25,
         marginTop: windowHeight * .25,
-        flex: 1
+        flex: 1, 
+        backgroundColor: '#BBDDBB'
     },
     modalImage:{
         width: "50%",
@@ -244,11 +247,12 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     quantity:{
-        borderWidth: 1,
+        borderWidth: 2,
         width: 40,
         height: 60,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: 'white',
     },
     submitButton:{
         width: 100,
