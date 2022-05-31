@@ -23,7 +23,7 @@ function HomePage(props){
                 <View style={styles.itemsContainer}>
                     {itemData.map((item) => {
                         return (
-                            <TouchableHighlight underlayColor="transparent" onPress={() => {setSelectedItem(item); setModalVisible(!modalVisible)}}>
+                            <TouchableHighlight key={item.name} underlayColor="transparent" onPress={() => {setSelectedItem(item); setModalVisible(!modalVisible)}}>
                                 <View style={styles.itemContainer}>
                                     <Text style={styles.itemName}>{item.name}</Text>
                                     <Text style={styles.itemCost}>{item.cost}</Text>
