@@ -44,7 +44,7 @@ const SignIn = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: '#FFDD62'
+      backgroundColor: '#BBDDBB'
     },
     logoContainer: {
       position: 'absolute',
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     opacity: 12,
     borderRadius: 25,
     paddingVertical: 10,
-    backgroundColor: '#FFD439',
+    backgroundColor: '#02604E',
     paddingHorizontal: 33,
     borderColor: 'white',
     borderWidth: 3,
