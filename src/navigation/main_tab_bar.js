@@ -3,11 +3,12 @@ import { Text, View, Dimensions, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomePage from '../screens/homePage';
-import Splash from '../screens/splash'
-import SignIn from '../screens/signIn';
-import SignUp from '../screens/signUp';
+import Splash from '../screens/splashLogIn/splash'
+import SignIn from '../screens/splashLogIn/signIn';
+import SignUp from '../screens/splashLogIn/signUp';
 import CartPage from '../screens/cartPage';
 import DeliveryPage from '../screens/DeliveryPage';
+import profilePage from '../screens/profilePage';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -69,7 +70,7 @@ const MainTabBar = () => {
         <Tab.Screen name="Home" component={HomePage} />
         <Tab.Screen name="Cart" component={CartPage} />
         <Tab.Screen name="Delivery" component={DeliveryPage} />
-        <Tab.Screen name="Profile" component={SearchTab} />
+        <Tab.Screen name="Profile" component={profilePage} />
       </Tab.Navigator>
     </NavigationContainer>
   );

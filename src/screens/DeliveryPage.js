@@ -31,9 +31,6 @@ function DeliveryPage(props){
                         <View style={styles.dividerLine}></View>
 
                     </View>
-
-
-
                     </View>
                 </View>
                         
