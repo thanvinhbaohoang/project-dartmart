@@ -102,8 +102,29 @@ import { initializeApp } from "firebase/app";
   }
 
 
-  // Fetch all items for displaying product options in menu
+  // Fetch all orders in the database
   export async function fetchAllOrders() { 
     const querySnapshot = await getDocs(collection(db, "orders"));
     return(querySnapshot.docs.map(doc => doc.data()));
-}
+  }
+
+  // Fetch all orders in progress
+  export async function fetchInProgressOrders() { 
+    inProgressOrderQuery = query(collection(db, "orders"), where ('status', '==', 'in-progress'));
+    const querySnapshot = await getDocs(inProgressOrderQuery);
+    return(querySnapshot.docs.map(doc => doc.data()));
+  }
+
+  // Fetch all orders for a certain deliverer
+  export async function fetchDeliveryOrders(deliveryID) { 
+    deliveryOrderQuery = query(collection(db, "orders"), where ('deliverId', '==', deliveryID));
+    const querySnapshot = await getDocs(deliveryOrderQuery);
+    return(querySnapshot.docs.map(doc => doc.data()));
+  }
+
+  // Fetch all orders for a certain customer
+  export async function fetchAllOrders(customer) {
+    customerOrderQuery = query(collection(db, "orders"), where ('customerId', '==', customer)); 
+    const querySnapshot = await getDocs(customerOrderQuery);
+    return(querySnapshot.docs.map(doc => doc.data()));
+  }
