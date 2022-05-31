@@ -55,7 +55,7 @@ function SignUp({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1, 
-    backgroundColor: '#FFDD62'
+    backgroundColor: '#BBDDBB'
   },
   logoContainer: {
     position: 'absolute',
@@ -126,8 +126,10 @@ guestButton: {
   alignContent: 'center',
   justifyContent: 'center',
   opacity: 12,
-  backgroundColor:"#FFD439",
+  backgroundColor:"#02604E",
   borderRadius: 25,
+  borderColor: 'white',
+  borderWidth: 3,
   paddingVertical: 10,
   paddingHorizontal: 33,
 },

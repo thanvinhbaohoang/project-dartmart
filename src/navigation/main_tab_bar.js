@@ -36,7 +36,7 @@ const MainTabBar = () => {
         tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: 'black',
         headerStyle:{
-          backgroundColor: '#FFDD62',
+          backgroundColor: '#BBDDBB',
           height: windowHeight * .15
         },
         headerTitleAlign: 'left',

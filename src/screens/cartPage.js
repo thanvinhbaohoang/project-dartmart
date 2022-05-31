@@ -15,7 +15,7 @@ function CartPage(props){
         setTempQuantity(1);
     }, [modalVisible])
     return (
-        <View backgroundColor='#FFDD62'>
+        <View backgroundColor='#BBDDBB'>
             {/* SCROLL VIEW FOR ITEMS IN CART */}
             <ScrollView contentContainerStyle={styles.container}>
 

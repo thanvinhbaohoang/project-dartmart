@@ -34,7 +34,7 @@ const Splash  = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1, 
-    backgroundColor: '#FFDD62'
+    backgroundColor: '#BBDDBB'
   },
   logoContainer: {
     flex: 2,
