@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable , TextInput} from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable , TextInput, Alert} from 'react-native';
 
 const SignIn = ({navigation}) => {
     return(    
@@ -29,7 +29,25 @@ const SignIn = ({navigation}) => {
 
               <View style={styles.checkoutAsGuestSection}>
                 <Text style={styles.text2}>Don't Have An Account?</Text>
-                <TouchableOpacity style={styles.signUpButton} onPress={()=>navigation.navigate('SignUp')}>
+                <TouchableOpacity style={styles.signUpButton} onPress={()=>
+                  Alert.alert(
+                    "SIGNUP TYPE",
+                    "How do you want to sign up?",
+                    [
+                      {
+                        text: "Via Dartmouth SSO", 
+                        onPress: () => {
+                          navigation.navigate('SignUp')
+                        }
+                      }, 
+                      { 
+                        text: "Via Darmart", 
+                        onPress: () => navigation.navigate("SignUp")
+                      }, 
+                    ],
+                    { cancelable: false }
+                  )
+                }>
                   <Text style={styles.text1}>Sign Up</Text>
                 </TouchableOpacity>
               </View>
@@ -44,7 +62,7 @@ const SignIn = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: '#FFDD62'
+      backgroundColor: '#BBDDBB'
     },
     logoContainer: {
       position: 'absolute',
@@ -111,7 +129,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 33,
-    backgroundColor: '#01D177',
+    backgroundColor: '#02967b',
     borderColor: 'white',
     borderWidth: 3,
   },
@@ -123,7 +141,7 @@ const styles = StyleSheet.create({
     opacity: 12,
     borderRadius: 25,
     paddingVertical: 10,
-    backgroundColor: '#FFD439',
+    backgroundColor: '#02604E',
     paddingHorizontal: 33,
     borderColor: 'white',
     borderWidth: 3,

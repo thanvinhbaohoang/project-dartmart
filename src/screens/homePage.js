@@ -46,9 +46,9 @@ function HomePage(props){
                         )
                     })}
                 </ScrollView>
-                <LinearGradient colors={['#78FFC4', '#75D000', '#269C56']} style={styles.featured}>
+                {/* <LinearGradient colors={['#78FFC4', '#75D000', '#269C56']} style={styles.featured}>
                     <Text style={styles.featuredText}>Featured Products</Text>
-                </LinearGradient>
+                </LinearGradient> */}
                 <View style={styles.itemsContainer}>
                     {allItems.map((item) => {
                         return (
