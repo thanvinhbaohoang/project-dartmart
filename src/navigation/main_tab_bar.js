@@ -7,6 +7,7 @@ import Splash from '../screens/splash'
 import SignIn from '../screens/signIn';
 import SignUp from '../screens/signUp';
 import CartPage from '../screens/cartPage';
+import SSOLogin from '../screens/sso-login';
 import DeliveryPage from '../screens/DeliveryPage';
 
 
@@ -65,6 +66,7 @@ const MainTabBar = () => {
         <Tab.Screen name="Splash" component={Splash} />
         <Tab.Screen name="SignIn" component={SignIn} />
         <Tab.Screen name="SignUp" component={SignUp} />
+        <Tab.Screen name="SSOLogin" component={SSOLogin} />
         {/* =============================================== */}
         <Tab.Screen name="Home" component={HomePage} />
         <Tab.Screen name="Cart" component={CartPage} />

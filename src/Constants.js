@@ -1,0 +1,1 @@
+export const SERVER_URL = "https://d-testline.herokuapp.com/sso_login"
