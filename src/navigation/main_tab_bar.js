@@ -7,7 +7,7 @@ import Splash from '../screens/splash'
 import SignIn from '../screens/signIn';
 import SignUp from '../screens/signUp';
 import CartPage from '../screens/cartPage';
-import SSOLogin from '../screens/sso-login';
+import SSOLogin from '../screens/ssoLogin';
 import DeliveryPage from '../screens/DeliveryPage';
 
 
