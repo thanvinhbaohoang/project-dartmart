@@ -39,6 +39,7 @@ function CategoryPage(props){
                 </View>
             </ScrollView>
             <Modal
+            animationType="slide"
             visible={modalVisible}
             transparent={true}
             onRequestClose={() => setModalVisible(!modalVisible)}
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
         height: 350,
         width: windowWidth * .8,
         marginHorizontal: windowWidth * .1,
-        backgroundColor: 'white',
+        backgroundColor: '#BBDDBB',
         borderRadius: 30,
         alignItems:'center',
         marginBottom: windowHeight * .25,

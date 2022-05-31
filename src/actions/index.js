@@ -31,6 +31,13 @@ export const ActionTypes = {
       payload: {item, quantity},  
     };
   }
+
+  export function removeItem(item) {
+    return{
+      type: ActionTypes.REMOVE_ITEM,
+      payload: {item}
+    }
+  }
   
   export function setCategory(category){
     return {
