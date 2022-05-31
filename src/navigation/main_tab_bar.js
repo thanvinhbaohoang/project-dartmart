@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Dimensions, TextInput } from 'react-native';
+import { Text, View, Dimensions, TextInput, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomePage from '../screens/homePage';
@@ -7,9 +7,10 @@ import Splash from '../screens/splash'
 import SignIn from '../screens/signIn';
 import SignUp from '../screens/signUp';
 import CartPage from '../screens/cartPage';
+import SSOLogin from '../screens/ssoLogin';
 import Shop from '../screens/shop';
-import SSOLogin from '../screens/sso-login';
 import DeliveryPage from '../screens/DeliveryPage';
+import SSOLogout from '../screens/ssoLogout';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -20,7 +21,18 @@ const AboutTab = (props) => {
 };
 
 const SearchTab = (props) => {
-  return <View style={{ flex: 1, justifyContent: 'center' }}><Text>Search</Text></View>;
+  return <View style={{ flex: 1, justifyContent: 'center', alignItems: "center" }}>
+    <TouchableOpacity
+      onPress={() => props.navigation.navigate('SSOLogout')}
+    >
+      <Text style={{
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: 'green'
+      }}
+      >Logout</Text>
+    </TouchableOpacity>
+    </View>;
 };
 
 const Tab = createBottomTabNavigator();
@@ -72,6 +84,7 @@ const MainTabBar = () => {
         <Tab.Screen name="Cart" options={{headerShown: false}} component={CartPage} />
         <Tab.Screen name="Delivery" component={SearchTab} />
         <Tab.Screen name="Profile" component={SearchTab} />
+        <Tab.Screen name="SSOLogout" component={SSOLogout} />
       </Tab.Navigator>
     </NavigationContainer>
   );
