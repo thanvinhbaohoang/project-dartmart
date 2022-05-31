@@ -10,11 +10,8 @@ import CartPage from '../screens/cartPage';
 import SSOLogin from '../screens/ssoLogin';
 import Shop from '../screens/shop';
 import DeliveryPage from '../screens/DeliveryPage';
-<<<<<<< HEAD
-import profilePage from '../screens/profilePage';
-=======
+import ProfilePage from '../screens/profilePage';
 import SSOLogout from '../screens/ssoLogout';
->>>>>>> 841008178f48bd468c3dce63b6586d7abedf6545
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -84,18 +81,11 @@ const MainTabBar = () => {
         <Tab.Screen name="SignUp" component={SignUp} />
         <Tab.Screen name="SSOLogin" component={SSOLogin} />
         {/* =============================================== */}
-<<<<<<< HEAD
-        <Tab.Screen name="Home" component={HomePage} />
-        <Tab.Screen name="Cart" component={CartPage} />
-        <Tab.Screen name="Delivery" component={DeliveryPage} />
-        <Tab.Screen name="Profile" component={profilePage} />
-=======
         <Tab.Screen name="Home" options={{headerShown: false}} component={Shop} />
         <Tab.Screen name="Cart" options={{headerShown: false}} component={CartPage} />
         <Tab.Screen name="Delivery" component={SearchTab} />
-        <Tab.Screen name="Profile" component={SearchTab} />
+        <Tab.Screen name="Profile" component={ProfilePage} />
         <Tab.Screen name="SSOLogout" component={SSOLogout} />
->>>>>>> 841008178f48bd468c3dce63b6586d7abedf6545
       </Tab.Navigator>
     </NavigationContainer>
   );
