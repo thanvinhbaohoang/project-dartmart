@@ -1,4 +1,4 @@
-// import * as db from './services/datastore';
+import * as db from '../services/datastore';
 
 
 // keys for actiontypes
@@ -15,7 +15,9 @@ export const ActionTypes = {
     UPDATE_ORDER: "UPDATE_ORDER",
     // INVENTORY MANAGEMENT
     FETCH_ITEMS: "FETCH_ITEMS",
-    FETCH_ITEM: "FETCH_ITEM"
+    FETCH_ITEM: "FETCH_ITEM",
+    // FOR WHAT CATEGORY TO DISPLAY
+    SET_CATEGORY: "SET_CATEGORY",
   };
   
   // CART MANAGEMENT
@@ -25,6 +27,13 @@ export const ActionTypes = {
       type: ActionTypes.ADD_ITEM,
       payload: {item, quantity},  
     };
+  }
+  
+  export function setCategory(category){
+    return {
+      type: ActionTypes.SET_CATEGORY,
+      payload: {category}
+    }
   }
 
   // USER MANAGEMENT
@@ -69,9 +78,16 @@ export const ActionTypes = {
   // INVENTORY ACCESS
 
   export function fetchItems() {
-    return {
-      type: ActionTypes.UPDATE_ORDER,
-      payload: {}
+    return(dispatch) => {
+      db.fetchItems().then((response) => {
+        dispatch({ type: ActionTypes.FETCH_ITEMS, payload: response });
+      }).catch((error) => {
+        console.log(error);
+      })
     }
+    // return {
+    //   type: ActionTypes.FETCH_ITEMS,
+    //   payload: {}
+    // }
   }
 

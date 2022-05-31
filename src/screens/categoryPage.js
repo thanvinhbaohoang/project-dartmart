@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, View, TouchableHighlight, Dimensions, ScrollView, Modal, Pressable, Image, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { addItem, fetchItems, setCategory } from '../actions/index';
+import { addItem, fetchItems } from '../actions/index';
 
-function HomePage(props){
-    const cart = useSelector((state) => state.item.cart);
+function CategoryPage(props){
+    const category = useSelector((state) => state.item.category);
     const allItems = useSelector((state) => state.item.allItems);
     const [modalVisible, setModalVisible] = useState(false); 
     const [selectedItem, setSelectedItem] = useState(null);
     const [tempQuantity, setTempQuantity] = useState(1);
 
-    const categories = [];
     useEffect(() => {
         setTempQuantity(1);
     }, [modalVisible])
@@ -22,36 +21,9 @@ function HomePage(props){
     return (
         <View>
             <ScrollView contentContainerStyle={styles.container}>
-                <View style={styles.categoryHeaderContainer}>
-                    <Text style={styles.categoryHeaderText}>Categories</Text> 
-                </View>
-                <ScrollView horizontal={true} style={styles.categoryScroll}>
-                { 
-                    allItems.forEach((item) => {
-                        if(!categories.includes(item.category)){
-                            categories.push(item.category);
-                        }
-                    })
-                }
-                {
-                categories.map((category) => {
-                        return (
-                            <TouchableHighlight key={category} onPress={() => {
-                                props.setCategory(category);
-                                props.navigation.navigate("Category");
-                            }}>
-                                <View style={styles.categoryContainer}>
-                                        <Text style={styles.categoryText}>{category}</Text>
-                                </View>
-                            </TouchableHighlight>
-                        )
-                    })}
-                </ScrollView>
-                <LinearGradient colors={['#78FFC4', '#75D000', '#269C56']} style={styles.featured}>
-                    <Text style={styles.featuredText}>Featured Products</Text>
-                </LinearGradient>
+                <Text style={styles.title}>{category.charAt(0).toUpperCase() + category.slice(1)}</Text>
                 <View style={styles.itemsContainer}>
-                    {allItems.map((item) => {
+                    {allItems.filter((item) => item.category === category).map((item) => {
                         return (
                             <TouchableHighlight key={item.name} underlayColor="transparent" onPress={() => {
                                 setSelectedItem(item); setModalVisible(!modalVisible)
@@ -115,7 +87,14 @@ const styles = StyleSheet.create({
         padding: 0,
         alignItems: 'center',
         width: windowWidth,
-        backgroundColor: '#02604E'
+        height: windowHeight,
+        backgroundColor: '#02604E',
+    },
+    title:{
+        fontSize: 25,
+        fontWeight: '500',
+        color: 'white',
+        marginTop: 15
     },
     categoryHeaderContainer:{
         height: windowHeight * .05,
@@ -264,4 +243,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(null, { addItem, fetchItems, setCategory })(HomePage);
+export default connect(null, { addItem, fetchItems })(CategoryPage);

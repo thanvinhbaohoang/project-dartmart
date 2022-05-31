@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   signUpButton: {
     width: 200,
     marginTop: 10,
-    alignContent: 'center',
+    alignItems: 'center',
     justifyContent: 'center',
     opacity: 12,
     borderRadius: 25,
