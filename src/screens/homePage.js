@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { StyleSheet, Text, View, TouchableHighlight, Dimensions, ScrollView, Modal, Pressable, Image, ImageBackground } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { StyleSheet, Text, View, TouchableHighlight, Dimensions, ScrollView, Modal, Pressable, Image, TextInput, TouchableOpacity } from 'react-native';
+// import { LinearGradient } from 'expo-linear-gradient';
 import { addItem, fetchItems, setCategory } from '../actions/index';
 
 function HomePage(props){
@@ -9,6 +9,7 @@ function HomePage(props){
     const [modalVisible, setModalVisible] = useState(false); 
     const [selectedItem, setSelectedItem] = useState(null);
     const [tempQuantity, setTempQuantity] = useState(1);
+    const [search, setSearch] = useState('');
 
     const categories = [];
     useEffect(() => {
@@ -19,46 +20,88 @@ function HomePage(props){
         props.fetchItems();
     }, [])
     return (
-        <View>
-            <ScrollView contentContainerStyle={styles.container}>
+        <View style={{backgroundColor: '#02604E'}}>
+            <ScrollView contentContainerStyle={styles.container} stickyHeaderIndices={[0]}>
+                <View style={styles.searchContainer}>
+                    <TextInput placeholder='Search Dartmart' style={{
+                        backgroundColor: 'white',
+                        width: windowWidth * .8,
+                        height: 40,
+                        borderRadius: 20,
+                        fontSize: 15,
+                        paddingLeft: 10,
+                        marginTop: 10,
+                    }} onChangeText={(text) => setSearch(text)}/>
+                </View>
                 <View style={styles.categoryHeaderContainer}>
                     <Text style={styles.categoryHeaderText}>Categories</Text> 
                 </View>
                 <ScrollView horizontal={true} style={styles.categoryScroll}>
-                { 
-                    allItems.forEach((item) => {
-                        if(!categories.includes(item.category)){
-                            categories.push(item.category);
-                        }
-                    })
-                }
+                    { 
+                        allItems.forEach((item) => {
+                            if(!categories.includes(item.category)){
+                                categories.push(item.category);
+                            }
+                        })
+                    }
+                    {
+                    categories.map((category) => {
+                            return (
+                                <TouchableHighlight key={category} onPress={() => {
+                                    props.setCategory(category);
+                                    props.navigation.navigate("Category");
+                                }}>
+                                    <View style={styles.categoryTagContainer}>
+                                            <Text style={styles.categoryText}>{category}</Text>
+                                    </View>
+                                </TouchableHighlight>
+                            )
+                    })}
+                </ScrollView>
                 {
                 categories.map((category) => {
                         return (
-                            <TouchableHighlight key={category} onPress={() => {
-                                props.setCategory(category);
-                                props.navigation.navigate("Category");
-                            }}>
-                                <View style={styles.categoryContainer}>
-                                        <Text style={styles.categoryText}>{category}</Text>
+                            <View style={styles.categoryContainer}>
+                                <View style={{padding: 10}}>
+                                    <Text style={styles.subheader}>{category?.toUpperCase()}</Text>
                                 </View>
-                            </TouchableHighlight>
+                                <ScrollView horizontal={true} contentContainerStyle={styles.categoryItemScroll}>
+                                    {allItems.filter((item) => item.category === category).map((item) => {
+                                        return (
+                                            <TouchableHighlight key={category + item.name} underlayColor="transparent" onPress={() => {
+                                                setSelectedItem(item); setModalVisible(!modalVisible)
+                                                }}>
+                                                <View style={styles.itemContainer}>
+                                                        <Text style={styles.itemName}>{item.name}</Text>
+                                                        <Image source={{uri: item.imageURL}} style={styles.image} />
+                                                        <Text style={styles.itemCost}>${item.cost}</Text>
+                                                </View>
+                                            </TouchableHighlight>
+                                        )
+                                    })}
+                                </ScrollView>
+                            </View>
+                            // <<TouchableHighlight key={category} onPress={() => {
+                            //     props.setCategory(category);
+                            //     props.navigation.navigate("Category");
+                            // }}>
+                            //     <View style={styles.categoryContainer}>
+                            //             <Text style={styles.categoryText}>{category}</Text>
+                            //     </View>
+                            // </TouchableHighlight>>
                         )
-                    })}
-                </ScrollView>
-                {/* <LinearGradient colors={['#78FFC4', '#75D000', '#269C56']} style={styles.featured}>
-                    <Text style={styles.featuredText}>Featured Products</Text>
-                </LinearGradient> */}
+                })}
+                <Text style={styles.subheader}>All items</Text>
                 <View style={styles.itemsContainer}>
-                    {allItems.map((item) => {
+                    {allItems.filter((item) => item.name.toUpperCase().startsWith(search.toUpperCase())).map((item) => {
                         return (
                             <TouchableHighlight key={item.name} underlayColor="transparent" onPress={() => {
                                 setSelectedItem(item); setModalVisible(!modalVisible)
                                 }}>
                                 <View style={styles.itemContainer}>
-                                        <Image source={{uri: item.imageURL}} style={styles.image} />
                                         <Text style={styles.itemName}>{item.name}</Text>
-                                        <Text style={styles.itemCost}>{item.cost}</Text>
+                                        <Image source={{uri: item.imageURL}} style={styles.image} />
+                                        <Text style={styles.itemCost}>${item.cost}</Text>
                                 </View>
                             </TouchableHighlight>
                         )
@@ -67,6 +110,7 @@ function HomePage(props){
             </ScrollView>
             <View style={{width: windowWidth, height: windowHeight, backgroundColor: modalVisible ? 'rgba(0,0,0,.5)' : 'transparent'}}>
                 <Modal
+                animationType="slide"
                 visible={modalVisible}
                 transparent={true}
                 onRequestClose={() => setModalVisible(!modalVisible)}
@@ -80,6 +124,15 @@ function HomePage(props){
                         </Pressable>
                         <View style={styles.controlContainer}>
                             <View style={styles.quantityContainer}>
+                                            <TouchableOpacity style={styles.quantityButton} onPress={()=> {if(tempQuantity > 0) setTempQuantity(tempQuantity-1)}}>
+                                                <Text style={styles.quantitySymbol}>-</Text>
+                                            </TouchableOpacity>    
+                                            <Text style={styles.text1}>{tempQuantity}</Text>
+                                            <TouchableOpacity style={styles.quantityButton} onPress={() => setTempQuantity(tempQuantity+1)}>
+                                                <Text style={styles.quantitySymbol}>+</Text>
+                                            </TouchableOpacity> 
+                                </View>
+                            {/* <View style={styles.quantityContainer}>
                                 <Pressable onPress={() => setTempQuantity(tempQuantity-1)}>
                                     <View style={tempQuantity === 1 ? {display: 'none'} : styles.quantityControl}>
                                         <Text style={styles.quantityControlText}>-</Text>
@@ -93,7 +146,7 @@ function HomePage(props){
                                         <Text style={styles.quantityControlText}>+</Text>
                                     </View>
                                 </Pressable>
-                            </View>
+                            </View> */}
                             <Pressable onPress={() => {props.addItem(selectedItem, tempQuantity); setModalVisible(!modalVisible)}}>
                                 <View style={styles.submitButton}>
                                     <Text style={styles.submitButtonText}>Submit</Text>
@@ -132,11 +185,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginLeft: 20
     },
+    searchContainer:{
+        width: windowWidth,
+        height: 60,
+        backgroundColor: 'black',
+        alignItems: 'center',
+    },  
     categoryScroll:{
         width: windowWidth,
         backgroundColor: 'black',
     },
-    categoryContainer:{
+    categoryTagContainer:{
         width: windowWidth * .35,
         margin: windowWidth * .025,
         marginHorizontal: 5,
@@ -146,39 +205,40 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    categoryContainer:{
+        height: windowWidth * .65,
+    },
     categoryText:{
         fontSize: 15,
         fontWeight: 'bold',
     },
-    featured:{
-        width: "90%",
-        height: windowHeight * .3,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 30,
-        marginTop: 20
+    categoryItemScroll:{
+        alignItems:'center',
+        minWidth: windowWidth,
+        backgroundColor: '#BBDDBB',
+        height: windowWidth * .5,
     },
-    featuredText: {
+    subheader:{
         color: 'white',
-        fontSize: 50,
+        fontSize: 25,
         fontWeight: 'bold',
-        textAlign: 'center'
     },
     itemsContainer:{
+        flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        marginBottom: windowWidth * .45,
-        marginTop: 30
+        paddingBottom: windowWidth * .45,
+        marginTop: 10,
     },
     image:{
-        height: "50%",
-        width: "50%",
-        marginTop: 20,
+        height: "40%",
+        width: "40%",
+        marginTop: 10,
         // borderRadius: 30,
     },
     itemContainer:{
-        width: windowWidth * .45,
+        width: windowWidth * .35,
         margin: windowWidth * .025,
         height: windowWidth * .45,
         borderRadius: 30,
@@ -187,17 +247,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     itemName: {
-        fontSize: 20,
-        position: 'absolute',
-        top: 10,
-        right: 15,
+        fontSize: 15,
+        width: '85%',
+        paddingTop: 5,
+        textAlign: 'center',
         fontWeight: 'bold',
     },
     itemCost: {
         fontSize: 15,
-        position: 'absolute',
-        bottom: 13,
-        left: 13
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
     itemModal:{
         height: 350,
@@ -228,31 +287,55 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 20,
     },
+    // quantityContainer: {
+    //     flexDirection: 'row',
+    //     justifyContent: 'space-evenly',
+    //     alignItems: 'center',
+    //     width: 200,
+    // },
+    // quantityControl:{
+    //     width: 40,
+    //     height: 40, 
+    //     borderRadius: 20,
+    //     backgroundColor: 'black',
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    // },
+    // quantityControlText:{
+    //     fontSize: 20,
+    //     color: 'white',
+    // },
+    // quantity:{
+    //     borderWidth: 2,
+    //     width: 40,
+    //     height: 60,
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    //     backgroundColor: 'white',
+    // },
     quantityContainer: {
+        height: 40,
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        width: 200,
-    },
-    quantityControl:{
-        width: 40,
-        height: 40, 
-        borderRadius: 20,
-        backgroundColor: 'black',
-        alignItems: 'center',
         justifyContent: 'center',
-    },
-    quantityControlText:{
-        fontSize: 20,
-        color: 'white',
-    },
-    quantity:{
-        borderWidth: 2,
-        width: 40,
-        height: 60,
         alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: 'white',
+        borderRadius: 20
+    },
+    quantityButton : {
+        width: 30,
+        height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 15,
+        // borderColor: 'white',
+        // borderWidth: 3,
+        backgroundColor: 'white',
+        margin: 5
+        },
+    quantitySymbol : {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: 'black'
     },
     submitButton:{
         width: 100,

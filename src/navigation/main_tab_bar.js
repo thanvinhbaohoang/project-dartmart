@@ -61,19 +61,19 @@ const MainTabBar = () => {
           fontSize: 30,
           fontWeight: 'bold',
         },
-        headerRight: () => (
-          <TextInput placeholder='Search' style={{
-            backgroundColor: 'white',
-            width: 150,
-            height: 30,
-            borderRadius: 15,
-            paddingLeft: 10,
-            fontSize: 15
-          }}/>
-        ),
-        headerRightContainerStyle: {
-          paddingRight: 30
-        }
+        // headerRight: () => (
+        //   <TextInput placeholder='Search' style={{
+        //     backgroundColor: 'white',
+        //     width: 150,
+        //     height: 30,
+        //     borderRadius: 15,
+        //     paddingLeft: 10,
+        //     fontSize: 15
+        //   }}/>
+        // ),
+        // headerRightContainerStyle: {
+        //   paddingRight: 30
+        // }
       }}>
         {/* TEMPORARY SIGN IN NAVIGATION */}
         <Tab.Screen name="Splash" component={Splash} />
