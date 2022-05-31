@@ -100,3 +100,10 @@ import { initializeApp } from "firebase/app";
         data
     });
   }
+
+
+  // Fetch all items for displaying product options in menu
+  export async function fetchAllOrders() { 
+    const querySnapshot = await getDocs(collection(db, "orders"));
+    return(querySnapshot.docs.map(doc => doc.data()));
+}
