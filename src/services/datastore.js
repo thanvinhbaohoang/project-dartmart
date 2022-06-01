@@ -102,11 +102,11 @@ import { initializeApp } from "firebase/app";
   }
 
 
-  // Fetch all orders in the database
-  export async function fetchAllOrders() { 
-    const querySnapshot = await getDocs(collection(db, "orders"));
-    return(querySnapshot.docs.map(doc => doc.data()));
-  }
+  // // Fetch all orders in the database
+  // export async function fetchAllOrders() { 
+  //   const querySnapshot = await getDocs(collection(db, "orders"));
+  //   return(querySnapshot.docs.map(doc => doc.data()));
+  // }
 
   // Fetch all orders in progress
   export async function fetchInProgressOrders() { 

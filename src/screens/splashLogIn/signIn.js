@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   signInButton: {
     width: 200,
     marginTop: 10,
-    alignContent: 'center',
+    alignItems: 'center',
     justifyContent: 'center',
     opacity: 12,
     borderRadius: 25,
@@ -138,13 +138,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    opacity: 12,
-    borderRadius: 25,
+    borderRadius: 23,
     paddingVertical: 10,
-    backgroundColor: '#02604E',
-    paddingHorizontal: 33,
-    borderColor: 'white',
-    borderWidth: 3,
+    backgroundColor: '#FFD439',
   },
   });
 

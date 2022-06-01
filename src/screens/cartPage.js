@@ -72,6 +72,7 @@ function CartPage(props){
                     })}
                 </View>
             </ScrollView>
+
             <View style={styles.checkoutInfo}>
                 <View>
                     <View>
@@ -133,14 +134,6 @@ const styles = StyleSheet.create({
         width: windowWidth,
         backgroundColor: '#02604E',
         borderRadius: 30,
-    },
-    featured:{
-        width: "90%",
-        height: windowHeight * .3,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 30,
-        marginTop: 20
     },
     featuredText: {
         color: 'white',

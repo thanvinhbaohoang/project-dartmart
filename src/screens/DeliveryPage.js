@@ -9,15 +9,12 @@ function DeliveryPage(props){
         <View backgroundColor='red' style={styles.container}>
 
                 <Text style={styles.featuredText}>Order Confirmed</Text>
-                <Text style={styles.text2}>Hey {orderDetail.userName}, Thanks For Your Purchase</Text>
+                <Text style={styles.text2}>${orderDetail.totalCost} paid with {orderDetail.paymentMethod} ending ***{orderDetail.paymentInfo.slice(-4)}</Text>
 
             <View>
-                <View style={styles.dividerLine}>
-                    <Text style={styles.text1} justifyContent='center' ></Text>
-                </View>
-                <View style={styles.subtotal}>
-                    <View style={styles.costLine}>
+                <View style={styles.dividerLine}></View>
 
+                <View style={styles.subtotal}>
                     <View style={styles.orderInfoContainer}>
                         <View style={styles.orderNumberAndEstimateTime}>
                             <Text style={styles.text2} alignSelf='baseline'>Order Number</Text>
@@ -28,9 +25,20 @@ function DeliveryPage(props){
                             <Text style={styles.text1}>#{orderDetail.orderNumber}</Text>
                             <Text style={styles.text1}>{orderDetail.estimatedTime}</Text>
                         </View>
+
                         <View style={styles.dividerLine}></View>
 
-                    </View>
+                        <View>
+                            <View style={styles.orderNumberAndEstimateTime}>
+                                <Text style={styles.text2} alignSelf='baseline'>Order Summary</Text>
+                            </View>
+
+                            <View style={styles.orderInfo}>
+                                <Text style={styles.text1}>#{orderDetail.orderNumber}</Text>
+                                <Text style={styles.text1}>{orderDetail.estimatedTime}</Text>
+                            </View>
+                        </View>
+
                     </View>
                 </View>
                         
@@ -61,7 +69,7 @@ const styles = StyleSheet.create({
       },
     container: {
         margin: 0,
-        padding: 0,
+        padding: 20,
         alignItems: 'center',
         width: windowWidth,
         height:windowHeight,
@@ -211,7 +219,8 @@ const styles = StyleSheet.create({
         width: windowWidth* 0.9,
         height: 3,
         borderRadius: 10,
-        opacity: 0.5
+        opacity: 0.5,
+        marginTop:30
     },
     costLine : {
         display: 'flex',
@@ -247,5 +256,9 @@ const orderDetail = {
     userName : 'USER',
     estimatedTime : '4:20 PM',
     orderNumber : '69',
+    totalCost :'21',
+    paymentMethod : 'VISA',
+    paymentInfo : '123456969',
 }
+
 export default connect(null, { addItem })(DeliveryPage);

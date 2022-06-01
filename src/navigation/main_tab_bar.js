@@ -83,7 +83,7 @@ const MainTabBar = () => {
         {/* =============================================== */}
         <Tab.Screen name="Home" options={{headerShown: false}} component={Shop} />
         <Tab.Screen name="Cart" options={{headerShown: false}} component={CartPage} />
-        <Tab.Screen name="Delivery" component={SearchTab} />
+        <Tab.Screen name="Delivery" component={DeliveryPage} />
         <Tab.Screen name="Profile" component={ProfilePage} />
         <Tab.Screen name="SSOLogout" component={SSOLogout} />
       </Tab.Navigator>

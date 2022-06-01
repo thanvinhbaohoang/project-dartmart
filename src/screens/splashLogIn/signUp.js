@@ -11,11 +11,9 @@ function SignUp({ navigation }) {
     <View style = {styles.footer}>
         <View style={styles.modalContainer}>
 
-        <Text style={styles.text1}>Sign In To Your Account</Text>
+        <Text style={styles.text1}>Sign Up A New Account</Text>
 
           <View style={styles.checkoutAsGuestSection}>
-
-
             <View style={styles.inputBox} >
                 <TextInput placeholder="Name" placeholderTextColor='grey' color = 'white' justifyContent = 'center'/>
             </View>
@@ -85,6 +83,7 @@ const styles = StyleSheet.create({
   },
   inputBox : {
       width: 300,
+      marginTop: 10,
       marginBottom: 10,
       borderRadius: 8,
       paddingVertical: 10,
@@ -116,22 +115,21 @@ checkoutAsGuestSection : {
   justifyContent: 'center',
   alignContent: 'center',
   alignItems: 'center',
-  marginTop: 30,
+  marginTop: 10,
   alignItems: 'center',
   justifyContent: 'center',
 },
 guestButton: {
   width: 250,
+  height: 65,
   marginTop: 10,
-  alignContent: 'center',
+  alignItems: 'center',
   justifyContent: 'center',
   opacity: 12,
   backgroundColor:"#02604E",
   borderRadius: 25,
   borderColor: 'white',
   borderWidth: 3,
-  paddingVertical: 10,
-  paddingHorizontal: 33,
 },
 });
 
