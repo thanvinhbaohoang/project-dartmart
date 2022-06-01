@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { addItem } from '../actions/index';
 
 function DeliveryPage({navigation}){
+    const cart = useSelector((state) => state.item.cart);
     return (
         <View backgroundColor='red' style={styles.container}>
 
@@ -33,11 +34,11 @@ function DeliveryPage({navigation}){
                                 <Text style={styles.text2} alignSelf='baseline'>Order Summary</Text>
                             </View>
 
-                            {orderDetail.orderItems.map( (item) => {
+                            {cart.map( ({item, quantity}) => {
                                 return(
                                     <View style={styles.itemLine}>
-                                        <Text style={styles.text1}>{item.itemName} (x{item.quantity})</Text>
-                                        <Text style={styles.text1}>${item.cost * item.quantity}</Text>
+                                        <Text style={styles.text1}>{item.name} (x{quantity})</Text>
+                                        <Text style={styles.text1}>${item.cost * quantity}</Text>
                                     </View>
                                 )
                             })}
@@ -61,7 +62,7 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
     text1: {
         color: 'white',
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: 'bold',
         alignSelf: 'center',
         alignItems: 'center',
@@ -264,11 +265,11 @@ const styles = StyleSheet.create({
 
 const orderDetail = {
     userName : 'USER',
-    estimatedTime : '4:20 PM',
-    orderNumber : '69',
+    estimatedTime : '3:15 PM',
+    orderNumber : '300',
     totalCost :'21',
     paymentMethod : 'VISA',
-    paymentInfo : '123456969',
+    paymentInfo : '123456789',
     orderItems : [
         {
             id : 1,
