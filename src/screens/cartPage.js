@@ -70,7 +70,7 @@ function CartPage(props){
                 const paymentIntent = await confirmPayment(clientSecret, {type: 'Card', billingDetails: cardDetails});
                 console.log(paymentIntent);
                 console.log(clientSecret);
-                console.log('HELLO WILLIAM');
+                // console.log('HELLO WILLIAM');
                 if(paymentIntent) {
                     while (true) {
                         success = fetchSuccessCode()
