@@ -117,8 +117,8 @@ function HomePage(props){
                 >
                     <View style={styles.itemModal}>
                         <Text style={styles.itemModalName}>{selectedItem?.name}</Text>
-                        <Text style={styles.itemModalCost}>{selectedItem?.cost}</Text>
                         <Image style={styles.modalImage} source={{uri: selectedItem?.imageURL}}/>
+                        <Text style={styles.itemModalCost}>${selectedItem?.cost}</Text>
                         <Pressable style={{position: 'absolute', top: 20, right: 20}} onPress={() => setModalVisible(!modalVisible)}>
                             <Text style={{fontSize: 25}}>X</Text>
                         </Pressable>
@@ -280,7 +280,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     itemModalCost:{
-        marginTop: 15
+        marginTop: 15,
+        fontSize: 20,
+        fontWeight: 'bold'
     },
     controlContainer:{
         alignItems: 'center',

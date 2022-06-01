@@ -77,7 +77,7 @@ function CartPage(props){
                     <View>
                         <View style={styles.subtotal}>
                             <View style={styles.costLine}>
-                                <Text style={styles.text2}>Cart total</Text>
+                                <Text style={styles.text2}>Cart Total</Text>
                                 <Text style={styles.text2}>${calcCartSum()}</Text>
                             </View>
                             <View style={styles.costLine}>
@@ -165,7 +165,6 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     imageContainer:{
-        // borderWidth:2,
         borderRadius: 18,
         justifyContent: 'center',
         alignSelf: 'center',
@@ -182,7 +181,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         color: 'black',
         fontSize: 18,
-        height: 30,
+        height: 45,
         padding: 10,
         fontWeight: 'bold',
         // alignSelf: 'baseline',
@@ -198,21 +197,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     itemCostContainer: {
-        // borderWidth: 1, 
-        // borderColor: 'black', 
-        // borderRadius: 22,
         paddingVertical: 5,
         paddingHorizontal: 10,
         justifyContent: 'center',
         alignItems: 'center',
         margin: 0,
-        // backgroundColor: 'white',
     },
     itemCost: {
         fontSize: 20,
-        // position: 'absolute',
-        // bottom: 0,
-        // left: 0,
         alignSelf: 'center',
         color: '#02604E',
         fontWeight: 'bold',
@@ -257,7 +249,9 @@ const styles = StyleSheet.create({
     },
     checkoutInfo : {
         width: windowWidth,
-        height: 200,
+        borderRadius: 22,
+        padding: 20,
+        height: 220,
         paddingTop: 10,
         backgroundColor: 'white',
         flexDirection: 'row',

@@ -102,19 +102,11 @@ import { initializeApp } from "firebase/app";
   }
 
 
-<<<<<<< HEAD
-  // // Fetch all orders in the database
-  // export async function fetchAllOrders() { 
-  //   const querySnapshot = await getDocs(collection(db, "orders"));
-  //   return(querySnapshot.docs.map(doc => doc.data()));
-  // }
-=======
   // Fetch all orders in the database
   // Returns a promise; data can be accessed w/ querySnapshot.docs.map(doc => doc.data())
   export async function fetchAllOrders() { 
     return getDocs(collection(db, "orders"));
   }
->>>>>>> 692da6b07d100d272765e95a29815c4ecdace0f0
 
   // Fetch all orders in progress
   // Returns a promise; data can be accessed w/ querySnapshot.docs.map(doc => doc.data())

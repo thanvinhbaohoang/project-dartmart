@@ -21,7 +21,7 @@ const SignIn = ({navigation}) => {
                 <TextInput placeholder="Your Password" placeholderTextColor='white' color = 'white'/>
                 </View>
 
-                <TouchableOpacity style={styles.signInButton} onPress={()=>navigation.navigate('SignUp')}>
+                <TouchableOpacity style={styles.signInButton} onPress={()=>navigation.navigate('Home')}>
                   <Text style={styles.text1} justifyContent='center' >Sign In</Text>
                 </TouchableOpacity>
 

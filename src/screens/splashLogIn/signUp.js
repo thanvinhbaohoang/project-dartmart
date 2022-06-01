@@ -126,7 +126,7 @@ guestButton: {
   alignItems: 'center',
   justifyContent: 'center',
   opacity: 12,
-  backgroundColor:"#02604E",
+  backgroundColor:"#FFD439",
   borderRadius: 25,
   borderColor: 'white',
   borderWidth: 3,
