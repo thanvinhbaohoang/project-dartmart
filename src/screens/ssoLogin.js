@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { createUser } from '../actions';
-import { SERVER_URL } from '../Constants';
+import { ROUTE_SSO_LOGIN, SERVER_URL } from '../Constants';
+import { createUser } from '../services/datastore';
 
 const styles = StyleSheet.create({
     AndroidSafeArea: {
@@ -26,7 +26,7 @@ const validateST = (ticketedURL, navigation) => {
     .then((data) => {
         console.log("server response:", data)
         if (data.succeeded == true) {
-            createUser(data.user_id, data.user_info);
+            createUser(data.user.user_id, data.user.user_info);
             
             navigation.navigate("Home");
         } else {
@@ -40,7 +40,7 @@ export default function SSOLogin ({ navigation }) {
     return (
         <SafeAreaView style={styles.AndroidSafeArea}>
             <WebView 
-                source={{ uri: SERVER_URL }}
+                source={{ uri: `${SERVER_URL}${ROUTE_SSO_LOGIN}` }}
                 onShouldStartLoadWithRequest={(request) => { 
                     console.log("onShouldStartLoadWithRequest:", request);
 

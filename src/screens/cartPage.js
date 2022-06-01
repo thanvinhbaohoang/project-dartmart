@@ -71,12 +71,13 @@ function CartPage(props){
                     })}
                 {/* </View> */}
             </ScrollView>
+
             <View style={styles.checkoutInfo}>
                 <View>
                     <View>
                         <View style={styles.subtotal}>
                             <View style={styles.costLine}>
-                                <Text style={styles.text2}>Cart total</Text>
+                                <Text style={styles.text2}>Cart Total</Text>
                                 <Text style={styles.text2}>${calcCartSum()}</Text>
                             </View>
                             <View style={styles.costLine}>
@@ -101,7 +102,7 @@ function CartPage(props){
                     </View>
                 </View>
                         
-                <TouchableOpacity style={styles.checkOutButton} onPress={()=>navigation.navigate('SignUp')}>
+                <TouchableOpacity style={styles.checkOutButton} onPress={()=> {if(cart) props.submitOrder(orderDetail)}}>
                 <Text style={styles.text1} justifyContent='center' >Check Out</Text>
                 </TouchableOpacity>
             </View>
@@ -132,14 +133,6 @@ const styles = StyleSheet.create({
         width: windowWidth,
         backgroundColor: '#02604E',
         borderRadius: 30,
-    },
-    featured:{
-        width: "90%",
-        height: windowHeight * .3,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 30,
-        marginTop: 20
     },
     featuredText: {
         color: 'white',
@@ -172,7 +165,6 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     imageContainer:{
-        // borderWidth:2,
         borderRadius: 18,
         justifyContent: 'center',
         alignSelf: 'center',
@@ -189,7 +181,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         color: 'black',
         fontSize: 18,
-        height: 30,
+        height: 45,
         padding: 10,
         fontWeight: 'bold',
         // alignSelf: 'baseline',
@@ -205,21 +197,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     itemCostContainer: {
-        // borderWidth: 1, 
-        // borderColor: 'black', 
-        // borderRadius: 22,
         paddingVertical: 5,
         paddingHorizontal: 10,
         justifyContent: 'center',
         alignItems: 'center',
         margin: 0,
-        // backgroundColor: 'white',
     },
     itemCost: {
         fontSize: 20,
-        // position: 'absolute',
-        // bottom: 0,
-        // left: 0,
         alignSelf: 'center',
         color: '#02604E',
         fontWeight: 'bold',
@@ -264,7 +249,9 @@ const styles = StyleSheet.create({
     },
     checkoutInfo : {
         width: windowWidth,
-        height: 200,
+        borderRadius: 22,
+        padding: 20,
+        height: 220,
         paddingTop: 10,
         backgroundColor: 'white',
         flexDirection: 'row',
@@ -301,4 +288,4 @@ const styles = StyleSheet.create({
       },
 });
 
-export default connect(null, { addItem, removeItem })(CartPage);
+export default connect(null, { addItem, removeItem, submitOrder })(CartPage);
