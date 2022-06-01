@@ -22,7 +22,7 @@ const SignIn = ({navigation}) => {
                 </View>
 
                 <TouchableOpacity style={styles.signInButton} onPress={()=>navigation.navigate('Home')}>
-                  <Text style={styles.text1} justifyContent='center' >Sign In</Text>
+                  <Text style={styles.text3} justifyContent='center' >Sign In</Text>
                 </TouchableOpacity>
 
               </View>
@@ -115,6 +115,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'normal',
   },
+  text3: {
+    color: '#02604E',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
   checkoutAsGuestSection : {
     marginTop: 30,
     alignItems: 'center',
@@ -129,7 +134,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 33,
-    backgroundColor: '#02967b',
+    backgroundColor: 'whitesmoke',
     borderColor: 'white',
     borderWidth: 3,
   },
@@ -139,8 +144,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 23,
+    borderColor: 'white',
+    borderWidth: 3,
     paddingVertical: 10,
-    backgroundColor: '#FFD439',
+    backgroundColor: '#02604E',
   },
   });
 

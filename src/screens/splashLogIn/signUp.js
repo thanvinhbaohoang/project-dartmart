@@ -38,7 +38,7 @@ function SignUp({ navigation }) {
 
           <View style={styles.checkoutAsGuestSection}>
             <TouchableOpacity style={styles.guestButton} onPress={()=>navigation.navigate('SignUp')}>
-              <Text style={styles.text1}>Create Account</Text>
+              <Text style={styles.text3}>Create Account</Text>
             </TouchableOpacity>
           </View>
 
@@ -107,6 +107,11 @@ text2: {
   fontSize: 16,
   fontWeight: 'normal',
 },
+text3: {
+  color: '#02604E',
+  fontSize: 24,
+  fontWeight: 'bold',
+},
 signInCredentialSection : {
   marginTop: 10,
 },
@@ -126,7 +131,7 @@ guestButton: {
   alignItems: 'center',
   justifyContent: 'center',
   opacity: 12,
-  backgroundColor:"#FFD439",
+  backgroundColor:'whitesmoke',
   borderRadius: 25,
   borderColor: 'white',
   borderWidth: 3,
