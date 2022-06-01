@@ -20,8 +20,8 @@ function DriverView(props) {
                     {orders.map(order => {
                         console.log(order);
                         return (
-                            <View key={order.customerId} style={styles.order}>
-                                <Text>{order.customerId}</Text>
+                            <View key={order.deliveryAddress} style={styles.order}>
+                                <Text>Deliver to: {order.deliveryAddress}</Text>
                             </View>)
                     })}
                 </View>
@@ -32,8 +32,8 @@ function DriverView(props) {
                     {orders.map(order => {
                         console.log(order);
                         return (
-                            <View key={order.customerId} style={styles.order}>
-                                <Text>{order.customerId}</Text>
+                            <View key={order.deliveryAddress} style={styles.order}>
+                                <Text>Deliver to: {order.deliveryAddress}</Text>
                             </View>)
                     })}
                 </View>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         fontSize: 36,
         fontWeight: 'bold',
         textAlign: 'center',
-        paddingTop: windowHeight * .05,
+        paddingTop: windowHeight * .025,
     },
     itemsContainer:{
         flexDirection: 'row',
