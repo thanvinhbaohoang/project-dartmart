@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal
 import { LinearGradient } from 'expo-linear-gradient';
 import { addItem } from '../actions/index';
 
-function DeliveryPage(props){
+function DeliveryPage({navigation}){
     return (
         <View backgroundColor='red' style={styles.container}>
 
@@ -33,17 +33,22 @@ function DeliveryPage(props){
                                 <Text style={styles.text2} alignSelf='baseline'>Order Summary</Text>
                             </View>
 
-                            <View style={styles.orderInfo}>
-                                <Text style={styles.text1}>#{orderDetail.orderNumber}</Text>
-                                <Text style={styles.text1}>{orderDetail.estimatedTime}</Text>
-                            </View>
+                            {orderDetail.orderItems.map( (item) => {
+                                return(
+                                    <View style={styles.itemLine}>
+                                        <Text style={styles.text1}>{item.itemName} (x{item.quantity})</Text>
+                                        <Text style={styles.text1}>${item.cost * item.quantity}</Text>
+                                    </View>
+                                )
+                            })}
+                          
                         </View>
 
                     </View>
                 </View>
                         
-                <TouchableOpacity style={styles.checkOutButton} onPress={()=>navigation.navigate('SignUp')}>
-                  <Text style={styles.text1} justifyContent='center' >More Order</Text>
+                <TouchableOpacity style={styles.checkOutButton} onPress={()=>navigation.navigate('Home')}>
+                  <Text style={styles.text1} justifyContent='center' >Return Home</Text>
                 </TouchableOpacity>
             </View>
 
@@ -214,6 +219,11 @@ const styles = StyleSheet.create({
         padding: 10,
         width: windowWidth* 0.95,
     },  
+    itemLine : {
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems: 'center',
+    },
     dividerLine : {
         backgroundColor: 'grey',
         width: windowWidth* 0.9,
@@ -259,6 +269,33 @@ const orderDetail = {
     totalCost :'21',
     paymentMethod : 'VISA',
     paymentInfo : '123456969',
+    orderItems : [
+        {
+            id : 1,
+            itemName : 'Water',
+            quantity: 12,
+            cost : 3,
+        },
+        {
+            id : 2,
+            itemName : 'Snack',
+            quantity: 2,
+            cost : 45,
+        },   
+        {
+            id : 3,
+            itemName : 'Keystone',
+            quantity: 2,
+            cost : 1,
+        },    
+        {
+            id : 4,
+            itemName : 'Beer',
+            quantity: 2,
+            cost : 4,
+        },
+    ]   
 }
+
 
 export default connect(null, { addItem })(DeliveryPage);

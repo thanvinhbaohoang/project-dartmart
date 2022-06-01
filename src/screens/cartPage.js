@@ -102,7 +102,7 @@ function CartPage(props){
                     </View>
                 </View>
                         
-                <TouchableOpacity style={styles.checkOutButton} onPress={()=>navigation.navigate('SignUp')}>
+                <TouchableOpacity style={styles.checkOutButton} onPress={()=> {if(cart) props.submitOrder(orderDetail)}}>
                 <Text style={styles.text1} justifyContent='center' >Check Out</Text>
                 </TouchableOpacity>
             </View>
@@ -288,4 +288,4 @@ const styles = StyleSheet.create({
       },
 });
 
-export default connect(null, { addItem, removeItem })(CartPage);
+export default connect(null, { addItem, removeItem, submitOrder })(CartPage);
