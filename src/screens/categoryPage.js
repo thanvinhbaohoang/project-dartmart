@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { StyleSheet, Text, View, TouchableHighlight, Dimensions, ScrollView, Modal, Pressable, Image, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, Dimensions, ScrollView, Modal, Pressable, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { addItem, fetchItems } from '../actions/index';
 
@@ -52,21 +52,15 @@ function CategoryPage(props){
                         <Text style={{fontSize: 25}}>X</Text>
                     </Pressable>
                     <View style={styles.controlContainer}>
-                        <View style={styles.quantityContainer}>
-                            <Pressable onPress={() => setTempQuantity(tempQuantity-1)}>
-                                <View style={tempQuantity === 1 ? {display: 'none'} : styles.quantityControl}>
-                                    <Text style={styles.quantityControlText}>-</Text>
+                                <View style={styles.quantityContainer}>
+                                            <TouchableOpacity style={styles.quantityButton} onPress={()=> {if(tempQuantity > 0) setTempQuantity(tempQuantity-1)}}>
+                                                <Text style={styles.quantitySymbol}>-</Text>
+                                            </TouchableOpacity>    
+                                            <Text style={styles.text1}>{tempQuantity}</Text>
+                                            <TouchableOpacity style={styles.quantityButton} onPress={() => setTempQuantity(tempQuantity+1)}>
+                                                <Text style={styles.quantitySymbol}>+</Text>
+                                            </TouchableOpacity> 
                                 </View>
-                            </Pressable>
-                            <View style={styles.quantity}>
-                                <Text>{tempQuantity}</Text>
-                            </View>
-                            <Pressable onPress={() => setTempQuantity(tempQuantity+1)}>
-                            <View style={styles.quantityControl}>
-                                    <Text style={styles.quantityControlText}>+</Text>
-                                </View>
-                            </Pressable>
-                        </View>
                         <Pressable onPress={() => {props.addItem(selectedItem, tempQuantity); setModalVisible(!modalVisible)}}>
                             <View style={styles.submitButton}>
                                 <Text style={styles.submitButtonText}>Submit</Text>
@@ -88,7 +82,7 @@ const styles = StyleSheet.create({
         padding: 0,
         alignItems: 'center',
         width: windowWidth,
-        height: windowHeight,
+        // height: windowHeight,
         backgroundColor: '#02604E',
     },
     title:{
@@ -150,13 +144,13 @@ const styles = StyleSheet.create({
         marginTop: 30
     },
     image:{
-        height: "50%",
-        width: "50%",
-        marginTop: 20,
+        height: "40%",
+        width: "40%",
+        marginTop: 10,
         // borderRadius: 30,
     },
     itemContainer:{
-        width: windowWidth * .45,
+        width: windowWidth * .35,
         margin: windowWidth * .025,
         height: windowWidth * .45,
         borderRadius: 30,
@@ -165,17 +159,28 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     itemName: {
-        fontSize: 20,
-        position: 'absolute',
-        top: 10,
-        right: 15,
+        fontSize: 15,
+        width: '85%',
+        paddingTop: 5,
+        textAlign: 'center',
         fontWeight: 'bold',
     },
     itemCost: {
         fontSize: 15,
-        position: 'absolute',
-        bottom: 13,
-        left: 13
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    itemModal:{
+        height: 350,
+        width: windowWidth * .8,
+        marginHorizontal: windowWidth * .1,
+        backgroundColor: 'white',
+        borderRadius: 30,
+        alignItems:'center',
+        marginBottom: windowHeight * .25,
+        marginTop: windowHeight * .25,
+        flex: 1, 
+        backgroundColor: '#BBDDBB'
     },
     itemModal:{
         height: 350,
@@ -206,18 +211,29 @@ const styles = StyleSheet.create({
         bottom: 20,
     },
     quantityContainer: {
+        height: 40,
+        width: 150,
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-around',
         alignItems: 'center',
-        width: 200,
+        backgroundColor: 'white',
+        borderRadius: 20
     },
-    quantityControl:{
-        width: 40,
-        height: 40, 
-        borderRadius: 20,
-        backgroundColor: 'black',
-        alignItems: 'center',
+    quantityButton : {
+        width: 30,
+        height: 30,
         justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 15,
+        // borderColor: 'white',
+        // borderWidth: 3,
+        backgroundColor: 'white',
+        margin: 5
+        },
+    quantitySymbol : {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: 'black'
     },
     quantityControlText:{
         fontSize: 20,

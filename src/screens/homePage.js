@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, View, TouchableHighlight, Dimensions, ScrollView, Modal, Pressable, Image, TextInput, TouchableOpacity } from 'react-native';
-// import { LinearGradient } from 'expo-linear-gradient';
 import { addItem, fetchItems, setCategory } from '../actions/index';
 
 function HomePage(props){
+    const ref = useRef(null);
+
     const allItems = useSelector((state) => state.item.allItems);
     const [modalVisible, setModalVisible] = useState(false); 
     const [selectedItem, setSelectedItem] = useState(null);
@@ -21,7 +22,7 @@ function HomePage(props){
     }, [])
     return (
         <View style={{backgroundColor: '#02604E'}}>
-            <ScrollView contentContainerStyle={styles.container} stickyHeaderIndices={[0]}>
+            <ScrollView ref={ref} contentContainerStyle={styles.container} stickyHeaderIndices={[0]}>
                 <View style={styles.searchContainer}>
                     <TextInput placeholder='Search Dartmart' style={{
                         backgroundColor: 'white',
@@ -31,7 +32,7 @@ function HomePage(props){
                         fontSize: 15,
                         paddingLeft: 10,
                         marginTop: 10,
-                    }} onChangeText={(text) => setSearch(text)}/>
+                    }} onSubmitEditing={(event) => {setSearch(event.nativeEvent.text); ref.current.scrollToEnd({animated: false})}}/>
                 </View>
                 <View style={styles.categoryHeaderContainer}>
                     <Text style={styles.categoryHeaderText}>Categories</Text> 
@@ -61,7 +62,7 @@ function HomePage(props){
                 {
                 categories.map((category) => {
                         return (
-                            <View style={styles.categoryContainer}>
+                            <View key={category} style={styles.categoryContainer}>
                                 <View style={{padding: 10}}>
                                     <Text style={styles.subheader}>{category?.toUpperCase()}</Text>
                                 </View>
@@ -81,14 +82,6 @@ function HomePage(props){
                                     })}
                                 </ScrollView>
                             </View>
-                            // <<TouchableHighlight key={category} onPress={() => {
-                            //     props.setCategory(category);
-                            //     props.navigation.navigate("Category");
-                            // }}>
-                            //     <View style={styles.categoryContainer}>
-                            //             <Text style={styles.categoryText}>{category}</Text>
-                            //     </View>
-                            // </TouchableHighlight>>
                         )
                 })}
                 <Text style={styles.subheader}>All items</Text>
@@ -132,21 +125,6 @@ function HomePage(props){
                                                 <Text style={styles.quantitySymbol}>+</Text>
                                             </TouchableOpacity> 
                                 </View>
-                            {/* <View style={styles.quantityContainer}>
-                                <Pressable onPress={() => setTempQuantity(tempQuantity-1)}>
-                                    <View style={tempQuantity === 1 ? {display: 'none'} : styles.quantityControl}>
-                                        <Text style={styles.quantityControlText}>-</Text>
-                                    </View>
-                                </Pressable>
-                                <View style={styles.quantity}>
-                                    <Text>{tempQuantity}</Text>
-                                </View>
-                                <Pressable onPress={() => setTempQuantity(tempQuantity+1)}>
-                                <View style={styles.quantityControl}>
-                                        <Text style={styles.quantityControlText}>+</Text>
-                                    </View>
-                                </Pressable>
-                            </View> */}
                             <Pressable onPress={() => {props.addItem(selectedItem, tempQuantity); setModalVisible(!modalVisible)}}>
                                 <View style={styles.submitButton}>
                                     <Text style={styles.submitButtonText}>Submit</Text>
@@ -228,8 +206,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        paddingBottom: windowWidth * .45,
+        paddingBottom: windowHeight * .15,
         marginTop: 10,
+        // minHeight: windowHeight * .7
     },
     image:{
         height: "40%",
@@ -289,36 +268,11 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 20,
     },
-    // quantityContainer: {
-    //     flexDirection: 'row',
-    //     justifyContent: 'space-evenly',
-    //     alignItems: 'center',
-    //     width: 200,
-    // },
-    // quantityControl:{
-    //     width: 40,
-    //     height: 40, 
-    //     borderRadius: 20,
-    //     backgroundColor: 'black',
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
-    // },
-    // quantityControlText:{
-    //     fontSize: 20,
-    //     color: 'white',
-    // },
-    // quantity:{
-    //     borderWidth: 2,
-    //     width: 40,
-    //     height: 60,
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
-    //     backgroundColor: 'white',
-    // },
     quantityContainer: {
         height: 40,
+        width: 150,
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: 'white',
         borderRadius: 20

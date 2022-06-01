@@ -39,9 +39,12 @@ const SearchTab = (props) => {
 
 const Tab = createBottomTabNavigator();
 
-const MainTabBar = () => {
+function MainTabBar(props){
+
+  const logout = () => {
+    props.navigation.navigate("Logout");
+  }
   return (
-    <NavigationContainer>
       <Tab.Navigator 
       screenOptions={{
         tabBarStyle:{
@@ -62,34 +65,19 @@ const MainTabBar = () => {
           fontSize: 30,
           fontWeight: 'bold',
         },
-        // headerRight: () => (
-        //   <TextInput placeholder='Search' style={{
-        //     backgroundColor: 'white',
-        //     width: 150,
-        //     height: 30,
-        //     borderRadius: 15,
-        //     paddingLeft: 10,
-        //     fontSize: 15
-        //   }}/>
-        // ),
-        // headerRightContainerStyle: {
-        //   paddingRight: 30
-        // }
       }}>
         {/* TEMPORARY SIGN IN NAVIGATION */}
-        <Tab.Screen name="Splash" component={Splash} />
-        <Tab.Screen name="SignIn" component={SignIn} />
-        <Tab.Screen name="SignUp" component={SignUp} />
-        <Tab.Screen name="SSOLogin" component={SSOLogin} />
+        {/* <Tab.Screen name="Splash" component={Splash} /> */}
+        {/* <Tab.Screen name="SignIn" component={SignIn} /> */}
+        {/* <Tab.Screen name="SignUp" component={SignUp} /> */}
+        {/* <Tab.Screen name="SSOLogin" component={SSOLogin} /> */}
         {/* =============================================== */}
         <Tab.Screen name="Home" options={{headerShown: false}} component={Shop} />
         <Tab.Screen name="Cart" options={{headerShown: false}} component={CartPage} />
         <Tab.Screen name="Delivery" component={DeliveryPage} />
-        <Tab.Screen name="Profile" component={ProfilePage} />
-        <Tab.Screen name="SSOLogout" component={SSOLogout} />
+        <Tab.Screen name="Profile" component={ProfilePage} initialParams={{logout: logout}}/>
         <Tab.Screen name="Driver" component={DriverView} />
       </Tab.Navigator>
-    </NavigationContainer>
   );
 };
 

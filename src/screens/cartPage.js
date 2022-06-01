@@ -46,7 +46,9 @@ function CartPage(props){
                                     <Image source={{uri: item.imageURL}} style={styles.image} />
                                 </View>
                                 <View style={styles.itemInfoContainer}>
-                                    <Text style={styles.itemName}>{item.name}</Text>
+                                    <View style={styles.itemNameContainer}>
+                                        <Text style={styles.itemName}>{item.name}</Text>
+                                    </View>
 
 
                                     <View style= {styles.costAndQuantity}>
@@ -178,16 +180,19 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: windowWidth * .7 - 20,
     },
-    itemName: {
+    itemNameContainer:{
+        width: '80%',
         alignSelf: 'flex-start',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+    },
+    itemName: {
+        // width: '80%',
         color: 'black',
         fontSize: 18,
-        height: 45,
         padding: 10,
         fontWeight: 'bold',
         // alignSelf: 'baseline',
-        alignItems: 'center',
-        justifyContent: 'center',
         // overflow: 'hidden'
     },
     costAndQuantity : {
@@ -238,8 +243,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 15,
-        // borderColor: 'white',
-        // borderWidth: 3,
         backgroundColor: 'white',
         margin: 5
         },

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { addItem } from '../actions/index';
 
 function DeliveryPage({navigation}){
@@ -253,6 +252,7 @@ const styles = StyleSheet.create({
     checkOutButton: {
         width: windowWidth*.9,
         marginTop: 10,
+        alignSelf: 'center',
         alignContent: 'center',
         justifyContent: 'center',
         opacity: 12,

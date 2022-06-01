@@ -30,9 +30,9 @@ export default function SSOLogout ({ navigation }) {
                 }}
             >
                 <Button
-                    title="SSOLogin"
+                    title="Login"
                     onPress={() => {
-                        navigation.navigate("SSOLogin");
+                        navigation.navigate("Login");
                     }}
                 />
             </View>
