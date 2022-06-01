@@ -63,7 +63,14 @@ import { initializeApp } from "firebase/app";
 
   // initialize a user in the databse
   export async function createUser(newUserId, data) {
-    await setDoc(doc(db, "users", newUserId), data);
+
+    const usersRef = doc(db, "users");
+    const userExistsQuery = query(usersRef, where("email", "==", data.email));
+    const querySnapshot = await getDocs(userExistsQuery);
+
+    if (!querySnapshot.exists()){
+      await setDoc(doc(db, "users", newUserId), data);
+    }
   }
 
   // update information about a user in the database
@@ -100,7 +107,6 @@ import { initializeApp } from "firebase/app";
         data
     });
   }
-
 
   // Fetch all orders in the database
   // Returns a promise; data can be accessed w/ querySnapshot.docs.map(doc => doc.data())

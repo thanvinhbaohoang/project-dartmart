@@ -12,6 +12,7 @@ import Shop from '../screens/shop';
 import DeliveryPage from '../screens/DeliveryPage';
 import ProfilePage from '../screens/profilePage';
 import SSOLogout from '../screens/ssoLogout';
+import DriverView from '../screens/DriverView';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -75,7 +76,7 @@ function MainTabBar(props){
         <Tab.Screen name="Cart" options={{headerShown: false}} component={CartPage} />
         <Tab.Screen name="Delivery" component={DeliveryPage} />
         <Tab.Screen name="Profile" component={ProfilePage} initialParams={{logout: logout}}/>
-        {/* <Tab.Screen name="SSOLogout" component={SSOLogout} /> */}
+        <Tab.Screen name="Driver" component={DriverView} />
       </Tab.Navigator>
   );
 };

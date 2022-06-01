@@ -26,6 +26,7 @@ function CartPage(props){
     }
 
     const calcFees = () => {
+        if (!sum) return 0.00;
         fees = Math.round((sum * .05 + 1.99) * 100) / 100;
         return fees;
     }
