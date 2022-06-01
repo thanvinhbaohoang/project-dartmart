@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     },  
     categoryScroll:{
         width: windowWidth,
-        backgroundColor: 'black',
+        backgroundColor: '#02604E',
     },
     categoryTagContainer:{
         width: windowWidth * .35,
