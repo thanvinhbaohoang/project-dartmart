@@ -61,16 +61,28 @@ import { initializeApp } from "firebase/app";
 
   // USER FUNCTIONS
 
-  // initialize a user in the databse
+  // check if a user with a given email address already exists
+  export async function fetchUser(email){
+    const usersRef = collection(db, "users");
+    const userExistsQuery = query(usersRef, where("email", "==", email));
+    return getDocs(userExistsQuery);
+  }
+
+  // initialize a user in the database
   export async function createUser(newUserId, data) {
 
-    const usersRef = doc(db, "users");
-    const userExistsQuery = query(usersRef, where("email", "==", data.email));
-    const querySnapshot = await getDocs(userExistsQuery);
+    console.log('data', data)
 
-    if (!querySnapshot.exists()){
-      await setDoc(doc(db, "users", newUserId), data);
+    fetchUser(data.email).then((response) => {
+
+      console.log('fetchingUser', response.docs);
+    
+    if (response.docs.length > 0){
+      console.log('existing user found!');
+    } else {
+      setDoc(doc(db, "users", newUserId), data);
     }
+  })
   }
 
   // update information about a user in the database
