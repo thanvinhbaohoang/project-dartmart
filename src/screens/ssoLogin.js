@@ -1,0 +1,77 @@
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
+
+import { WebView } from 'react-native-webview';
+import { ROUTE_SSO_LOGIN, SERVER_URL } from '../Constants';
+import { createUser } from '../services/datastore';
+
+const styles = StyleSheet.create({
+    AndroidSafeArea: {
+      flex: 1,
+      padding: 15,
+      backgroundColor: "white",
+      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+    }
+  });
+
+const validateST = (ticketedURL, navigation) => {
+    fetch(ticketedURL,
+    {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        } 
+    })
+    .then(response => response.json())
+    .then((data) => {
+        console.log("server response:", data)
+        if (data.succeeded == true) {
+            createUser(data.user.user_id, {...data.user.user_info, isDriver: false});
+            
+            navigation.navigate("Main");
+        } else {
+            console.log(data.msg);
+        }
+    })
+    .catch((error) => console.log("error:", error));
+}
+
+export default function SSOLogin ({ navigation }) {
+    var ticketedURL;
+    const isFocused = useIsFocused();
+    const [url, setUrl] = useState(`${SERVER_URL}${ROUTE_SSO_LOGIN}`);
+    const [tempKey, setTempKey] = useState(1);
+    useEffect(() => {
+        setUrl((` ` + url).slice(1));
+        setTempKey(tempKey * -1);
+    }, [isFocused])
+    return(
+        <SafeAreaView style={styles.AndroidSafeArea}>
+            <WebView 
+                key={tempKey}
+                source={{ uri: url }}
+                onShouldStartLoadWithRequest={(request) => { 
+                    console.log("onShouldStartLoadWithRequest:", request);
+
+                    if (request.url.includes("?ticket")) {
+                        console.log("ST url:", request.url)
+                        
+                        ticketedURL = request.url
+                        console.log("ticketedURL:", ticketedURL)
+                        validateST(ticketedURL, navigation);
+                    }
+
+                    else {
+                        return true // continue loaading if service ticket is not included in the url
+                    }
+                }}
+                startInLoadingState={true}
+                onMessage={(event) => {
+                    console.log("onMessage event:", event.nativeEvent, "onMessage data:", event.nativeEvent.data)
+                }}
+            />
+        </SafeAreaView>
+    )
+}

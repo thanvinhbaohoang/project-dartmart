@@ -1,14 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
-import rootReducer from '../reducers/index'
-import { doc, setDoc, updateDoc, getDoc, getFirestore } from "firebase/firestore"; 
+import { doc, setDoc, updateDoc, getDoc, getFirestore, getDocs, collection, query, where } from "firebase/firestore"; 
 import { initializeApp } from "firebase/app";
 
 
 // FIREBASE CONFIGURATION
-
-export const store = configureStore({
-    reducer: rootReducer
-})
 
   // firebase config object
   const firebaseConfig = {
@@ -33,11 +27,12 @@ export const store = configureStore({
 
   // Fetch all items for displaying product options in menu
   export async function fetchItems() { 
-      await getDocs(collection(db, "cities"));
-        querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-        });
+      const querySnapshot = await getDocs(collection(db, "items"));
+      return(querySnapshot.docs.map(doc => doc.data()));
+        // querySnapshot.forEach((doc) => {
+        //     // doc.data() is never undefined for query doc snapshots
+        //     // console.log(doc.id, " => ", doc.data());
+        // });
   }
 
 
@@ -68,7 +63,14 @@ export const store = configureStore({
 
   // initialize a user in the databse
   export async function createUser(newUserId, data) {
-    await setDoc(doc(db, "users", newUserId), data);
+
+    const usersRef = doc(db, "users");
+    const userExistsQuery = query(usersRef, where("email", "==", data.email));
+    const querySnapshot = await getDocs(userExistsQuery);
+
+    if (!querySnapshot.exists()){
+      await setDoc(doc(db, "users", newUserId), data);
+    }
   }
 
   // update information about a user in the database
@@ -104,4 +106,31 @@ export const store = configureStore({
     await updateDoc(docRef, {
         data
     });
+  }
+
+  // Fetch all orders in the database
+  // Returns a promise; data can be accessed w/ querySnapshot.docs.map(doc => doc.data())
+  export async function fetchAllOrders() { 
+    return getDocs(collection(db, "orders"));
+  }
+
+  // Fetch all orders in progress
+  // Returns a promise; data can be accessed w/ querySnapshot.docs.map(doc => doc.data())
+  export async function fetchInProgressOrders() { 
+    const inProgressOrderQuery = query(collection(db, "orders"), where ('status', '==', 'in-progress'));
+    return getDocs(inProgressOrderQuery);
+  }
+
+  // Fetch all orders for a certain deliverer
+  // Returns a promise; data can be accessed w/ querySnapshot.docs.map(doc => doc.data())
+  export async function fetchDeliveryOrders(deliveryID) { 
+    deliveryOrderQuery = query(collection(db, "orders"), where ('deliverId', '==', deliveryID));
+    return getDocs(deliveryOrderQuery);
+  }
+
+  // Fetch all orders for a certain customer
+  // Returns a promise; data can be accessed w/ querySnapshot.docs.map(doc => doc.data())
+  export async function fetchOrders(customer) {
+    customerOrderQuery = query(collection(db, "orders"), where ('customerId', '==', customer)); 
+    return getDocs(customerOrderQuery);
   }

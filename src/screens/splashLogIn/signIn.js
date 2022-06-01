@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable , TextInput} from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable , TextInput, Alert} from 'react-native';
 
 const SignIn = ({navigation}) => {
     return(    
@@ -21,15 +21,33 @@ const SignIn = ({navigation}) => {
                 <TextInput placeholder="Your Password" placeholderTextColor='white' color = 'white'/>
                 </View>
 
-                <TouchableOpacity style={styles.signInButton} onPress={()=>navigation.navigate('SignUp')}>
-                  <Text style={styles.text1} justifyContent='center' >Sign In</Text>
+                <TouchableOpacity style={styles.signInButton} onPress={()=>navigation.navigate('Home')}>
+                  <Text style={styles.text3} justifyContent='center' >Sign In</Text>
                 </TouchableOpacity>
 
               </View>
 
               <View style={styles.checkoutAsGuestSection}>
                 <Text style={styles.text2}>Don't Have An Account?</Text>
-                <TouchableOpacity style={styles.signUpButton} onPress={()=>navigation.navigate('SignUp')}>
+                <TouchableOpacity style={styles.signUpButton} onPress={()=>
+                  Alert.alert(
+                    "SIGNUP TYPE",
+                    "How do you want to sign up?",
+                    [
+                      {
+                        text: "Via Dartmouth SSO", 
+                        onPress: () => {
+                          navigation.navigate('SignUp')
+                        }
+                      }, 
+                      { 
+                        text: "Via Darmart", 
+                        onPress: () => navigation.navigate("SignUp")
+                      }, 
+                    ],
+                    { cancelable: false }
+                  )
+                }>
                   <Text style={styles.text1}>Sign Up</Text>
                 </TouchableOpacity>
               </View>
@@ -97,6 +115,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'normal',
   },
+  text3: {
+    color: '#02604E',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
   checkoutAsGuestSection : {
     marginTop: 30,
     alignItems: 'center',
@@ -105,28 +128,26 @@ const styles = StyleSheet.create({
   signInButton: {
     width: 200,
     marginTop: 10,
-    alignContent: 'center',
+    alignItems: 'center',
     justifyContent: 'center',
     opacity: 12,
     borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 33,
-    backgroundColor: '#01D177',
+    backgroundColor: 'whitesmoke',
     borderColor: 'white',
     borderWidth: 3,
   },
   signUpButton: {
     width: 200,
     marginTop: 10,
-    alignContent: 'center',
+    alignItems: 'center',
     justifyContent: 'center',
-    opacity: 12,
-    borderRadius: 25,
-    paddingVertical: 10,
-    backgroundColor: '#02604E',
-    paddingHorizontal: 33,
+    borderRadius: 23,
     borderColor: 'white',
     borderWidth: 3,
+    paddingVertical: 10,
+    backgroundColor: '#02604E',
   },
   });
 

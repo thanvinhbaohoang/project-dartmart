@@ -20,12 +20,12 @@ TODO: how to deploy the project
 ## Authors
 
 {
-Camden Hao
-Will McCall
-Harold Than
-Garrett Johnston
-Edmund Aduse Poku
-Burke Jaeger
+Camden Hao,
+Will McCall,
+Harold Than,
+Garrett Johnston,
+Edmund Aduse Poku,
+Burke Jaeger,
 }
 
 ## Acknowledgments

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button, Alert} from 'react-native';
-import { addItem } from '../actions/index';
+import { StyleSheet, Text, Image, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button, Alert} from 'react-native';
 import { CardField, useStripe, useConfirmPayment} from '@stripe/stripe-react-native';
-
+import { addItem, submitOrder, removeItem } from '../actions/index';
 
 function CartPage(props){
     const cart = useSelector((state) => state.item.cart);
@@ -97,70 +96,88 @@ function CartPage(props){
     }
     
 
+    var sum = 0;
+    var fees = 0;
     useEffect(() => {
         setTempQuantity(1);
     }, [modalVisible])
+
+
+    const calcCartSum = () => {
+        sum = 0;
+        cart.forEach(({item, quantity}) => {
+            sum += quantity * item.cost;
+        })
+        return Math.round(sum * 100) / 100;
+    }
+
+    const calcFees = () => {
+        if (!sum) return 0.00;
+        fees = Math.round((sum * .05 + 1.99) * 100) / 100;
+        return fees;
+    }
     return (
-        <View backgroundColor='#BBDDBB'>
+        <View backgroundColor='#02604E' style={{height: windowHeight * .9}}>
             {/* SCROLL VIEW FOR ITEMS IN CART */}
-            <ScrollView contentContainerStyle={styles.container}>
-
-                <Text style={styles.featuredText}>Shopping Cart</Text>
-
-                <View style={styles.itemsContainer}>
-                    {itemData.map((item) => {
+            <Text style={styles.featuredText}>Shopping Cart</Text>
+            <ScrollView contentContainerStyle={styles.itemsContainer}>
+                {/* <View style={styles.itemsContainer}> */}
+                    {cart.map(({item, quantity}) => {
                         return (
-                            <TouchableOpacity key={item.name} underlayColor="transparent" onPress={() => {setSelectedItem(item)}}>
-                                <View style ={styles.itemContainer}>
-                                    <View style={styles.imageContainer}>
-                                        <Text style={styles.text1}>IMAGE</Text>
-                                    </View>
-                                    <View style={styles.itemInfoContainer}>
+                            <View key={item.name} style={styles.itemContainer}>
+                                {/* <View style={styles.imageContainer}>
+                                    <
+                                </View> */}
+                                <View style={styles.imageContainer}>
+                                    <Image source={{uri: item.imageURL}} style={styles.image} />
+                                </View>
+                                <View style={styles.itemInfoContainer}>
+                                    <View style={styles.itemNameContainer}>
                                         <Text style={styles.itemName}>{item.name}</Text>
+                                    </View>
 
 
-                                        <View style= {styles.costAndQuantity}>
-                                            <View style = {styles.itemCostContainer}>
-                                                <Text style={styles.text1}>${item.cost}</Text>
-                                            </View>
-                                            <View style={styles.quantityContainer}>
-                                                <TouchableOpacity style={styles.quantityButton} onPress={()=>navigation.navigate('SignUp')}>
-                                                    <Text style={styles.quantitySymbol}>-</Text>
-                                                </TouchableOpacity>    
-                                                <Text style={styles.text1}>#</Text>
-                                                <TouchableOpacity style={styles.quantityButton} onPress={()=>navigation.navigate('SignUp')}>
-                                                    <Text style={styles.quantitySymbol}>+</Text>
-                                                </TouchableOpacity> 
-                                            </View>
+                                    <View style= {styles.costAndQuantity}>
+                                        <View style = {styles.itemCostContainer}>
+                                            <Text style={styles.itemCost}>${item.cost * quantity}</Text>
                                         </View>
-
+                                        <View style={styles.quantityContainer}>
+                                            <TouchableOpacity style={styles.quantityButton} onPress={()=> {if(quantity > 0) props.addItem(item, -1)}}>
+                                                <Text style={styles.quantitySymbol}>-</Text>
+                                            </TouchableOpacity>    
+                                            <Text style={styles.text1}>{quantity}</Text>
+                                            <TouchableOpacity style={styles.quantityButton} onPress={()=>props.addItem(item, 1)}>
+                                                <Text style={styles.quantitySymbol}>+</Text>
+                                            </TouchableOpacity> 
+                                        </View>
                                     </View>
                                 </View>
-                            </TouchableOpacity>
-
+                                <Pressable style={{position: 'absolute', top: 10, right: 10}} onPress={() => {props.removeItem(item)}}>
+                                    <Text style={styles.removeItemText}>x</Text>
+                                </Pressable>
+                            </View>
                         )
                     })}
-                </View>
+                {/* </View> */}
+            </ScrollView>
 
             <View style={styles.checkoutInfo}>
                 <View>
                     <View>
                         <View style={styles.subtotal}>
                             <View style={styles.costLine}>
-                                <Text style={styles.text2}>Sign Up</Text>
-                                <Text style={styles.text2}>$69</Text>
+                                <Text style={styles.text2}>Cart Total</Text>
+                                <Text style={styles.text2}>${calcCartSum()}</Text>
                             </View>
                             <View style={styles.costLine}>
-                                <Text style={styles.text2}>Tax and Fees</Text>
-                                <Text style={styles.text2}>$31</Text>
+                                <Text style={styles.text2}>Tax & Fees</Text>
+                                <Text style={styles.text2}>${calcFees()}</Text>
                             </View>
                             <View style={styles.costLine}>
                                 <Text style={styles.text2}>Tips</Text>
                                 <Text style={styles.text2}>$0</Text>
                             </View>
-
                         </View>
-
                     </View>
                 </View>
 
@@ -169,8 +186,8 @@ function CartPage(props){
                 </View>
                 <View style={styles.subtotal}>
                     <View style={styles.costLine}>
-                        <Text style={styles.text1}>Total</Text>
-                        <Text style={styles.text1}>$100</Text>
+                        <Text style={styles.text2}>Total</Text>
+                        <Text style={styles.text2}>${Math.round((sum + fees) * 100) / 100}</Text>
                     </View>
                     <CardField
         postalCodeEnabled={true}
@@ -208,8 +225,6 @@ function CartPage(props){
                     }}
                   /> */}
             </View>
-            
-            </ScrollView>
         </View>
         
     );
@@ -230,15 +245,15 @@ const styles = StyleSheet.create({
     },
 
     text1: {
-        color: 'white',
-        fontSize: 24,
+        color: 'black',
+        fontSize: 18,
         fontWeight: 'bold',
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center'
     },
     text2: {
-        color: 'white',
+        color: 'black',
         fontSize: 20,
         fontWeight: 'normal',
       },
@@ -250,79 +265,86 @@ const styles = StyleSheet.create({
         backgroundColor: '#02604E',
         borderRadius: 30,
     },
-    featured:{
-        width: "90%",
-        height: windowHeight * .3,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 30,
-        marginTop: 20
-    },
     featuredText: {
         color: 'white',
-        fontSize: 36,
+        fontSize: 30,
+        paddingBottom: 10,
         fontWeight: 'bold',
-        textAlign: 'center'
+        textAlign: 'center',
+        paddingTop: windowHeight * .05,
     },
     itemsContainer:{
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        marginTop: 30
+        marginTop: 30,
+        paddingBottom: 30,
     },
+    image:{
+        width: '100%',
+        height: '100%',
+        borderRadius: 18
+    },  
     itemContainer:{
         flexDirection:'row',
         justifyContent: 'space-between',
-        width: windowWidth,
+        width: windowWidth * .95,
         margin: windowWidth * .025,
-        borderRadius: 8,
+        borderRadius: 10,
         height: windowWidth * .35,
-        backgroundColor: 'green',
+        backgroundColor: '#BBDDBB',
         padding: 10,
     },
     imageContainer:{
-        borderColor: 'white',
-        borderWidth:2,
         borderRadius: 18,
         justifyContent: 'center',
-        width: windowWidth * 0.3,
+        alignSelf: 'center',
+        width: windowWidth * .25,
+        height: windowWidth * .25,
+        backgroundColor:'white',
     },
     itemInfoContainer:{
+        // alignItems: 'flex-start',
         justifyContent: 'space-between',
-        width: windowWidth*.62,
-        padding:5,
+        width: windowWidth * .7 - 20,
+    },
+    itemNameContainer:{
+        width: '80%',
+        alignSelf: 'flex-start',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
     },
     itemName: {
-        color: 'white',
-        fontSize: 24,
-        height: 30,
+        // width: '80%',
+        color: 'black',
+        fontSize: 18,
+        padding: 10,
         fontWeight: 'bold',
-        alignSelf: 'baseline',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden'
+        // alignSelf: 'baseline',
+        // overflow: 'hidden'
     },
     costAndQuantity : {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems:'center',
-
+        alignSelf: 'flex-end',
+        width: '100%',
+        // alignItems:'flex-end',
+        justifyContent: 'space-between'
     },
     itemCostContainer: {
-        borderWidth: 4, 
-        borderColor: 'red', 
-        borderRadius: 22,
         paddingVertical: 5,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 0
+        margin: 0,
     },
     itemCost: {
-        fontSize: 15,
-        position: 'absolute',
-        bottom: 13,
-        left: 13
+        fontSize: 20,
+        alignSelf: 'center',
+        color: '#02604E',
+        fontWeight: 'bold',
+    },
+    removeItemText:{
+        fontSize: 25, 
     },
     itemModal:{
         height: 350,
@@ -336,18 +358,19 @@ const styles = StyleSheet.create({
         marginTop: windowHeight * .25,
     },
     quantityContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-    },
-    quantityButton : {
-        width: 40,
         height: 40,
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 50,
-        // borderColor: 'white',
-        // borderWidth: 3,
+        backgroundColor: 'white',
+        borderRadius: 20
+    },
+    quantityButton : {
+        width: 30,
+        height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 15,
         backgroundColor: 'white',
         margin: 5
         },
@@ -357,20 +380,20 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     checkoutInfo : {
-        width: 400,
-        height: 350,
-        backgroundColor: 'black',
+        width: windowWidth,
+        borderRadius: 22,
+        padding: 20,
+        height: windowHeight * .33,
+        paddingTop: 10,
+        backgroundColor: 'white',
         flexDirection: 'row',
-        borderRadius: 18,
         flexWrap: 'wrap',
         justifyContent: 'center',
-        marginBottom: windowWidth * .22,
         opacity: 0.9,
-        padding: 20,
     },
     subtotal :{
         marginBottom: 20,
-        padding: 10,
+        paddingLeft: 10,
         width: windowWidth* 0.95,
     },  
     dividerLine : {
@@ -387,45 +410,14 @@ const styles = StyleSheet.create({
     },
     checkOutButton: {
         width: windowWidth*.9,
-        marginTop: 10,
         alignContent: 'center',
         justifyContent: 'center',
         opacity: 12,
         borderRadius: 12,
         paddingVertical: 10,
         paddingHorizontal: 33,
-        backgroundColor: '#01D177',
+        backgroundColor: '#BBDDBB',
       },
 });
 
-const itemData = [
-    {
-        name: 'FOCO Fries',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },
-    {
-        name: 'DASANI WATER(24 Pack) ',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },    {
-        name: 'test3',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },    {
-        name: 'test4',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },    {
-        name: 'test5',
-        cost: '2.99',
-        imageURL:'',
-        quantity: 1
-    },
-
-]
-export default connect(null, { addItem })(CartPage);
+export default connect(null, { addItem, removeItem, submitOrder })(CartPage);
