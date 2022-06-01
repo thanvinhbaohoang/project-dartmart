@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { StyleSheet, Image, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { StyleSheet, Text, Image, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button, Alert} from 'react-native';
+import { CardField, useStripe, useConfirmPayment} from '@stripe/stripe-react-native';
 import { addItem, submitOrder, removeItem } from '../actions/index';
 
 function CheckoutScreen() {
@@ -66,6 +66,92 @@ function CartPage(props){
     const [modalVisible, setModalVisible] = useState(false); 
     const [selectedItem, setSelectedItem] = useState(null);
     const [tempQuantity, setTempQuantity] = useState(1);
+    const [cardDetails, setCardDetails] = useState();
+    const {confirmPayment, loading} = useConfirmPayment()
+    const { initPaymentSheet, presentPaymentSheet } = useStripe();
+    const API_URL = "http://localhost:3000";
+
+    const fetchSuccessCode = async () => 
+    {
+        const response = await fetch(`${API_URL}/payment-success`, 
+        {
+            method: "POST",
+            headers: 
+            {
+                "Content-Type" : "application/json",
+            },
+        });
+        const {success} = await response.json();
+        console.log("client secret: ", success);
+        return success;
+    }
+
+    const fetchPaymentIntentClientSecret = async () => 
+    {
+        const response = await fetch(`${API_URL}/create-payment-intent`, 
+        {
+            method: "POST",
+            headers: 
+            {
+                "Content-Type" : "application/json",
+            },
+            body: JSON.stringify({
+                amount: 1099
+            })
+        });
+        const {clientSecret, error} = await response.json();
+        console.log("client secret: ", clientSecret);
+        return {clientSecret, error};
+    }
+    const handlePayPress = async () => 
+    {
+        
+        //gather billing info
+
+        if(!cardDetails?.complete)
+        {
+            Alert.alert('please complete the card details!');
+            return;
+        }
+        try
+        {
+            const {clientSecret, error} = await fetchPaymentIntentClientSecret();
+            if(error)
+            {
+                Alert.alert('Payment failed. Check your card details.');
+            }
+            else
+            {
+                const paymentIntent = await confirmPayment(clientSecret, {type: 'Card', billingDetails: cardDetails});
+                console.log(paymentIntent);
+                console.log(clientSecret);
+                // console.log('HELLO WILLIAM');
+                if(paymentIntent) {
+                    while (true) {
+                        success = fetchSuccessCode()
+                        console.log("Success", success);
+                        if(success) {
+                            Alert.alert('payment successful!');
+                            break;
+                        }
+                        await sleep(1000);
+                    }
+                    props.navigation.navigate('Home');
+                }
+                else
+                {
+                    Alert.alert('payment failed!');
+                    
+                }
+            }
+        }
+        catch(err)
+        {
+            Alert.alert('error in fetching payment intent client secret');
+        }
+    }
+    
+
     var sum = 0;
     var fees = 0;
     useEffect(() => {
@@ -159,19 +245,61 @@ function CartPage(props){
                         <Text style={styles.text2}>Total</Text>
                         <Text style={styles.text2}>${Math.round((sum + fees) * 100) / 100}</Text>
                     </View>
+                    <CardField
+        postalCodeEnabled={true}
+        placeholders={{
+          number: '4242 4242 4242 4242',
+        }}
+        cardStyle={{
+          backgroundColor: '#FFFFFF',
+          textColor: '#000000',
+        }}
+        style={{
+          width: '100%',
+          height: 50,
+          marginVertical: 15,
+        }}
+        onCardChange={(cardDetails) => {
+          setCardDetails(cardDetails);
+        }}
+        onFocus={(focusedField) => {
+          console.log('focusField', focusedField);
+        }}
+      />
                 </View>
-                        
-                <TouchableOpacity style={styles.checkOutButton} onPress={()=> {if(cart) props.submitOrder(orderDetail)}}>
-                <Text style={styles.text1} justifyContent='center' >Check Out</Text>
+                
+                <TouchableOpacity key="uniqueId1" style={styles.checkOutButton} onPress={handlePayPress} disabled={loading}>
+                  <Text style={styles.text1} justifyContent='center'>Check Out</Text>
                 </TouchableOpacity>
+                 {/* <CardField 
+                  postalCodeEnabled={true}
+                    cardStyle={styles.card}
+                    style={styles.cardContainer}
+                    placeholder={'Card Number:' + '4242 4242 4242 4242'}
+                    onCardChange={(cardDetails) => {
+                        setCardDetails(cardDetails);
+                    }}
+                  /> */}
             </View>
         </View>
+        
     );
 }
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+    card:
+    {
+        backgroundColor: '#efefefef',
+    },
+    cardContainer:
+    {
+        height: 50,
+        marginVertical: 30,
+
+    },
+
     text1: {
         color: 'black',
         fontSize: 18,
@@ -311,7 +439,7 @@ const styles = StyleSheet.create({
         width: windowWidth,
         borderRadius: 22,
         padding: 20,
-        height: 220,
+        height: windowHeight * .33,
         paddingTop: 10,
         backgroundColor: 'white',
         flexDirection: 'row',
