@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         padding: 0,
         alignItems: 'center',
         width: windowWidth,
-        height: windowHeight,
+        // height: windowHeight,
         backgroundColor: '#02604E',
     },
     title:{

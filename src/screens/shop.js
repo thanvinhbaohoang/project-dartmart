@@ -26,6 +26,7 @@ function Shop(props){
               backgroundColor: '#BBDDBB',
               height: windowHeight * .15
             },
+            gestureEnabled: false,
             headerTitleAlign: 'left',
             headerTitle: 'Dartmart',
             headerTitleStyle:{
@@ -33,21 +34,8 @@ function Shop(props){
               fontSize: 30,
               fontWeight: 'bold',
             },
-            // headerRight: () => (
-            //   <TextInput placeholder='Search' style={{
-            //     backgroundColor: 'white',
-            //     width: 150,
-            //     height: 30,
-            //     borderRadius: 15,
-            //     paddingLeft: 10,
-            //     fontSize: 15
-            //   }}/>
-            // ),
-            // headerRightContainerStyle: {
-            //   paddingRight: 30
-            // }
           }}>
-            <Stack.Screen name="Shop" component={HomePage} />
+            <Stack.Screen name="Shop" component={HomePage} options={{headerLeft: () => null}} />
             <Stack.Screen name="Category" component={CategoryPage} />
         </Stack.Navigator>
     );

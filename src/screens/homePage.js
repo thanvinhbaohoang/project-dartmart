@@ -62,7 +62,7 @@ function HomePage(props){
                 {
                 categories.map((category) => {
                         return (
-                            <View style={styles.categoryContainer}>
+                            <View key={category} style={styles.categoryContainer}>
                                 <View style={{padding: 10}}>
                                     <Text style={styles.subheader}>{category?.toUpperCase()}</Text>
                                 </View>
@@ -206,9 +206,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        paddingBottom: windowWidth * .45,
+        paddingBottom: windowHeight * .15,
         marginTop: 10,
-        minHeight: windowHeight * .7
+        // minHeight: windowHeight * .7
     },
     image:{
         height: "40%",
@@ -268,32 +268,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 20,
     },
-    // quantityContainer: {
-    //     flexDirection: 'row',
-    //     justifyContent: 'space-evenly',
-    //     alignItems: 'center',
-    //     width: 200,
-    // },
-    // quantityControl:{
-    //     width: 40,
-    //     height: 40, 
-    //     borderRadius: 20,
-    //     backgroundColor: 'black',
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
-    // },
-    // quantityControlText:{
-    //     fontSize: 20,
-    //     color: 'white',
-    // },
-    // quantity:{
-    //     borderWidth: 2,
-    //     width: 40,
-    //     height: 60,
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
-    //     backgroundColor: 'white',
-    // },
     quantityContainer: {
         height: 40,
         width: 150,

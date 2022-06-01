@@ -18,6 +18,10 @@ function ProfilePage(props){
                     <TouchableOpacity>
                         <Text style={styles.text1}>Payment</Text>
                     </TouchableOpacity>
+
+                    <TouchableOpacity onPress={props.route.params.logout}>
+                        <Text style={styles.text1}>Logout</Text>
+                    </TouchableOpacity>
                 </View>
         </View>
     );

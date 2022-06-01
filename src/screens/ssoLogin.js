@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
+
 import { WebView } from 'react-native-webview';
 import { ROUTE_SSO_LOGIN, SERVER_URL } from '../Constants';
 import { createUser } from '../services/datastore';
@@ -26,9 +28,9 @@ const validateST = (ticketedURL, navigation) => {
     .then((data) => {
         console.log("server response:", data)
         if (data.succeeded == true) {
-            createUser(data.user.user_id, data.user.user_info);
+            createUser(data.user.user_id, {...data.user.user_info, isDriver: false});
             
-            navigation.navigate("Home");
+            navigation.navigate("Main");
         } else {
             console.log(data.msg);
         }
@@ -37,10 +39,19 @@ const validateST = (ticketedURL, navigation) => {
 }
 
 export default function SSOLogin ({ navigation }) {
-    return (
+    var ticketedURL;
+    const isFocused = useIsFocused();
+    const [url, setUrl] = useState(`${SERVER_URL}${ROUTE_SSO_LOGIN}`);
+    const [tempKey, setTempKey] = useState(1);
+    useEffect(() => {
+        setUrl((` ` + url).slice(1));
+        setTempKey(tempKey * -1);
+    }, [isFocused])
+    return(
         <SafeAreaView style={styles.AndroidSafeArea}>
             <WebView 
-                source={{ uri: `${SERVER_URL}${ROUTE_SSO_LOGIN}` }}
+                key={tempKey}
+                source={{ uri: url }}
                 onShouldStartLoadWithRequest={(request) => { 
                     console.log("onShouldStartLoadWithRequest:", request);
 
