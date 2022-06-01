@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Image, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { addItem, submitOrder } from '../actions/index';
+import { addItem, submitOrder, removeItem } from '../actions/index';
 
 function CartPage(props){
     const cart = useSelector((state) => state.item.cart);
@@ -22,7 +22,7 @@ function CartPage(props){
         cart.forEach(({item, quantity}) => {
             sum += quantity * item.cost;
         })
-        return sum;
+        return Math.round(sum * 100) / 100;
     }
 
     const calcFees = () => {
@@ -33,44 +33,43 @@ function CartPage(props){
         <View backgroundColor='#02604E' style={{height: windowHeight * .9}}>
             {/* SCROLL VIEW FOR ITEMS IN CART */}
             <Text style={styles.featuredText}>Shopping Cart</Text>
-            <ScrollView contentContainerStyle={styles.container}>
-                <View style={styles.itemsContainer}>
+            <ScrollView contentContainerStyle={styles.itemsContainer}>
+                {/* <View style={styles.itemsContainer}> */}
                     {cart.map(({item, quantity}) => {
                         return (
-                            <TouchableOpacity key={item.name} underlayColor="transparent" onPress={() => {setSelectedItem(item)}}>
-                                <View style ={styles.itemContainer}>
-                                    {/* <View style={styles.imageContainer}>
-                                        <
-                                    </View> */}
-                                    <View style={styles.imageContainer}>
-                                        <Image source={{uri: item.imageURL}} style={styles.image} />
-                                    </View>
-                                    <View style={styles.itemInfoContainer}>
-                                        <Text style={styles.itemName}>{item.name}</Text>
+                            <View key={item.name} style={styles.itemContainer}>
+                                {/* <View style={styles.imageContainer}>
+                                    <
+                                </View> */}
+                                <View style={styles.imageContainer}>
+                                    <Image source={{uri: item.imageURL}} style={styles.image} />
+                                </View>
+                                <View style={styles.itemInfoContainer}>
+                                    <Text style={styles.itemName}>{item.name}</Text>
 
 
-                                        <View style= {styles.costAndQuantity}>
-                                            <View style = {styles.itemCostContainer}>
-                                                <Text style={styles.text1}>${item.cost * quantity}</Text>
-                                            </View>
-                                            <View style={styles.quantityContainer}>
-                                                <TouchableOpacity style={styles.quantityButton} onPress={()=>props.addItem(item, -1)}>
-                                                    <Text style={styles.quantitySymbol}>-</Text>
-                                                </TouchableOpacity>    
-                                                <Text style={styles.text1}>{quantity}</Text>
-                                                <TouchableOpacity style={styles.quantityButton} onPress={()=>props.addItem(item, 1)}>
-                                                    <Text style={styles.quantitySymbol}>+</Text>
-                                                </TouchableOpacity> 
-                                            </View>
+                                    <View style= {styles.costAndQuantity}>
+                                        <View style = {styles.itemCostContainer}>
+                                            <Text style={styles.itemCost}>${item.cost * quantity}</Text>
                                         </View>
-
+                                        <View style={styles.quantityContainer}>
+                                            <TouchableOpacity style={styles.quantityButton} onPress={()=> {if(quantity > 0) props.addItem(item, -1)}}>
+                                                <Text style={styles.quantitySymbol}>-</Text>
+                                            </TouchableOpacity>    
+                                            <Text style={styles.text1}>{quantity}</Text>
+                                            <TouchableOpacity style={styles.quantityButton} onPress={()=>props.addItem(item, 1)}>
+                                                <Text style={styles.quantitySymbol}>+</Text>
+                                            </TouchableOpacity> 
+                                        </View>
                                     </View>
                                 </View>
-                            </TouchableOpacity>
-
+                                <Pressable style={{position: 'absolute', top: 10, right: 10}} onPress={() => {props.removeItem(item)}}>
+                                    <Text style={styles.removeItemText}>x</Text>
+                                </Pressable>
+                            </View>
                         )
                     })}
-                </View>
+                {/* </View> */}
             </ScrollView>
 
             <View style={styles.checkoutInfo}>
@@ -98,13 +97,13 @@ function CartPage(props){
                 </View>
                 <View style={styles.subtotal}>
                     <View style={styles.costLine}>
-                        <Text style={styles.text1}>Total</Text>
-                        <Text style={styles.text1}>${sum + fees}</Text>
+                        <Text style={styles.text2}>Total</Text>
+                        <Text style={styles.text2}>${Math.round((sum + fees) * 100) / 100}</Text>
                     </View>
                 </View>
                         
                 <TouchableOpacity style={styles.checkOutButton} onPress={()=>navigation.navigate('SignUp')}>
-                  <Text style={styles.text1} justifyContent='center' >Check Out</Text>
+                <Text style={styles.text1} justifyContent='center' >Check Out</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -115,15 +114,15 @@ const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     text1: {
-        color: 'white',
-        fontSize: 24,
+        color: 'black',
+        fontSize: 18,
         fontWeight: 'bold',
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center'
     },
     text2: {
-        color: 'white',
+        color: 'black',
         fontSize: 20,
         fontWeight: 'normal',
       },
@@ -137,7 +136,8 @@ const styles = StyleSheet.create({
     },
     featuredText: {
         color: 'white',
-        fontSize: 36,
+        fontSize: 30,
+        paddingBottom: 10,
         fontWeight: 'bold',
         textAlign: 'center',
         paddingTop: windowHeight * .05,
@@ -146,7 +146,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        marginTop: 30
+        marginTop: 30,
+        paddingBottom: 30,
     },
     image:{
         width: '100%',
@@ -156,56 +157,68 @@ const styles = StyleSheet.create({
     itemContainer:{
         flexDirection:'row',
         justifyContent: 'space-between',
-        width: windowWidth,
+        width: windowWidth * .95,
         margin: windowWidth * .025,
-        borderRadius: 8,
+        borderRadius: 10,
         height: windowWidth * .35,
-        backgroundColor: 'green',
+        backgroundColor: '#BBDDBB',
         padding: 10,
     },
     imageContainer:{
-        borderWidth:2,
+        // borderWidth:2,
         borderRadius: 18,
         justifyContent: 'center',
-        width: windowWidth * 0.3,
+        alignSelf: 'center',
+        width: windowWidth * .25,
+        height: windowWidth * .25,
         backgroundColor:'white',
     },
     itemInfoContainer:{
+        // alignItems: 'flex-start',
         justifyContent: 'space-between',
-        width: windowWidth*.62,
-        padding:5,
+        width: windowWidth * .7 - 20,
     },
     itemName: {
-        color: 'white',
-        fontSize: 24,
+        alignSelf: 'flex-start',
+        color: 'black',
+        fontSize: 18,
         height: 30,
+        padding: 10,
         fontWeight: 'bold',
-        alignSelf: 'baseline',
+        // alignSelf: 'baseline',
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden'
+        // overflow: 'hidden'
     },
     costAndQuantity : {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems:'center',
-
+        alignSelf: 'flex-end',
+        width: '100%',
+        // alignItems:'flex-end',
+        justifyContent: 'space-between'
     },
     itemCostContainer: {
-        borderWidth: 1, 
-        borderColor: 'white', 
-        borderRadius: 22,
+        // borderWidth: 1, 
+        // borderColor: 'black', 
+        // borderRadius: 22,
         paddingVertical: 5,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 0
+        margin: 0,
+        // backgroundColor: 'white',
     },
     itemCost: {
-        fontSize: 15,
-        position: 'absolute',
-        bottom: 13,
-        left: 13
+        fontSize: 20,
+        // position: 'absolute',
+        // bottom: 0,
+        // left: 0,
+        alignSelf: 'center',
+        color: '#02604E',
+        fontWeight: 'bold',
+    },
+    removeItemText:{
+        fontSize: 25, 
     },
     itemModal:{
         height: 350,
@@ -219,16 +232,19 @@ const styles = StyleSheet.create({
         marginTop: windowHeight * .25,
     },
     quantityContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-    },
-    quantityButton : {
-        width: 40,
         height: 40,
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 50,
+        backgroundColor: 'white',
+        borderRadius: 20
+    },
+    quantityButton : {
+        width: 30,
+        height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 15,
         // borderColor: 'white',
         // borderWidth: 3,
         backgroundColor: 'white',
@@ -240,23 +256,18 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     checkoutInfo : {
-        position: 'absolute',
-        bottom: 0,
         width: windowWidth,
-        height: 300,
-        backgroundColor: 'black',
+        height: 200,
+        paddingTop: 10,
+        backgroundColor: 'white',
         flexDirection: 'row',
-        borderTopRightRadius: 18,
-        borderTopLeftRadius: 18,
         flexWrap: 'wrap',
         justifyContent: 'center',
-        // marginBottom: windowWidth * .22,
         opacity: 0.9,
-        padding: 20,
     },
     subtotal :{
         marginBottom: 20,
-        padding: 10,
+        paddingLeft: 10,
         width: windowWidth* 0.95,
     },  
     dividerLine : {
@@ -273,15 +284,14 @@ const styles = StyleSheet.create({
     },
     checkOutButton: {
         width: windowWidth*.9,
-        marginTop: 10,
         alignContent: 'center',
         justifyContent: 'center',
         opacity: 12,
         borderRadius: 12,
         paddingVertical: 10,
         paddingHorizontal: 33,
-        backgroundColor: '#01D177',
+        backgroundColor: '#BBDDBB',
       },
 });
 
-export default connect(null, { addItem })(CartPage);
+export default connect(null, { addItem, removeItem })(CartPage);
