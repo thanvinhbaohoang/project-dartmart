@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button} from 'react-native';
 import { addItem } from '../actions/index';
+import { Ionicons } from "@expo/vector-icons";
 
 function DeliveryPage({navigation}){
     const cart = useSelector((state) => state.item.cart);
@@ -9,8 +10,8 @@ function DeliveryPage({navigation}){
         <View backgroundColor='red' style={styles.container}>
 
                 <Text style={styles.featuredText}>Order Confirmed</Text>
+                <Ionicons name="checkmark-circle" style={styles.checkIcon}></Ionicons>
                 <Text style={styles.text2}>${orderDetail.totalCost} paid with {orderDetail.paymentMethod} ending ***{orderDetail.paymentInfo.slice(-4)}</Text>
-
             <View>
                 <View style={styles.dividerLine}></View>
 
@@ -88,6 +89,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 30,
         marginTop: 20
+    },
+    checkIcon : {
+        color: 'white',
+        fontSize: 84,
+        margin:20
     },
     featuredText: {
         color: 'white',

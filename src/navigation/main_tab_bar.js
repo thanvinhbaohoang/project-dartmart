@@ -13,7 +13,7 @@ import DeliveryPage from '../screens/DeliveryPage';
 import ProfilePage from '../screens/profilePage';
 import SSOLogout from '../screens/ssoLogout';
 import DriverView from '../screens/DriverView';
-
+import { Ionicons } from "@expo/vector-icons";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -72,11 +72,18 @@ function MainTabBar(props){
         {/* <Tab.Screen name="SignUp" component={SignUp} /> */}
         {/* <Tab.Screen name="SSOLogin" component={SSOLogin} /> */}
         {/* =============================================== */}
-        <Tab.Screen name="Home" options={{headerShown: false}} component={Shop} />
+        {/* <Tab.Screen name="Home" options={{headerShown: false}} component={Shop} />
         <Tab.Screen name="Cart" options={{headerShown: false}} component={CartPage} />
         <Tab.Screen name="Delivery" component={DeliveryPage} />
         <Tab.Screen name="Profile" component={ProfilePage} initialParams={{logout: logout}}/>
-        <Tab.Screen name="Driver" component={DriverView} />
+        <Tab.Screen name="Driver" component={DriverView} /> */}
+
+        <Tab.Screen name="Home" component={Shop}  options={{headerShown: false, tabBarLabel: 'Home', tabBarIcon: ({ color, size }) => (  <Ionicons name="home" color={color} size={size} />),}}/>   
+        <Tab.Screen name="Cart" component={CartPage}  options={{headerShown: false, tabBarLabel: 'Cart', tabBarIcon: ({ color, size }) => (  <Ionicons name="cart" color={color} size={size} />),}}/>        
+        <Tab.Screen name="Delivery" component={DeliveryPage}  options={{ tabBarLabel: 'Delivery', tabBarIcon: ({ color, size }) => (  <Ionicons name="bookmarks-outline" color={color} size={size} />),}}/>        
+        <Tab.Screen name="Profile" component={ProfilePage} initialParams={{logout: logout}}  options={{ tabBarLabel: 'Profile', tabBarIcon: ({ color, size }) => (  <Ionicons name="person-circle-outline" color={color} size={size} />),}}/>        
+        <Tab.Screen name="Driver" component={DriverView}  options={{ tabBarLabel: 'Driver', tabBarIcon: ({ color, size }) => (  <Ionicons name="bicycle-outline" color={color} size={size} />),}}/>   
+        
       </Tab.Navigator>
   );
 };
