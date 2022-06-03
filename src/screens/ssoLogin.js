@@ -17,7 +17,10 @@ const styles = StyleSheet.create({
     }
   });
 
-const validateST = (ticketedURL, navigation) => {
+
+
+function SSOLogin (props) {
+    const validateST = (ticketedURL) => {
     fetch(ticketedURL,
     {
         method: 'GET',
@@ -30,17 +33,16 @@ const validateST = (ticketedURL, navigation) => {
     .then((data) => {
         console.log("server response:", data)
         if (data.succeeded == true) {
+            // console.log('creating user');
             props.createUser(data.user.user_id, {...data.user.user_info, isDriver: false});
             
-            navigation.navigate("Main");
+            props.navigation.navigate("Main");
         } else {
             console.log(data.msg);
         }
     })
     .catch((error) => console.log("error:", error));
 }
-
-function SSOLogin ({ navigation }) {
     var ticketedURL;
     const isFocused = useIsFocused();
     const [url, setUrl] = useState(`${SERVER_URL}${ROUTE_SSO_LOGIN}`);
@@ -62,7 +64,7 @@ function SSOLogin ({ navigation }) {
                         
                         ticketedURL = request.url
                         console.log("ticketedURL:", ticketedURL)
-                        validateST(ticketedURL, navigation);
+                        validateST(ticketedURL);
                     }
 
                     else {

@@ -50,6 +50,7 @@ export const ActionTypes = {
 
   export function createUser(newUserId, userfields) {
     return(dispatch) => {
+      console.log("userfields", userfields);
       db.createUser(newUserId, userfields).then((response) => {
         dispatch({ type: ActionTypes.FETCH_USER, payload: response });
       }).catch((error) => {
