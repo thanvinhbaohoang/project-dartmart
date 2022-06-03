@@ -71,8 +71,6 @@ import { initializeApp } from "firebase/app";
   // initialize a user in the database
   export async function createUser(newUserId, data) {
 
-    console.log('data', data)
-
     fetchUser(data.email).then((response) => {
 
       console.log('fetchingUser', response.docs);

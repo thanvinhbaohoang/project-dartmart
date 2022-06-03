@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, View, TouchableHighlight, Dimensions, ScrollView, Modal, Pressable, Image, TextInput, TouchableOpacity } from 'react-native';
 import { addItem, fetchItems, setCategory } from '../actions/index';
+import { Ionicons } from "@expo/vector-icons";
 
 function HomePage(props){
     const ref = useRef(null);
@@ -22,7 +23,7 @@ function HomePage(props){
     }, [])
     return (
         <View style={{backgroundColor: '#02604E'}}>
-            <ScrollView ref={ref} contentContainerStyle={styles.container} stickyHeaderIndices={[0]}>
+            <ScrollView ref={ref} contentContainerStyle={styles.container} stickyHeaderIndices={[0]} >
                 <View style={styles.searchContainer}>
                     <TextInput placeholder='Search Dartmart' style={{
                         backgroundColor: 'white',
@@ -108,29 +109,37 @@ function HomePage(props){
                 transparent={true}
                 onRequestClose={() => setModalVisible(!modalVisible)}
                 >
-                    <View style={styles.itemModal}>
+                    <View style={styles.itemModal}  >
                         <Text style={styles.itemModalName}>{selectedItem?.name}</Text>
                         <Image style={styles.modalImage} source={{uri: selectedItem?.imageURL}}/>
                         <Text style={styles.itemModalCost}>${selectedItem?.cost}</Text>
                         <Pressable style={{position: 'absolute', top: 20, right: 20}} onPress={() => setModalVisible(!modalVisible)}>
-                            <Text style={{fontSize: 25}}>X</Text>
+                            <Ionicons name="close" size={25}/>
                         </Pressable>
                         <View style={styles.controlContainer}>
                             <View style={styles.quantityContainer}>
                                             <TouchableOpacity style={styles.quantityButton} onPress={()=> {if(tempQuantity > 0) setTempQuantity(tempQuantity-1)}}>
                                                 <Text style={styles.quantitySymbol}>-</Text>
                                             </TouchableOpacity>    
-                                            <Text style={styles.text1}>{tempQuantity}</Text>
+                                            <Text style={styles.quantityText}>{tempQuantity}</Text>
                                             <TouchableOpacity style={styles.quantityButton} onPress={() => setTempQuantity(tempQuantity+1)}>
                                                 <Text style={styles.quantitySymbol}>+</Text>
                                             </TouchableOpacity> 
                                 </View>
-                            <Pressable onPress={() => {props.addItem(selectedItem, tempQuantity); setModalVisible(!modalVisible)}}>
+                        </View>
+                        <View style={styles.cartButtons}>
+                            <Pressable onPress={() => setModalVisible(!modalVisible)}>
                                 <View style={styles.submitButton}>
-                                    <Text style={styles.submitButtonText}>Submit</Text>
+                                    <Ionicons name="close-circle" size={60} color={'red'}></Ionicons>
+                                </View>
+                            </Pressable>
+                            <Pressable onPress={() => {props.addItem(selectedItem, tempQuantity); setModalVisible(!modalVisible)}}>
+                                <View style={styles.discardButton}>
+                                    <Ionicons name="checkmark-circle" size={60} color={'green'}></Ionicons>
                                 </View>
                             </Pressable>
                         </View>
+                        
                     </View>
                 </Modal>
             </View>
@@ -221,9 +230,10 @@ const styles = StyleSheet.create({
         margin: windowWidth * .025,
         height: windowWidth * .45,
         borderRadius: 30,
-        backgroundColor: 'white',
+        backgroundColor: 'whitesmoke',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 5,
     },
     itemName: {
         fontSize: 15,
@@ -238,69 +248,107 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     itemModal:{
-        height: 350,
-        width: windowWidth * .8,
-        marginHorizontal: windowWidth * .1,
+        // height: 350,
+        // width: windowWidth * .8,
+        height: 'auto',
+        width: 'auto',
+        marginHorizontal: windowWidth * .05,
         backgroundColor: 'white',
         borderRadius: 30,
         alignItems:'center',
-        marginBottom: windowHeight * .25,
-        marginTop: windowHeight * .25,
-        flex: 1, 
-        backgroundColor: '#BBDDBB'
+        justifyContent: 'space-evenly',
+        // marginBottom: windowHeight * .25,
+        marginTop: windowHeight * .15,
+        // flex: 1,
+        flexDirection: 'column',
+        backgroundColor: 'whitesmoke',
+        borderColor: 'lightgray',
+        borderWidth: 1,
     },
     modalImage:{
-        width: "50%",
+        width: "70%",
         height: "45%",
     },
     itemModalName:{
-        marginTop: 20,
+        marginTop: 40,
+        marginBottom: 15,
         fontSize: 20,
         fontWeight: 'bold',
     },
     itemModalCost:{
-        marginTop: 15,
         fontSize: 20,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        backgroundColor: 'white',
+        position: 'relative', 
+        top: -25, 
+        right: -90,
+        padding: 7,
+        paddingLeft: 12,
+        paddingRight: 12,
+        borderStyle: 'solid',
+        borderColor: 'lightgray',
+        borderWidth: 1,
+        borderRadius: 20,
+        overflow: 'hidden'
     },
     controlContainer:{
         alignItems: 'center',
-        position: 'absolute',
-        bottom: 20,
+        margin: 2,
+        marginTop: 2,
     },
     quantityContainer: {
-        height: 40,
+        height: 60,
         width: 150,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: 'white',
-        borderRadius: 20
+        borderRadius: 30,
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: 'lightgray',
+        
     },
     quantityButton : {
-        width: 30,
-        height: 30,
+        width: 40,
+        height: 40,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 15,
+        borderRadius: 20,
         // borderColor: 'white',
         // borderWidth: 3,
         backgroundColor: 'white',
         margin: 5
         },
     quantitySymbol : {
-        fontSize: 22,
+        fontSize: 30,
         fontWeight: 'bold',
         color: 'black'
     },
+    quantityText : {
+        fontSize: 20,
+    },
+    cartButtons : {
+        backgroundColor: 'transparent',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: 250,
+        paddingBottom: 10,
+        paddingTop: 10,
+    },
     submitButton:{
-        width: 100,
-        height: 30,
-        backgroundColor: 'black',
+        width: 60,
+        height: 60,
+        backgroundColor: 'transparent',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20,
-        borderRadius: 10
+    },
+    discardButton:{
+        width: 60,
+        height: 60,
+        backgroundColor: 'transparent',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     submitButtonText:{
         color: 'white',
