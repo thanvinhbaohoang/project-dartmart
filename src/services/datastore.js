@@ -1,6 +1,6 @@
 import { doc, setDoc, updateDoc, getDoc, getFirestore, getDocs, collection, query, where } from "firebase/firestore"; 
 import { initializeApp } from "firebase/app";
-
+import stripe, { CardField, useStripe, useConfirmPayment} from '@stripe/stripe-react-native';
 
 // FIREBASE CONFIGURATION
 
@@ -69,8 +69,16 @@ import { initializeApp } from "firebase/app";
     const querySnapshot = await getDocs(userExistsQuery);
 
     if (!querySnapshot.exists()){
-      await setDoc(doc(db, "users", newUserId), data);
+      const customer = await stripe.customers.create({
+        email: data.email
+      });
+      const doc = await setDoc(doc(db, "users", newUserId), {...data, customerId: customer.id});
+      console.log(doc);
+      return doc;
+      
     }
+
+    return querySnapshot.data(); 
   }
 
   // update information about a user in the database

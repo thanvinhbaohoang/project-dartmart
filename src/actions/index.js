@@ -48,10 +48,13 @@ export const ActionTypes = {
 
   // USER MANAGEMENT
 
-  export function createUser(userfields) {
-    return {
-      type: ActionTypes.FETCH_USER,
-      payload: {userfields}
+  export function createUser(newUserId, userfields) {
+    return(dispatch) => {
+      db.createUser(newUserId, userfields).then((response) => {
+        dispatch({ type: ActionTypes.FETCH_USER, payload: response });
+      }).catch((error) => {
+        console.log(error);
+      })
     }
   }
 

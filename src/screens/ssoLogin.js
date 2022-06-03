@@ -4,7 +4,9 @@ import { useIsFocused } from '@react-navigation/native';
 
 import { WebView } from 'react-native-webview';
 import { ROUTE_SSO_LOGIN, SERVER_URL } from '../Constants';
-import { createUser } from '../services/datastore';
+// import { createUser } from '../services/datastore';
+import { createUser } from '../actions/index'
+import { connect } from 'react-redux';
 
 const styles = StyleSheet.create({
     AndroidSafeArea: {
@@ -28,7 +30,7 @@ const validateST = (ticketedURL, navigation) => {
     .then((data) => {
         console.log("server response:", data)
         if (data.succeeded == true) {
-            createUser(data.user.user_id, {...data.user.user_info, isDriver: false});
+            props.createUser(data.user.user_id, {...data.user.user_info, isDriver: false});
             
             navigation.navigate("Main");
         } else {
@@ -38,7 +40,7 @@ const validateST = (ticketedURL, navigation) => {
     .catch((error) => console.log("error:", error));
 }
 
-export default function SSOLogin ({ navigation }) {
+function SSOLogin ({ navigation }) {
     var ticketedURL;
     const isFocused = useIsFocused();
     const [url, setUrl] = useState(`${SERVER_URL}${ROUTE_SSO_LOGIN}`);
@@ -75,3 +77,5 @@ export default function SSOLogin ({ navigation }) {
         </SafeAreaView>
     )
 }
+
+export default connect(null, { createUser })(SSOLogin);

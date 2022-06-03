@@ -39,7 +39,29 @@ app.post("/payment-success", async (req, res) => {
     res.json({success})
 })
 
+app.post('/payment-sheet', async (req, res) => {
+  // Use an existing Customer ID if this is a returning customer.
+//   const customer = await stripe.customers.create();
+  const ephemeralKey = await stripe.ephemeralKeys.create(
+    //{customer: null},
+    {customer: customer.id},
+    
+    {apiVersion: '2020-08-27'}
+  );
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: 1099,
+    currency: 'eur',
+    customer: null,
+    payment_method_types: ['bancontact', 'card', 'ideal', 'klarna', 'sepa_debit', 'sofort'],
+  });
 
+  res.json({
+    paymentIntent: paymentIntent.client_secret,
+    ephemeralKey: ephemeralKey.secret,
+    customer: null,
+    publishableKey: 'pk_test_51L2ihZH8XcWRx3ZXYWgTAHXAy2192jRAEl3EQh56T5hKA5GSJP2FieJ2erTBIfeRFdpLPj4ltd3b4Sk0aD82v77u00rzVM0x0i'
+  });
+});
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
 const endpointSecret = "whsec_5e86c6e36d15de2025dbf2ed329247f494b17f6da8c3d024e42d998d3f45b0bf";

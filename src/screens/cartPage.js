@@ -5,15 +5,70 @@ import { CardField, useStripe, useConfirmPayment} from '@stripe/stripe-react-nat
 import { addItem, submitOrder, removeItem } from '../actions/index';
 
 function CartPage(props){
+
+
+    
     const cart = useSelector((state) => state.item.cart);
 
     const [modalVisible, setModalVisible] = useState(false); 
     const [selectedItem, setSelectedItem] = useState(null);
     const [tempQuantity, setTempQuantity] = useState(1);
     const [cardDetails, setCardDetails] = useState();
-    const {confirmPayment, loading} = useConfirmPayment()
-    const { initPaymentSheet, presentPaymentSheet } = useStripe();
+    //const {confirmPayment, loading} = useConfirmPayment()
     const API_URL = "http://localhost:3000";
+    const { initPaymentSheet, presentPaymentSheet } = useStripe();
+    const [loading, setLoading] = useState(false);
+
+  const fetchPaymentSheetParams = async () => {
+    const response = await fetch(`${API_URL}/payment-sheet`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const { paymentIntent, ephemeralKey, customer } = await response.json();
+
+    return {
+      paymentIntent,
+      ephemeralKey,
+      customer,
+    };
+  };
+
+  const initializePaymentSheet = async () => {
+      console.log("initializePaymentSheet");
+    const {
+      paymentIntent,
+      ephemeralKey,
+      customer,
+    } = await fetchPaymentSheetParams();
+
+    const { error } = await initPaymentSheet({
+      customerId: customer,
+      customerEphemeralKeySecret: ephemeralKey,
+      paymentIntentClientSecret: paymentIntent,
+    });
+    console.log('error:', error);
+    if (!error) {
+      setLoading(true);
+    }
+  };
+
+   const openPaymentSheet = async () => {
+        const {clientSecret, errorWhatever} = await fetchPaymentIntentClientSecret();
+    const { error } = await presentPaymentSheet({ clientSecret });
+
+    if (error) {
+      Alert.alert(`Error code: ${error.code}`, error.message);
+    } else {
+      Alert.alert('Success', 'Your order is confirmed!');
+    }
+  };
+
+  useEffect(() => {
+    initializePaymentSheet();
+  }, []);
+
 
     const fetchSuccessCode = async () => 
     {
@@ -91,6 +146,7 @@ function CartPage(props){
         }
         catch(err)
         {
+            console.log("error: ", err);
             Alert.alert('error in fetching payment intent client secret');
         }
     }
@@ -170,7 +226,7 @@ function CartPage(props){
                                 <Text style={styles.text2}>${calcCartSum()}</Text>
                             </View>
                             <View style={styles.costLine}>
-                                <Text style={styles.text2}>Tax & Fees</Text>
+                                <Text style={styles.text2}>Tax and Fees</Text>
                                 <Text style={styles.text2}>${calcFees()}</Text>
                             </View>
                             <View style={styles.costLine}>
@@ -212,7 +268,7 @@ function CartPage(props){
       />
                 </View>
                 
-                <TouchableOpacity key="uniqueId1" style={styles.checkOutButton} onPress={handlePayPress} disabled={loading}>
+                <TouchableOpacity key="uniqueId1" style={styles.checkOutButton} onPress={openPaymentSheet}>
                   <Text style={styles.text1} justifyContent='center'>Check Out</Text>
                 </TouchableOpacity>
                  {/* <CardField 
