@@ -391,6 +391,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'center',
         opacity: 0.9,
+        paddingRight: 30,
     },
     subtotal :{
         marginBottom: 20,

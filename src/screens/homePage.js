@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     searchContainer:{
         width: windowWidth,
         height: 60,
-        backgroundColor: 'black',
+        backgroundColor: '#02604E',
         alignItems: 'center',
     },  
     categoryScroll:{
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     categoryItemScroll:{
         alignItems:'center',
         minWidth: windowWidth,
-        backgroundColor: '#BBDDBB',
+        backgroundColor: 'lightgray',
         height: windowWidth * .5,
     },
     subheader:{
@@ -234,6 +234,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 5,
+        borderColor: 'lightgray',
+        borderWidth: 1,
     },
     itemName: {
         fontSize: 15,
@@ -246,6 +248,8 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
         textAlign: 'center',
+        color: '#02604E',
+        margin: 2,
     },
     itemModal:{
         // height: 350,
@@ -262,8 +266,8 @@ const styles = StyleSheet.create({
         // flex: 1,
         flexDirection: 'column',
         backgroundColor: 'whitesmoke',
-        borderColor: 'lightgray',
-        borderWidth: 1,
+        borderColor: 'darkgray',
+        borderWidth: 1.5,
     },
     modalImage:{
         width: "70%",
@@ -286,7 +290,7 @@ const styles = StyleSheet.create({
         paddingLeft: 12,
         paddingRight: 12,
         borderStyle: 'solid',
-        borderColor: 'lightgray',
+        borderColor: 'darkgray',
         borderWidth: 1,
         borderRadius: 20,
         overflow: 'hidden'
@@ -306,7 +310,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         borderWidth: 1,
         borderStyle: 'solid',
-        borderColor: 'lightgray',
+        borderColor: 'darkgray',
         
     },
     quantityButton : {
