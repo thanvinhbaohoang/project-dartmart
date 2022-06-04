@@ -8,6 +8,7 @@ function HomePage(props){
     const ref = useRef(null);
 
     const allItems = useSelector((state) => state.item.allItems);
+    const stripeId = useSelector((state) => state.user.user.stripeId);
     const [modalVisible, setModalVisible] = useState(false); 
     const [selectedItem, setSelectedItem] = useState(null);
     const [tempQuantity, setTempQuantity] = useState(1);
