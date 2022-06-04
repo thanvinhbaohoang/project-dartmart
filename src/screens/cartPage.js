@@ -4,7 +4,31 @@ import { StyleSheet, Text, Image, View, TouchableOpacity, Dimensions, ScrollView
 import { CardField, useStripe, useConfirmPayment} from '@stripe/stripe-react-native';
 import { addItem, submitOrder, removeItem } from '../actions/index';
 
+const API_URL = "http://localhost:3000";
+
+
 function CheckoutScreen() {
+
+    return (
+      <Screen>
+        <Button
+          variant="primary"
+          disabled={!loading}
+          title="Checkout"
+          onPress={openPaymentSheet}
+        />
+      </Screen>
+    );
+  }
+function CartPage(props){
+    const cart = useSelector((state) => state.item.cart);
+
+    const [modalVisible, setModalVisible] = useState(false); 
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [tempQuantity, setTempQuantity] = useState(1);
+    const [cardDetails, setCardDetails] = useState();
+    // const {confirmPayment, loading} = useConfirmPayment()
+
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
     const [loading, setLoading] = useState(false);
   
@@ -42,34 +66,48 @@ function CheckoutScreen() {
     };
   
     const openPaymentSheet = async () => {
-      // see below
+        const {clientSecret, error1} = await fetchPaymentIntentClientSecret();
+            if(error1)
+            {
+                Alert.alert('Payment failed. Check your card details.');
+            }
+            else
+            {
+                // const paymentIntent = await confirmPayment(clientSecret, {type: 'Card', billingDetails: cardDetails});
+                console.log(paymentIntent);
+                console.log(clientSecret);
+                // console.log('HELLO WILLIAM');
+                // if(paymentIntent) {
+                //     while (true) {
+                //         success = fetchSuccessCode()
+                //         console.log("Success", success);
+                //         if(success) {
+                //             Alert.alert('payment successful!');
+                //             break;
+                //         }
+                //         await sleep(1000);
+                //     }
+                //     props.navigation.navigate('Home');
+                // }
+                // else
+                // {
+                //     Alert.alert('payment failed!');
+                    
+                // }
+            }
+        console.log('pressed checkout');
+        const { error2 } = await presentPaymentSheet({ clientSecret });
+
+        if (error2) {
+          Alert.alert(`Error code: ${error2.code}`, error2.message);
+        } else {
+          Alert.alert('Success', 'Your order is confirmed!');
+        }
     };
   
     useEffect(() => {
       initializePaymentSheet();
     }, []);
-  
-    return (
-      <Screen>
-        <Button
-          variant="primary"
-          disabled={!loading}
-          title="Checkout"
-          onPress={openPaymentSheet}
-        />
-      </Screen>
-    );
-  }
-function CartPage(props){
-    const cart = useSelector((state) => state.item.cart);
-
-    const [modalVisible, setModalVisible] = useState(false); 
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [tempQuantity, setTempQuantity] = useState(1);
-    const [cardDetails, setCardDetails] = useState();
-    const {confirmPayment, loading} = useConfirmPayment()
-    const { initPaymentSheet, presentPaymentSheet } = useStripe();
-    const API_URL = "http://localhost:3000";
 
     const fetchSuccessCode = async () => 
     {
@@ -268,7 +306,7 @@ function CartPage(props){
       />
                 </View>
                 
-                <TouchableOpacity key="uniqueId1" style={styles.checkOutButton} onPress={handlePayPress} disabled={loading}>
+                <TouchableOpacity key="uniqueId1" style={styles.checkOutButton} onPress={handlePayPress}>
                   <Text style={styles.text1} justifyContent='center'>Check Out</Text>
                 </TouchableOpacity>
                  {/* <CardField 
