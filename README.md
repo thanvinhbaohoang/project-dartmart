@@ -1,21 +1,29 @@
 # Project Name
 
-![Team Photo](Insert a Team Photo URL here)
+Team photo:
+
+<img src='https://media-exp2.licdn.com/dms/image/C4D03AQFYN3suAiH4VA/profile-displayphoto-shrink_400_400/0/1627012112467?e=1659571200&v=beta&t=XomvJB1ebkhvFzQqsBYrlNKruv5xRMdmrqNEDon9gJY' />
 [*how?*](https://help.github.com/articles/about-readmes/#relative-links-and-image-paths-in-readme-files)
 
 TODO: short project description, some sample screenshots or mockups
 
 ## Architecture
 
-TODO:  descriptions of code organization and tools and libraries used
+Front End:  React Native W/Express, (tested with expo)
+Back End: Heroku (User Authentication), Firebase (User and order storage), Stripe (payment processing), Render.com (web service endpoints to hit stripe)
 
 ## Setup
 
-TODO: how to get the project dev environment up and running, npm install etc
+To test the environment locally you will need to run the front end with expo and the stripe endpoint server with node.
 
-## Deployment
+in project-dartmart, run:
+`npm install && expo start -i`
+to install package dependencies and start the IOS version of the app on your emulator.
 
-TODO: how to deploy the project
+Then
+`cd server/
+node index.js `
+
 
 ## Authors
 
@@ -28,4 +36,5 @@ Edmund Aduse Poku,
 Burke Jaeger,
 }
 
-## Acknowledgments
+## Videos:
+
