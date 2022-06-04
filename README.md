@@ -11,6 +11,8 @@
 
 This React Native application will allow Authenticated Dartmouth students to order snacks on demand from anywhere on campus at the touch of a button.
 
+Uploading DartMartDemo.mov…
+
 ## Architecture
 
 Front End:  React Native W/Express, (tested with expo)
