@@ -20,7 +20,8 @@ function CartPage(props){
     const [fees, setFees] = useState(0);
     const [sum, setSum] = useState(0);
     //const {confirmPayment, loading} = useConfirmPayment()
-    const API_URL = "http://localhost:3000";
+    // const API_URL = "http://localhost:3000";
+    const API_URL = "https://stripeserver.onrender.com:10000";
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
     const [loading, setLoading] = useState(false);
 

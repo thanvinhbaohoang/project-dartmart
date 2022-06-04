@@ -1,12 +1,12 @@
 import express from 'express';
 import Stripe from 'stripe';
-import 'dotenv/config';
+//import 'dotenv/config';
 const app = express();
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 3000;
-const PUBLISHABLE_KEY = process.env.PUBLISHABLE_KEY;
-const SECRET_KEY = process.env.SECRET_KEY;
+//const PUBLISHABLE_KEY = process.env.PUBLISHABLE_KEY;
+//const SECRET_KEY = process.env.SECRET_KEY;
 const stripe = new Stripe('sk_test_51L2ihZH8XcWRx3ZXDdopoeHEEQGQN2mtcchVdxMazkyEkzW78vrueW5Ah3VDWoBlEHdbjLLWkCvldQpRFVzwPqVm00k6dbYlvi', { apiVersion: '2020-08-27' });
 
 var success = false;
