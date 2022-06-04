@@ -4,8 +4,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomePage from '../screens/homePage';
 import Splash from '../screens/splashLogIn/splash'
-import SignIn from '../screens/splashLogIn/signIn';
-import SignUp from '../screens/splashLogIn/signUp';
 import CartPage from '../screens/cartPage';
 import SSOLogin from '../screens/ssoLogin';
 import Shop from '../screens/shop';

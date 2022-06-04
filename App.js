@@ -9,6 +9,7 @@ import rootReducer from './src/reducers';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import SSOLogin from './src/screens/ssoLogin';
+import Onboard from './src/screens/onboard';
 import SSOLogout from './src/screens/ssoLogout';
 
 
@@ -31,7 +32,7 @@ function App(props){
           gestureEnabled: false,
         }}
         >
-          <Stack.Screen name="Login" component={SSOLogin} />
+          <Stack.Screen name="Login" component={Onboard} />
           <Stack.Screen name="Main" component={MainTabBar} />
           <Stack.Screen name="Logout" component={SSOLogout} />
         </Stack.Navigator>
