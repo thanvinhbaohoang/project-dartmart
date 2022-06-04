@@ -3,6 +3,7 @@ import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, Image, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button, Alert} from 'react-native';
 import { CardField, useStripe, useConfirmPayment} from '@stripe/stripe-react-native';
 import { addItem, submitOrder, removeItem } from '../actions/index';
+import { Ionicons } from "@expo/vector-icons";
 
 function CartPage(props){
     const cart = useSelector((state) => state.item.cart);
@@ -139,7 +140,7 @@ function CartPage(props){
 
                                     <View style= {styles.costAndQuantity}>
                                         <View style = {styles.itemCostContainer}>
-                                            <Text style={styles.itemCost}>${item.cost * quantity}</Text>
+                                            <Text style={styles.itemCost}>${Math.round((item.cost * quantity) * 100) / 100}</Text>
                                         </View>
                                         <View style={styles.quantityContainer}>
                                             <TouchableOpacity style={styles.quantityButton} onPress={()=> {if(quantity > 0) props.addItem(item, -1)}}>
@@ -153,7 +154,7 @@ function CartPage(props){
                                     </View>
                                 </View>
                                 <Pressable style={{position: 'absolute', top: 10, right: 10}} onPress={() => {props.removeItem(item)}}>
-                                    <Text style={styles.removeItemText}>x</Text>
+                                    <Ionicons name="close" size={25}/>
                                 </Pressable>
                             </View>
                         )
@@ -389,6 +390,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'center',
         opacity: 0.9,
+        paddingRight: 30,
     },
     subtotal :{
         marginBottom: 20,

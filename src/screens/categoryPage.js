@@ -3,6 +3,7 @@ import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, View, TouchableHighlight, Dimensions, ScrollView, Modal, Pressable, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { addItem, fetchItems } from '../actions/index';
+import { Ionicons } from "@expo/vector-icons";
 
 function CategoryPage(props){
     const category = useSelector((state) => state.item.category);
@@ -38,37 +39,47 @@ function CategoryPage(props){
                     })}
                 </View>
             </ScrollView>
-            <Modal
-            animationType="slide"
-            visible={modalVisible}
-            transparent={true}
-            onRequestClose={() => setModalVisible(!modalVisible)}
-            >
-                <View style={styles.itemModal}>
-                    <Text style={styles.itemModalName}>{selectedItem?.name}</Text>
-                    <Text style={styles.itemModalCost}>{selectedItem?.cost}</Text>
-                    <Image style={styles.modalImage} source={{uri: selectedItem?.imageURL}}/>
-                    <Pressable style={{position: 'absolute', top: 20, right: 20}} onPress={() => setModalVisible(!modalVisible)}>
-                        <Text style={{fontSize: 25}}>X</Text>
-                    </Pressable>
-                    <View style={styles.controlContainer}>
-                                <View style={styles.quantityContainer}>
+            <View style={{width: windowWidth, height: windowHeight, backgroundColor: modalVisible ? 'rgba(0,0,0,.5)' : 'transparent'}}>
+                <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+                onRequestClose={() => setModalVisible(!modalVisible)}
+                >
+                    <View style={styles.itemModal}  >
+                        <Text style={styles.itemModalName}>{selectedItem?.name}</Text>
+                        <Image style={styles.modalImage} source={{uri: selectedItem?.imageURL}}/>
+                        <Text style={styles.itemModalCost}>${selectedItem?.cost}</Text>
+                        <Pressable style={{position: 'absolute', top: 20, right: 20}} onPress={() => setModalVisible(!modalVisible)}>
+                            <Ionicons name="close" size={25}/>
+                        </Pressable>
+                        <View style={styles.controlContainer}>
+                            <View style={styles.quantityContainer}>
                                             <TouchableOpacity style={styles.quantityButton} onPress={()=> {if(tempQuantity > 0) setTempQuantity(tempQuantity-1)}}>
                                                 <Text style={styles.quantitySymbol}>-</Text>
                                             </TouchableOpacity>    
-                                            <Text style={styles.text1}>{tempQuantity}</Text>
+                                            <Text style={styles.quantityText}>{tempQuantity}</Text>
                                             <TouchableOpacity style={styles.quantityButton} onPress={() => setTempQuantity(tempQuantity+1)}>
                                                 <Text style={styles.quantitySymbol}>+</Text>
                                             </TouchableOpacity> 
                                 </View>
-                        <Pressable onPress={() => {props.addItem(selectedItem, tempQuantity); setModalVisible(!modalVisible)}}>
-                            <View style={styles.submitButton}>
-                                <Text style={styles.submitButtonText}>Submit</Text>
-                            </View>
-                        </Pressable>
+                        </View>
+                        <View style={styles.cartButtons}>
+                            <Pressable onPress={() => setModalVisible(!modalVisible)}>
+                                <View style={styles.submitButton}>
+                                    <Ionicons name="close-circle" size={60} color={'red'}></Ionicons>
+                                </View>
+                            </Pressable>
+                            <Pressable onPress={() => {props.addItem(selectedItem, tempQuantity); setModalVisible(!modalVisible)}}>
+                                <View style={styles.discardButton}>
+                                    <Ionicons name="checkmark-circle" size={60} color={'green'}></Ionicons>
+                                </View>
+                            </Pressable>
+                        </View>
+                        
                     </View>
-                </View>
-            </Modal>
+                </Modal>
+            </View>
         </View>
 
     );
@@ -183,77 +194,107 @@ const styles = StyleSheet.create({
         backgroundColor: '#BBDDBB'
     },
     itemModal:{
-        height: 350,
-        width: windowWidth * .8,
-        marginHorizontal: windowWidth * .1,
-        backgroundColor: '#BBDDBB',
+        // height: 350,
+        // width: windowWidth * .8,
+        height: 'auto',
+        width: 'auto',
+        marginHorizontal: windowWidth * .05,
+        backgroundColor: 'white',
         borderRadius: 30,
         alignItems:'center',
-        marginBottom: windowHeight * .25,
-        marginTop: windowHeight * .25,
-        flex: 1
+        justifyContent: 'space-evenly',
+        // marginBottom: windowHeight * .25,
+        marginTop: windowHeight * .15,
+        // flex: 1,
+        flexDirection: 'column',
+        backgroundColor: 'whitesmoke',
+        borderColor: 'darkgray',
+        borderWidth: 1.5,
     },
     modalImage:{
-        width: "50%",
+        width: "70%",
         height: "45%",
     },
     itemModalName:{
-        marginTop: 20,
+        marginTop: 40,
+        marginBottom: 15,
         fontSize: 20,
         fontWeight: 'bold',
     },
     itemModalCost:{
-        marginTop: 15
+        fontSize: 20,
+        fontWeight: 'bold',
+        backgroundColor: 'white',
+        position: 'relative', 
+        top: -25, 
+        right: -90,
+        padding: 7,
+        paddingLeft: 12,
+        paddingRight: 12,
+        borderStyle: 'solid',
+        borderColor: 'darkgray',
+        borderWidth: 1,
+        borderRadius: 20,
+        overflow: 'hidden'
     },
     controlContainer:{
         alignItems: 'center',
-        position: 'absolute',
-        bottom: 20,
+        margin: 2,
+        marginTop: 2,
     },
     quantityContainer: {
-        height: 40,
+        height: 60,
         width: 150,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: 'white',
-        borderRadius: 20
+        borderRadius: 30,
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: 'darkgray',
+        
     },
     quantityButton : {
-        width: 30,
-        height: 30,
+        width: 40,
+        height: 40,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 15,
+        borderRadius: 20,
         // borderColor: 'white',
         // borderWidth: 3,
         backgroundColor: 'white',
         margin: 5
         },
     quantitySymbol : {
-        fontSize: 22,
+        fontSize: 30,
         fontWeight: 'bold',
         color: 'black'
     },
-    quantityControlText:{
+    quantityText : {
         fontSize: 20,
-        color: 'white',
     },
-    quantity:{
-        borderWidth: 1,
-        width: 40,
-        height: 60,
-        alignItems: 'center',
-        justifyContent: 'center',
+    cartButtons : {
+        backgroundColor: 'transparent',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: 250,
+        paddingBottom: 10,
+        paddingTop: 10,
     },
     submitButton:{
-        width: 100,
-        height: 30,
-        backgroundColor: 'black',
+        width: 60,
+        height: 60,
+        backgroundColor: 'transparent',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20,
-        borderRadius: 10
+    },
+    discardButton:{
+        width: 60,
+        height: 60,
+        backgroundColor: 'transparent',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     submitButtonText:{
         color: 'white',
