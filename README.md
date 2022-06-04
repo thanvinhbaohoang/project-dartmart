@@ -9,8 +9,7 @@
 <img src='https://media-exp2.licdn.com/dms/image/C4D03AQEM8mXT7WwaWQ/profile-displayphoto-shrink_400_400/0/1644938805452?e=1659571200&v=beta&t=gYSk4Y62agvjkn0V2H0kNh4YeD87QqxKZ73Hyw5d7kU' style="width:300px;height:300px;" />
 </div>
 
-
-TODO: short project description, some sample screenshots or mockups
+This React Native application will allow Authenticated Dartmouth students to order snacks on demand from anywhere on campus at the touch of a button.
 
 ## Architecture
 
