@@ -382,9 +382,8 @@ const styles = StyleSheet.create({
     checkoutInfo : {
         width: windowWidth,
         borderRadius: 22,
-        padding: 20,
-        height: windowHeight * .33,
-        paddingTop: 10,
+        height: windowHeight * .37,
+        paddingTop: 20,
         backgroundColor: 'white',
         flexDirection: 'row',
         flexWrap: 'wrap',
