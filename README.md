@@ -42,5 +42,3 @@ Edmund Aduse Poku,
 Burke Jaeger,
 }
 
-## Videos:
-
