@@ -11,7 +11,7 @@ const stripe = new Stripe('sk_test_51L2ihZH8XcWRx3ZXDdopoeHEEQGQN2mtcchVdxMazkyE
 
 var success = false;
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
     console.log(`Server is listening on port ${port}`);
     }
 );
