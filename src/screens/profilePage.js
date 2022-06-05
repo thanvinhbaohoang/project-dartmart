@@ -3,6 +3,7 @@ import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { addItem } from '../actions/index';
+import { Ionicons } from "@expo/vector-icons";
 
 function ProfilePage(props){
     return (
@@ -11,15 +12,18 @@ function ProfilePage(props){
                 <Text style={styles.featuredText}> {orderDetail.userName}</Text>
                 <Text style={styles.text2}> {orderDetail.role}</Text>
                 <View style={styles.buttonsSection}>
-                    <TouchableOpacity>
+                    <TouchableOpacity style={styles.profileButton}>
+                        <Ionicons name='person' size={50} color={'white'}/>
                         <Text style={styles.text1}>Personal Info</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity>
+                    <TouchableOpacity style={styles.profileButton}>
+                        <Ionicons name='card' size={50} color={'white'}/>
                         <Text style={styles.text1}>Payment</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={props.route.params.logout}>
+                    <TouchableOpacity onPress={props.route.params.logout} style={styles.profileButton}>
+                        <Ionicons name='log-out' size={50} color={'white'}/>
                         <Text style={styles.text1}>Logout</Text>
                     </TouchableOpacity>
                 </View>
@@ -51,6 +55,7 @@ const styles = StyleSheet.create({
         height:windowHeight,
         backgroundColor: '#02604E',
         borderRadius: 30,
+        overflow: 'hidden',
     },
     featuredText: {
         marginTop:20,
@@ -63,6 +68,16 @@ const styles = StyleSheet.create({
         marginTop:30,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    profileButton : {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: 'whitesmoke',
+        borderWidth: '2',
+        padding: 10,
+        borderRadius: 20,
+        width: 250,
+        margin: 10
     }
 });
 

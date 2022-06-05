@@ -5,6 +5,7 @@ import { CardField, useStripe, useConfirmPayment} from '@stripe/stripe-react-nat
 import { addItem, submitOrder, removeItem } from '../actions/index';
 import axios from "axios";
 
+
 import { Ionicons } from "@expo/vector-icons";
 
 const API_URL = "http://localhost:3000";

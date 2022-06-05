@@ -1,35 +1,27 @@
 import React, { useEffect } from 'react';
 import { Text, View, Dimensions, TextInput, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+<<<<<<< HEAD
+=======
+import HomePage from '../screens/homePage';
+import Splash from '../screens/splashLogIn/splash'
+>>>>>>> 49ab6ba4db8fc4bf4a1b2ea6cbf4d11ed5b7117e
 import CartPage from '../screens/cartPage';
 import Shop from '../screens/shop';
 import DeliveryPage from '../screens/DeliveryPage';
 import ProfilePage from '../screens/profilePage';
 import DriverView from '../screens/DriverView';
 import { Ionicons } from "@expo/vector-icons";
+<<<<<<< HEAD
 import { connect, useSelector } from 'react-redux';
 import { fetchOrders } from '../actions/index';
+=======
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
+
+>>>>>>> 49ab6ba4db8fc4bf4a1b2ea6cbf4d11ed5b7117e
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-
-const AboutTab = (props) => {
-  return <View style={{ flex: 1, justifyContent: 'center' }}><Text>about</Text></View>;
-};
-
-const SearchTab = (props) => {
-  return <View style={{ flex: 1, justifyContent: 'center', alignItems: "center" }}>
-    <TouchableOpacity
-      onPress={() => props.navigation.navigate('SSOLogout')}
-    >
-      <Text style={{
-        fontSize: 30,
-        fontWeight: 'bold',
-        color: 'green'
-      }}
-      >Logout</Text>
-    </TouchableOpacity>
-    </View>;
-};
 
 const Tab = createBottomTabNavigator();
 
@@ -38,6 +30,16 @@ function MainTabBar(props){
     props.fetchOrders();
   },[])
   const user = useSelector((state) => state.user.user)
+
+  let [themeFontLoad] = useFonts({
+    'Poppins': require('../assets/fonts/Poppins-Medium.ttf'),
+  });
+
+  if (!themeFontLoad) {
+    // (deprecated) prevent app from displaying without the theme font loaded in
+    return <AppLoading />;
+  }
+
   const logout = () => {
     props.navigation.navigate("Logout");
   }
@@ -60,7 +62,8 @@ function MainTabBar(props){
         headerTitleStyle:{
           marginLeft: 30,
           fontSize: 30,
-          fontWeight: 'bold',
+          color: '#02604E',
+          fontFamily: 'Poppins',
         },
       }}>
 

@@ -6,9 +6,10 @@ import { Ionicons } from "@expo/vector-icons";
 
 function DeliveryPage({navigation}){
     const cart = useSelector((state) => state.item.cart);
-    const orderStatus = false;
+    // CONNECT BACK END STRIPE STATUS HERE
+    const orderStatus = true;
 
-    const orderStatusCheck  = (cart) => {
+    const orderStatusCheck  = () => {
         if (orderStatus) {
             return orderConfirmed()
         } else {
@@ -87,53 +88,6 @@ function DeliveryPage({navigation}){
     }
 
     return (
-        // <View backgroundColor='red' style={styles.container}>
-
-        //         <Text style={styles.featuredText}>Order Confirmed</Text>
-        //         <Ionicons name="checkmark-circle" style={styles.checkIcon}></Ionicons>
-        //         <Text style={styles.text2}>${orderDetail.totalCost} paid with {orderDetail.paymentMethod} ending ***{orderDetail.paymentInfo.slice(-4)}</Text>
-        //     <View>
-        //         <View style={styles.dividerLine}></View>
-
-        //         <View style={styles.subtotal}>
-        //             <View style={styles.orderInfoContainer}>
-        //                 <View style={styles.orderNumberAndEstimateTime}>
-        //                     <Text style={styles.text2} alignSelf='baseline'>Order Number</Text>
-        //                     <Text style={styles.text2}>Estimated Time</Text>
-        //                 </View>
-
-        //                 <View style={styles.orderInfo}>
-        //                     <Text style={styles.text1}>#{orderDetail.orderNumber}</Text>
-        //                     <Text style={styles.text1}>{orderDetail.estimatedTime}</Text>
-        //                 </View>
-
-        //                 <View style={styles.dividerLine}></View>
-
-        //                 <View>
-        //                     <View style={styles.orderNumberAndEstimateTime}>
-        //                         <Text style={styles.text2} alignSelf='baseline'>Order Summary</Text>
-        //                     </View>
-
-        //                     {cart.map( ({item, quantity}) => {
-        //                         return(
-        //                             <View style={styles.itemLine}>
-        //                                 <Text style={styles.text1}>{item.name} (x{quantity})</Text>
-        //                                 <Text style={styles.text1}>${item.cost * quantity}</Text>
-        //                             </View>
-        //                         )
-        //                     })}
-                          
-        //                 </View>
-
-        //             </View>
-        //         </View>
-                        
-        //         <TouchableOpacity style={styles.checkOutButton} onPress={()=>navigation.navigate('Home')}>
-        //           <Text style={styles.text1} justifyContent='center' >Return Home</Text>
-        //         </TouchableOpacity>
-        //     </View>
-
-        // </View>
         orderStatusCheck()
     );
 }

@@ -33,7 +33,6 @@ const API_URL = "http://localhost:3000";
   // INVENTORY FUNCTIONS
 
   // check if a user with a given email address already exists
-
   // initialize a user in the database
   
   // Fetch all items for displaying product options in menu
