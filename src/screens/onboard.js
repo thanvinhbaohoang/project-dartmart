@@ -8,10 +8,22 @@ import HomePage from './homePage'
 import CategoryPage from './categoryPage';
 import SSOLogin from './ssoLogin';
 import Splash from './splashLogIn/splash';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 const Stack = createStackNavigator();
 
 function Onboard(props){
+
+    /* let [themeFontLoad] = useFonts({
+        'Poppins': require('../assets/fonts/Poppins-Medium.ttf'),
+      });
+    
+    if (!themeFontLoad) {
+    // (deprecated) prevent app from displaying without the theme font loaded in
+        return <AppLoading />;
+    }*/
+
     return (
         <Stack.Navigator
         screenOptions={{
@@ -30,11 +42,13 @@ function Onboard(props){
             },
             gestureEnabled: false,
             headerTitleAlign: 'left',
-            headerTitle: 'Dartmart',
+            headerTitle: 'DM',
             headerTitleStyle:{
               marginLeft: 30,
               fontSize: 30,
               fontWeight: 'bold',
+              color: '#02604E',
+              // fontFamily: 'Poppins',
             },
           }}>
             <Stack.Screen name="Splash" component={Splash} options={{headerLeft: () => null}} />

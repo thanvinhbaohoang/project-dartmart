@@ -6,10 +6,22 @@ import { addItem, fetchItems } from '../actions/index';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomePage from './homePage'
 import CategoryPage from './categoryPage';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 const Stack = createStackNavigator();
 
 function Shop(props){
+
+  let [themeFontLoad] = useFonts({
+    'Poppins': require('../assets/fonts/Poppins-Medium.ttf'),
+  });
+
+  if (!themeFontLoad) {
+    // (deprecated) prevent app from displaying without the theme font loaded in
+    return <AppLoading />;
+  }
+
     return (
         <Stack.Navigator
         screenOptions={{
@@ -33,6 +45,8 @@ function Shop(props){
               marginLeft: 30,
               fontSize: 30,
               fontWeight: 'bold',
+              color: '#02604E',
+              fontFamily: 'Poppins',
             },
           }}>
             <Stack.Screen name="Shop" component={HomePage} options={{headerLeft: () => null}} />
