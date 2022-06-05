@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable } from 'react-native';
 import SSOLogin from '../ssoLogin';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const Splash  = ({navigation}) => {
+
+  let [themeFontLoad] = useFonts({
+    'Poppins': require('../../assets/fonts/Poppins-Medium.ttf'),
+  });
+
+  if (!themeFontLoad) {
+    // (deprecated) prevent app from displaying without the theme font loaded in
+    return <AppLoading />;
+  }
+
     return (
       <View style={styles.container}>
         <View style={styles.logoContainer}>
@@ -43,10 +55,15 @@ const styles = StyleSheet.create({
   logo1 : {
     fontSize: 24,
     fontWeight: 'bold',
+    fontFamily: 'Poppins',
+    color: '#02604E'
   },
   logo2 : {
     fontSize: 48,
     fontWeight: 'bold',
+    fontFamily: 'Poppins',
+    color: '#02604E'
+
   },
   footer: {
     flex: 1,

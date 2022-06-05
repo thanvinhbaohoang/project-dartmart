@@ -4,6 +4,8 @@ import { StyleSheet, Text, View, TouchableHighlight, Dimensions, ScrollView, Mod
 import { LinearGradient } from 'expo-linear-gradient';
 import { addItem, fetchItems } from '../actions/index';
 import { Ionicons } from "@expo/vector-icons";
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 function CategoryPage(props){
     const category = useSelector((state) => state.item.category);
@@ -19,6 +21,16 @@ function CategoryPage(props){
     useEffect(() => {
         props.fetchItems();
     }, [])
+
+
+    let [fontsLoaded] = useFonts({
+        'Poppins': require('../assets/fonts/Poppins-Medium.ttf'),
+      });
+    
+      if (!fontsLoaded) {
+        return <AppLoading />;
+      }
+
     return (
         <View>
             <ScrollView contentContainerStyle={styles.container}>

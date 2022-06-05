@@ -9,35 +9,26 @@ import SSOLogin from '../screens/ssoLogin';
 import Shop from '../screens/shop';
 import DeliveryPage from '../screens/DeliveryPage';
 import ProfilePage from '../screens/profilePage';
-import SSOLogout from '../screens/ssoLogout';
 import DriverView from '../screens/DriverView';
 import { Ionicons } from "@expo/vector-icons";
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const AboutTab = (props) => {
-  return <View style={{ flex: 1, justifyContent: 'center' }}><Text>about</Text></View>;
-};
-
-const SearchTab = (props) => {
-  return <View style={{ flex: 1, justifyContent: 'center', alignItems: "center" }}>
-    <TouchableOpacity
-      onPress={() => props.navigation.navigate('SSOLogout')}
-    >
-      <Text style={{
-        fontSize: 30,
-        fontWeight: 'bold',
-        color: 'green'
-      }}
-      >Logout</Text>
-    </TouchableOpacity>
-    </View>;
-};
-
 const Tab = createBottomTabNavigator();
 
 function MainTabBar(props){
+
+  let [themeFontLoad] = useFonts({
+    'Poppins': require('../assets/fonts/Poppins-Medium.ttf'),
+  });
+
+  if (!themeFontLoad) {
+    // (deprecated) prevent app from displaying without the theme font loaded in
+    return <AppLoading />;
+  }
 
   const logout = () => {
     props.navigation.navigate("Logout");
@@ -61,7 +52,8 @@ function MainTabBar(props){
         headerTitleStyle:{
           marginLeft: 30,
           fontSize: 30,
-          fontWeight: 'bold',
+          color: '#02604E',
+          fontFamily: 'Poppins',
         },
       }}>
         {/* TEMPORARY SIGN IN NAVIGATION */}

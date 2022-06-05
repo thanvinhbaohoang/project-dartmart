@@ -202,8 +202,12 @@ const styles = StyleSheet.create({
     categoryItemScroll:{
         alignItems:'center',
         minWidth: windowWidth,
-        backgroundColor: 'lightgray',
+        backgroundColor: '#f0f0f0',
         height: windowWidth * .5,
+        borderTopColor: 'lightgray',
+        borderTopWidth: 2,
+        borderBottomColor: 'lightgray',
+        borderBottomWidth: 2,
     },
     subheader:{
         color: 'white',
@@ -234,7 +238,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 5,
-        borderColor: 'lightgray',
+        borderColor: '#BBDDBB',
         borderWidth: 1,
     },
     itemName: {
