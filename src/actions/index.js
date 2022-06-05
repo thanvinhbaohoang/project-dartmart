@@ -108,7 +108,7 @@ export const ActionTypes = {
 
   export function updateOrder(orderId, updates) {
     return(dispatch) => {
-      db.updateOrder(userId, updates).then((response) => {
+      db.updateOrder(orderId, updates).then((response) => {
         dispatch({ type: ActionTypes.UPDATE_ORDER, payload: response });
       }).catch((error) => {
         console.log(error);
