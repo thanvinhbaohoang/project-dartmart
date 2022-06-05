@@ -1,47 +1,53 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button} from 'react-native';
-import { addItem } from '../actions/index';
+import { addItem, fetchOrders } from '../actions/index';
 import { Ionicons } from "@expo/vector-icons";
 
-function DeliveryPage({navigation}){
-    const cart = useSelector((state) => state.item.cart);
+function DeliveryPage(props){
+    // const cart = useSelector((state) => state.item.cart);
+    const userId = useSelector((state) => state.user.user.id);
+    
     // CONNECT BACK END STRIPE STATUS HERE
-    const orderStatus = true;
+    const orderInfo = props.fetchOrders(userId);
 
     const orderStatusCheck  = () => {
-        if (orderStatus) {
-            return orderConfirmed()
+        console.log("DeliveryPage.js || OrderStatusCheck: ", orderInfo);
+        if (!orderInfo) {
+            return noOrderView()
         } else {
-            return orderFailed()
+            return orderConfirmedView()
         }
     }
 
-    const orderFailed = () => {
+    const noOrderView = () => {
         return(
             <View style={styles.container}>
-
-            <Text style={styles.featuredText}>Order Failed</Text>
-            <Ionicons name="close-circle" style={styles.failedIcon}></Ionicons>
-            <Text style={styles.text2}> There Was A Problem With Your Order</Text>
+            <Text style={styles.featuredText}>No Order</Text>
+            <Ionicons name="fast-food-outline" style={styles.foodIcon}></Ionicons>
+            <Text style={styles.text2}> You Do Not Have Any Order</Text>
         <View>
             <View style={styles.dividerLine}></View>
                     
-            <TouchableOpacity style={styles.checkOutButton} onPress={()=>navigation.navigate('Home')}>
-              <Text style={styles.text1} justifyContent='center' >Return Home</Text>
+            <TouchableOpacity style={styles.checkOutButton} onPress={()=> props.navigation.navigate('Home')}>
+              <Text style={styles.text1} justifyContent='center'>Return Home</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.goToCartButton} onPress={()=> props.navigation.navigate('Cart')}>
+              <Text style={styles.text1} justifyContent='center'>Go To Checkout</Text>
             </TouchableOpacity>
         </View>
 
     </View>
         )
     }
-    const orderConfirmed = () => {
+    const orderConfirmedView = () => {
         return(
             <View style={styles.container}>
 
             <Text style={styles.featuredText}>Order Confirmed</Text>
             <Ionicons name="checkmark-circle" style={styles.checkIcon}></Ionicons>
-            <Text style={styles.text2}>${orderDetail.totalCost} paid with {orderDetail.paymentMethod} ending ***{orderDetail.paymentInfo.slice(-4)}</Text>
+            <Text style={styles.text2}>You Payment Of ${orderInfo.orderPaymentAmount} Has Been Confirmed</Text>
         <View>
             <View style={styles.dividerLine}></View>
 
@@ -64,7 +70,7 @@ function DeliveryPage({navigation}){
                             <Text style={styles.text2} alignSelf='baseline'>Order Summary</Text>
                         </View>
 
-                        {cart.map( ({item, quantity}) => {
+                        {orderInfo.orderItems.map( ({item, quantity}) => {
                             return(
                                 <View style={styles.itemLine}>
                                     <Text style={styles.text1}>{item.name} (x{quantity})</Text>
@@ -130,8 +136,8 @@ const styles = StyleSheet.create({
         fontSize: 84,
         margin:20
     },
-    failedIcon : {
-        color: 'red',
+    foodIcon : {
+        color: 'white',
         fontSize: 84,
         margin:20
     },
@@ -305,6 +311,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 33,
         backgroundColor: '#01D177',
       },
+      goToCartButton : {
+        width: windowWidth*.9,
+        marginTop: 10,
+        alignSelf: 'center',
+        alignContent: 'center',
+        justifyContent: 'center',
+        opacity: 12,
+        borderRadius: 12,
+        paddingVertical: 10,
+        paddingHorizontal: 33,
+        backgroundColor: '#BBDDBB',
+      }
 });
 
 const orderDetail = {
@@ -343,4 +361,4 @@ const orderDetail = {
 }
 
 
-export default connect(null, { addItem })(DeliveryPage);
+export default connect(null, { addItem, fetchOrders })(DeliveryPage);

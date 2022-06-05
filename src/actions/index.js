@@ -9,6 +9,7 @@ export const ActionTypes = {
     // USER MANAGEMENT
     CREATE_USER: "CREATE_USER",
     FETCH_USER: "FETCH_USER",
+    UPDATE_USER: "UPDATE_USER",
     // ORDER MANAGEMENT
     FETCH_ORDER: "FETCH_ORDER",
     SUBMIT_ORDER: "SUBMIT_ORDER",
@@ -63,6 +64,16 @@ export const ActionTypes = {
     return {
       type: ActionTypes.FETCH_USER,
       payload: {username, pass}
+    }
+  }
+
+  export function updateUser(userId, updates) {
+    return(dispatch) => {
+      db.updateUser(userId, updates).then((response) => {
+        dispatch({ type: ActionTypes.UPDATE_USER, payload: response });
+      }).catch((error) => {
+        console.log(error);
+      })
     }
   }
 
