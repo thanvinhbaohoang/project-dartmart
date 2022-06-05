@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimension
 import SSOLogin from '../ssoLogin';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
+import { Ionicons } from "@expo/vector-icons";
+
 
 const Splash  = ({navigation}) => {
 
@@ -18,6 +20,7 @@ const Splash  = ({navigation}) => {
     return (
       <View style={styles.container}>
         <View style={styles.logoContainer}>
+            <Ionicons name="pizza" color={'#02604E'} size={100} />
             <Text style={styles.logo1}> Welcome To </Text>
             <Text style={styles.logo2}> Dartmart</Text>
         </View>
@@ -25,14 +28,12 @@ const Splash  = ({navigation}) => {
         <View style = {styles.footer}>
             <View style={styles.modalContainer}>
 
-              <TouchableOpacity onPress={()=>navigation.navigate('SSOLogin')}>
-                  <Text style={styles.text1}>Sign In To Your Account</Text>
-              </TouchableOpacity>
 
-              <View style={styles.checkoutAsGuestSection}>
-                <Text style={styles.text2}>Don't Have An Account?</Text>
-                <TouchableOpacity style={styles.guestButton} onPress={()=>navigation.navigate('SSOLogin')}>
-                  <Text style={styles.text1}>Sign Up</Text>
+
+              <View style={styles.authenticateSection}>
+              <TouchableOpacity style={styles.ssoButton} onPress={()=>navigation.navigate('SSOLogin')}>
+                  <Ionicons name="arrow-forward" color={'whitesmoke'} size={80} />
+                  <Text style={styles.text1}>SSO Login</Text>
                 </TouchableOpacity>
               </View>
 
@@ -56,7 +57,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     fontFamily: 'Poppins',
-    color: '#02604E'
+    color: '#02604E',
+    marginTop: 30,
+    marginBottom: 10,
   },
   logo2 : {
     fontSize: 48,
@@ -79,33 +82,34 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
 text1: {
-    color: 'white',
-    fontSize: 24,
+    color: 'whitesmoke',
+    fontSize: 40,
     fontWeight: 'bold',
     alignSelf: 'center',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    fontFamily: 'Poppins',
 },
 text2: {
   color: 'white',
   fontSize: 16,
   fontWeight: 'normal',
 },
-checkoutAsGuestSection : {
-  marginTop: 30,
+authenticateSection: {
   alignItems: 'center',
   justifyContent: 'center',
 },
-guestButton: {
+ssoButton: {
   marginTop: 10,
   alignContent: 'center',
+  alignItems: 'center',
   justifyContent: 'center',
   opacity: 12,
   borderRadius: 18,
   paddingVertical: 10,
   paddingHorizontal: 33,
-  borderColor: 'white',
-  borderWidth: 3,
+  borderColor: 'transparent',
+  borderWidth: 2,
 },
 });
 

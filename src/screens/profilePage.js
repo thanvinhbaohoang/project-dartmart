@@ -12,7 +12,7 @@ function ProfilePage(props){
     return (
         <View backgroundColor='red' style={styles.container}>
 
-                <Text style={styles.featuredText}> {user.name}</Text>
+                <Text style={styles.featuredText}> {user?.name}</Text>
                 <Text style={styles.text2}> {orderDetail.role}</Text>
                 <View style={styles.buttonsSection}>
                     <TouchableOpacity style={styles.profileButton}>
@@ -30,10 +30,14 @@ function ProfilePage(props){
                         <Text style={styles.text1}>Logout</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => props.updateUser(user.id, {isDriver: true})} style={styles.profileButton}>
-                        <Ionicons name='bicycle' size={50} color={'white'}/>
-                        <Text style={styles.text1}>Sign Up as Driver</Text>
-                    </TouchableOpacity>
+                    {user?.isDriver === false ? <TouchableOpacity onPress={() => props.updateUser(user.id, {isDriver: true})} style={styles.profileButton}>
+                        <Ionicons name='car' size={50} color={'white'}/>
+                        <Text style={styles.text1}>Driver View</Text>
+                    </TouchableOpacity> : null}
+                    {user?.isDriver === true ? <TouchableOpacity onPress={() => props.updateUser(user.id, {isDriver: false})} style={styles.profileButton}>
+                        <Ionicons name='arrow-back' size={50} color={'white'}/>
+                        <Text style={styles.text1}>Customer View</Text>
+                    </TouchableOpacity> : null}
                 </View>
         </View>
     );

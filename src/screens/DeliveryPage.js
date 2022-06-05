@@ -9,11 +9,12 @@ function DeliveryPage(props){
     const userId = useSelector((state) => state.user.user.id);
     
     // CONNECT BACK END STRIPE STATUS HERE
-    const orderInfo = props.fetchOrders(userId);
+    const userOrders = props.fetchOrders(); // Returning Undefined????????? ==> Need to fix this
 
     const orderStatusCheck  = () => {
-        console.log("DeliveryPage.js || OrderStatusCheck: ", orderInfo);
-        if (!orderInfo) {
+        console.log("DeliveryPage.js || OrderStatusCheck || userID :", userId, typeof userId);
+        console.log("DeliveryPage.js || OrderStatusCheck || userOrders :", userOrders);
+        if (!userOrders) {
             return noOrderView()
         } else {
             return orderConfirmedView()
@@ -47,7 +48,7 @@ function DeliveryPage(props){
 
             <Text style={styles.featuredText}>Order Confirmed</Text>
             <Ionicons name="checkmark-circle" style={styles.checkIcon}></Ionicons>
-            <Text style={styles.text2}>You Payment Of ${orderInfo.orderPaymentAmount} Has Been Confirmed</Text>
+            <Text style={styles.text2}>Your Payment Of ${userOrders.orderPaymentAmount} Has Been Confirmed</Text>
         <View>
             <View style={styles.dividerLine}></View>
 
@@ -70,7 +71,7 @@ function DeliveryPage(props){
                             <Text style={styles.text2} alignSelf='baseline'>Order Summary</Text>
                         </View>
 
-                        {orderInfo.orderItems.map( ({item, quantity}) => {
+                        {userOrders.orderItems.map( ({item, quantity}) => {
                             return(
                                 <View style={styles.itemLine}>
                                     <Text style={styles.text1}>{item.name} (x{quantity})</Text>

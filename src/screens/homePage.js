@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: windowWidth,
         backgroundColor: '#02604E',
+        
     },
     categoryHeaderContainer:{
         height: windowHeight * .05,
