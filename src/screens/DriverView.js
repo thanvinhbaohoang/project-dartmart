@@ -29,6 +29,7 @@ function DriverView(props) {
                                 <TouchableHighlight key={order.id} style={styles.order} onPress={() => {setSelectedOrder(order); setCurrModalVisible(!currModalVisible)}}>
                                     <View>
                                         <Text>{order.id}</Text>
+                                        <Text>${order.orderPaymentAmount/100}</Text>
                                         <Text>Deliver to: {order.deliveryAddress}</Text>
                                     </View>
                                 </TouchableHighlight>)
@@ -45,7 +46,8 @@ function DriverView(props) {
                             <TouchableHighlight key={order.id} style={styles.order} onPress={() => {setSelectedOrder(order); setModalVisible(!modalVisible)}}>
                                 <View>
                                     <Text>{order.id}</Text>
-                                    <Text>{order.orderPaymentAmount}</Text>
+                                    <Text>${order.orderPaymentAmount/100}</Text>
+                                    <Text>Deliver to: {order.deliveryAddress}</Text>
                                 </View>
                             </TouchableHighlight>)
                     })}
@@ -395,6 +397,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     itemModalCost:{
+        marginTop: 20,
         fontSize: 20,
         fontWeight: 'bold',
         backgroundColor: 'white',
