@@ -101,6 +101,19 @@ const API_URL = "http://localhost:3000";
   };
 };
 
+export async function setUserAsDriver (userId, userEmail) {
+  
+  const response = await fetchUser(userEmail);
+
+  if (response.docs.length > 0){
+      const userInfo = response.docs[0].data();
+  } 
+
+  const tempDoc = await setDoc(doc(db, "users", userId), {...userInfo, isDriver: true});
+
+  return tempDoc;
+}
+
   // initialize a user in the databse
   //export async function createUser(newUserId, data) {
 
@@ -148,9 +161,7 @@ const API_URL = "http://localhost:3000";
   // update information about a user in the database
   export async function updateUser(userId, data) {
     const docRef = doc(db, "users", userId);
-    await updateDoc(docRef, {
-        data
-    });
+    await updateDoc(docRef, data );
   }
 
   // FUNCTIONS FOR ORDERS

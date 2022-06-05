@@ -4,12 +4,16 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal
 import { LinearGradient } from 'expo-linear-gradient';
 import { addItem } from '../actions/index';
 import { Ionicons } from "@expo/vector-icons";
+import { setUserAsDriver } from '../services/datastore';
 
 function ProfilePage(props){
+
+    const user = useSelector(state => state.user.user);
+
     return (
         <View backgroundColor='red' style={styles.container}>
 
-                <Text style={styles.featuredText}> {orderDetail.userName}</Text>
+                <Text style={styles.featuredText}> {user.name}</Text>
                 <Text style={styles.text2}> {orderDetail.role}</Text>
                 <View style={styles.buttonsSection}>
                     <TouchableOpacity style={styles.profileButton}>
@@ -25,6 +29,11 @@ function ProfilePage(props){
                     <TouchableOpacity onPress={props.route.params.logout} style={styles.profileButton}>
                         <Ionicons name='log-out' size={50} color={'white'}/>
                         <Text style={styles.text1}>Logout</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => setUserAsDriver(user.id, user.email)} style={styles.profileButton}>
+                        <Ionicons name='bicycle' size={50} color={'white'}/>
+                        <Text style={styles.text1}>Sign Up as Driver</Text>
                     </TouchableOpacity>
                 </View>
         </View>
