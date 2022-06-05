@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button} from 'react-native';
-import { addItem } from '../actions/index';
+import { addItem, fetchOrders } from '../actions/index';
 import { Ionicons } from "@expo/vector-icons";
 
-function DeliveryPage({navigation}){
+function DeliveryPage(props){
     const cart = useSelector((state) => state.item.cart);
+    const userId = useSelector((state) => state.user.user.id);
+    
     // CONNECT BACK END STRIPE STATUS HERE
-    const orderStatus = false;
+    const orderInfo = props.fetchOrders(userId);
 
     const orderStatusCheck  = () => {
-        if (orderStatus) {
-            return orderConfirmedView()
-        } else {
+        console.log("DeliveryPage.js || OrderStatusCheck: ", orderInfo);
+        if (!orderInfo) {
             return noOrderView()
+        } else {
+            return orderConfirmedView()
         }
     }
 
@@ -22,12 +25,16 @@ function DeliveryPage({navigation}){
             <View style={styles.container}>
             <Text style={styles.featuredText}>No Order</Text>
             <Ionicons name="fast-food-outline" style={styles.foodIcon}></Ionicons>
-            <Text style={styles.text2}> You Have Not Made Any Order Yet</Text>
+            <Text style={styles.text2}> You Do Not Have Any Order</Text>
         <View>
             <View style={styles.dividerLine}></View>
                     
-            <TouchableOpacity style={styles.checkOutButton} onPress={()=>navigation.navigate('Home')}>
+            <TouchableOpacity style={styles.checkOutButton} onPress={()=> props.navigation.navigate('Home')}>
               <Text style={styles.text1} justifyContent='center'>Return Home</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.goToCartButton} onPress={()=> props.navigation.navigate('Cart')}>
+              <Text style={styles.text1} justifyContent='center'>Go To Checkout</Text>
             </TouchableOpacity>
         </View>
 
@@ -304,6 +311,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 33,
         backgroundColor: '#01D177',
       },
+      goToCartButton : {
+        width: windowWidth*.9,
+        marginTop: 10,
+        alignSelf: 'center',
+        alignContent: 'center',
+        justifyContent: 'center',
+        opacity: 12,
+        borderRadius: 12,
+        paddingVertical: 10,
+        paddingHorizontal: 33,
+        backgroundColor: '#BBDDBB',
+      }
 });
 
 const orderDetail = {
@@ -342,4 +361,4 @@ const orderDetail = {
 }
 
 
-export default connect(null, { addItem })(DeliveryPage);
+export default connect(null, { addItem, fetchOrders })(DeliveryPage);
