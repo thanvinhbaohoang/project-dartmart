@@ -5,7 +5,7 @@ import { addItem, fetchOrders } from '../actions/index';
 import { Ionicons } from "@expo/vector-icons";
 
 function DeliveryPage(props){
-    const cart = useSelector((state) => state.item.cart);
+    // const cart = useSelector((state) => state.item.cart);
     const userId = useSelector((state) => state.user.user.id);
     
     // CONNECT BACK END STRIPE STATUS HERE
@@ -47,7 +47,7 @@ function DeliveryPage(props){
 
             <Text style={styles.featuredText}>Order Confirmed</Text>
             <Ionicons name="checkmark-circle" style={styles.checkIcon}></Ionicons>
-            <Text style={styles.text2}>${orderDetail.totalCost} paid with {orderDetail.paymentMethod} ending ***{orderDetail.paymentInfo.slice(-4)}</Text>
+            <Text style={styles.text2}>You Payment Of ${orderInfo.orderPaymentAmount} Has Been Confirmed</Text>
         <View>
             <View style={styles.dividerLine}></View>
 
@@ -70,7 +70,7 @@ function DeliveryPage(props){
                             <Text style={styles.text2} alignSelf='baseline'>Order Summary</Text>
                         </View>
 
-                        {cart.map( ({item, quantity}) => {
+                        {orderInfo.orderItems.map( ({item, quantity}) => {
                             return(
                                 <View style={styles.itemLine}>
                                     <Text style={styles.text1}>{item.name} (x{quantity})</Text>
