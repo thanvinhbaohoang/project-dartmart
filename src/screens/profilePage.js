@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { addItem } from '../actions/index';
 import { Ionicons } from "@expo/vector-icons";
-import { setUserAsDriver } from '../services/datastore';
+import { updateUser } from '../actions/index';
 
 function ProfilePage(props){
 
@@ -31,7 +30,7 @@ function ProfilePage(props){
                         <Text style={styles.text1}>Logout</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => setUserAsDriver(user.id, user.email)} style={styles.profileButton}>
+                    <TouchableOpacity onPress={() => props.updateUser(user.id, {isDriver: true})} style={styles.profileButton}>
                         <Ionicons name='bicycle' size={50} color={'white'}/>
                         <Text style={styles.text1}>Sign Up as Driver</Text>
                     </TouchableOpacity>
@@ -96,4 +95,4 @@ const orderDetail = {
     estimatedTime : '4:20 PM',
     orderNumber : '69',
 }
-export default connect(null, { addItem })(ProfilePage);
+export default connect(null, { updateUser })(ProfilePage);
