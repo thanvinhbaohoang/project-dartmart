@@ -3,22 +3,82 @@ import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, Image, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button, Alert} from 'react-native';
 import { CardField, useStripe, useConfirmPayment} from '@stripe/stripe-react-native';
 import { addItem, submitOrder, removeItem } from '../actions/index';
+import axios from "axios";
+
 import { Ionicons } from "@expo/vector-icons";
 
 function CartPage(props){
+
+
+    const stripeId = useSelector(state => state.user.user.stripeId);
     const cart = useSelector((state) => state.item.cart);
 
     const [modalVisible, setModalVisible] = useState(false); 
     const [selectedItem, setSelectedItem] = useState(null);
     const [tempQuantity, setTempQuantity] = useState(1);
     const [cardDetails, setCardDetails] = useState();
-    const {confirmPayment, loading} = useConfirmPayment()
+    const [cartTotal, setCartTotal] = useState(0);
+    const [fees, setFees] = useState(0);
+    const [sum, setSum] = useState(0);
+    //const {confirmPayment, loading} = useConfirmPayment()
+     const API_URL = "http://localhost:3000";
+    //const API_URL = "https://stripeserver.onrender.com:10000";
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
-    const API_URL = "http://localhost:3000";
+    const [loading, setLoading] = useState(false);
+
+  const fetchPaymentSheetParams = async () => {
+    const response = await axios.post(`${API_URL}/payment-sheet`, {
+        amount: cartTotal,
+        stripeId: stripeId
+    });
+    const { paymentIntent, ephemeralKey, customer } = response.data;
+
+    return {
+      paymentIntent,
+      ephemeralKey,
+      customer,
+    };
+  };
+
+  const initializePaymentSheet = async () => {
+      console.log("initializePaymentSheet");
+    const {
+      paymentIntent,
+      ephemeralKey,
+      customer,
+    } = await fetchPaymentSheetParams();
+
+    const { error } = await initPaymentSheet({
+      customerId: customer,
+      customerEphemeralKeySecret: ephemeralKey,
+      paymentIntentClientSecret: paymentIntent,
+    });
+    console.log('error:', error);
+    if (!error) {
+      setLoading(true);
+    }
+  };
+
+   const openPaymentSheet = async () => {
+       const initialize = await initializePaymentSheet();
+        const {clientSecret, errorWhatever} = await fetchPaymentIntentClientSecret();
+    const { error } = await presentPaymentSheet({ clientSecret });
+
+    if (error) {
+      Alert.alert(`Error code: ${error.code}`, error.message);
+    } else {
+      Alert.alert('Success', 'Your order is confirmed!');
+    }
+  };
+
+  useEffect(() => {
+    // initializePaymentSheet();
+  }, []);
+
 
     const fetchSuccessCode = async () => 
     {
-        const response = await fetch(`${API_URL}/payment-success`, 
+        const response = axios.post(`${API_URL}/payment-success`, 
         {
             method: "POST",
             headers: 
@@ -26,25 +86,19 @@ function CartPage(props){
                 "Content-Type" : "application/json",
             },
         });
-        const {success} = await response.json();
+        // const {success} = await response.json();
         console.log("client secret: ", success);
         return success;
     }
 
     const fetchPaymentIntentClientSecret = async () => 
     {
-        const response = await fetch(`${API_URL}/create-payment-intent`, 
+        const response = await axios.post(`${API_URL}/create-payment-intent`, 
         {
-            method: "POST",
-            headers: 
-            {
-                "Content-Type" : "application/json",
-            },
-            body: JSON.stringify({
-                amount: 1099
-            })
+                amount: cartTotal
         });
-        const {clientSecret, error} = await response.json();
+        console.log('rseponse', response.data);
+        const {clientSecret, error} = response.data;
         console.log("client secret: ", clientSecret);
         return {clientSecret, error};
     }
@@ -73,12 +127,12 @@ function CartPage(props){
                 // console.log('HELLO WILLIAM');
                 if(paymentIntent) {
                     while (true) {
-                        success = fetchSuccessCode()
-                        console.log("Success", success);
-                        if(success) {
+                        // success = fetchSuccessCode()
+                        // console.log("Success", success);
+                        // if(success) {
                             Alert.alert('payment successful!');
-                            break;
-                        }
+                            // break;
+                        // }
                         await sleep(1000);
                     }
                     props.navigation.navigate('Home');
@@ -92,29 +146,36 @@ function CartPage(props){
         }
         catch(err)
         {
+            console.log("error: ", err);
             Alert.alert('error in fetching payment intent client secret');
         }
     }
     
 
-    var sum = 0;
-    var fees = 0;
     useEffect(() => {
         setTempQuantity(1);
     }, [modalVisible])
 
+    useEffect(() => {
+        var tempSum = 0;
+        cart.forEach(({item, quantity}) => {
+            tempSum += quantity * item.cost;
+        })
+        setSum(Math.round(tempSum * 100) / 100);
+        setFees(Math.round((tempSum * .05 + 1.99) * 100) / 100)
+        setCartTotal(Math.round((tempSum + fees) * 100))
+    }, [cart])
+    // useEffect(() => {
+    //     setCartTotal(Math.round((sum + fees) * 100));
+    // }, [fees, sum])
 
     const calcCartSum = () => {
-        sum = 0;
-        cart.forEach(({item, quantity}) => {
-            sum += quantity * item.cost;
-        })
+        
         return Math.round(sum * 100) / 100;
     }
 
     const calcFees = () => {
         if (!sum) return 0.00;
-        fees = Math.round((sum * .05 + 1.99) * 100) / 100;
         return fees;
     }
     return (
@@ -168,11 +229,11 @@ function CartPage(props){
                         <View style={styles.subtotal}>
                             <View style={styles.costLine}>
                                 <Text style={styles.text2}>Cart Total</Text>
-                                <Text style={styles.text2}>${calcCartSum()}</Text>
+                                <Text style={styles.text2}>${sum}</Text>
                             </View>
                             <View style={styles.costLine}>
-                                <Text style={styles.text2}>Tax & Fees</Text>
-                                <Text style={styles.text2}>${calcFees()}</Text>
+                                <Text style={styles.text2}>Tax and Fees</Text>
+                                <Text style={styles.text2}>${fees}</Text>
                             </View>
                             <View style={styles.costLine}>
                                 <Text style={styles.text2}>Tips</Text>
@@ -188,9 +249,9 @@ function CartPage(props){
                 <View style={styles.subtotal}>
                     <View style={styles.costLine}>
                         <Text style={styles.text2}>Total</Text>
-                        <Text style={styles.text2}>${Math.round((sum + fees) * 100) / 100}</Text>
+                        <Text style={styles.text2}>${cartTotal / 100}</Text>
                     </View>
-                    <CardField
+                    {/* <CardField
         postalCodeEnabled={true}
         placeholders={{
           number: '4242 4242 4242 4242',
@@ -210,10 +271,10 @@ function CartPage(props){
         onFocus={(focusedField) => {
           console.log('focusField', focusedField);
         }}
-      />
+      /> */}
                 </View>
                 
-                <TouchableOpacity key="uniqueId1" style={styles.checkOutButton} onPress={handlePayPress} disabled={loading}>
+                <TouchableOpacity key="uniqueId1" style={styles.checkOutButton} onPress={openPaymentSheet}>
                   <Text style={styles.text1} justifyContent='center'>Check Out</Text>
                 </TouchableOpacity>
                  {/* <CardField 
@@ -384,7 +445,7 @@ const styles = StyleSheet.create({
         width: windowWidth,
         borderRadius: 22,
         padding: 20,
-        height: windowHeight * .33,
+        height: windowHeight * .25,
         paddingTop: 10,
         backgroundColor: 'white',
         flexDirection: 'row',

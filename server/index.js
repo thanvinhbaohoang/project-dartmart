@@ -1,20 +1,39 @@
 import express from 'express';
 import Stripe from 'stripe';
-import 'dotenv/config';
+//import 'dotenv/config';
 const app = express();
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 3000;
-const PUBLISHABLE_KEY = process.env.PUBLISHABLE_KEY;
-const SECRET_KEY = process.env.SECRET_KEY;
-const stripe = new Stripe(SECRET_KEY, { apiVersion: '2020-08-27' });
+//const PUBLISHABLE_KEY = process.env.PUBLISHABLE_KEY;
+//const SECRET_KEY = process.env.SECRET_KEY;
+const stripe = new Stripe('sk_test_51L2ihZH8XcWRx3ZXDdopoeHEEQGQN2mtcchVdxMazkyEkzW78vrueW5Ah3VDWoBlEHdbjLLWkCvldQpRFVzwPqVm00k6dbYlvi', { apiVersion: '2020-08-27' });
 
-var success = false
+var success = false;
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
     console.log(`Server is listening on port ${port}`);
     }
 );
+//payment route from stripe to get user id from stripe
+
+app.post("/v1/customers", async (req, res) => {
+
+   console.log(req.body);
+    const customer = await stripe.customers.create({
+        email: req.body.email,
+        name: req.body.name,
+    }
+    );
+
+    if (customer) {
+      console.log(customer);
+      res.json(customer);
+    } else {
+        res.status(400);
+    }
+});
+
 
 app.post("/create-payment-intent", async (req, res) => {
     console.log(req.body.amount);
@@ -39,7 +58,29 @@ app.post("/payment-success", async (req, res) => {
     res.json({success})
 })
 
-
+app.post('/payment-sheet', async (req, res) => {
+  // Use an existing Customer ID if this is a returning customer.
+  const customer = await stripe.customers.retrieve(req.body.stripeId);
+  const ephemeralKey = await stripe.ephemeralKeys.create(
+    {customer: customer.id},
+    {apiVersion: '2020-08-27'}
+  );
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: req.body.amount,
+    currency: 'usd',
+    customer: customer.id,
+    automatic_payment_methods: {
+      enabled: true,
+    },
+  });
+  console.log('ephemeral key', ephemeralKey);
+  res.json({
+    paymentIntent: paymentIntent.client_secret,
+    ephemeralKey: ephemeralKey.secret,
+    customer: customer.id,
+    publishableKey: 'pk_test_51L2ihZH8XcWRx3ZXYWgTAHXAy2192jRAEl3EQh56T5hKA5GSJP2FieJ2erTBIfeRFdpLPj4ltd3b4Sk0aD82v77u00rzVM0x0i'
+  });
+});
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
 const endpointSecret = "whsec_5e86c6e36d15de2025dbf2ed329247f494b17f6da8c3d024e42d998d3f45b0bf";
@@ -55,7 +96,6 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
     response.status(400).send(`Webhook Error: ${err.message}`);
     return;
   }
-
   // Handle the event
   switch (event.type) {
     case 'payment_intent.succeeded':
