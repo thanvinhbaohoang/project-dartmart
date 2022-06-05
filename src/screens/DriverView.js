@@ -21,7 +21,7 @@ function DriverView(props) {
     return (
         <View backgroundColor='#02604E' style={{height: windowHeight * .9}}>
             <Text style={styles.featuredText}>My Ongoing Orders</Text>
-            <View style={{height: 'auto', minHeight: windowHeight * .1, maxHeight: windowHeight * .5}}>
+            <View style={{height: 'auto', minHeight: windowHeight * .1, maxHeight: windowHeight * .4}}>
                 <ScrollView contentContainerStyle={styles.allOrdersContainer}>
                     <View style={styles.itemsContainer}>
                         {allOrders?.filter((order) => order?.hasOwnProperty('delivererId') && order.status === "in-progress" && order.delivererId === user.id).map(order => {
