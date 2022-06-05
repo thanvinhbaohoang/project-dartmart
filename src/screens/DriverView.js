@@ -21,7 +21,7 @@ function DriverView(props) {
     return (
         <View backgroundColor='#02604E' style={{height: windowHeight * .9}}>
             <Text style={styles.featuredText}>My Ongoing Orders</Text>
-            <View style={{height: 'auto', maxHeight: windowHeight * .5}}>
+            <View style={{height: 'auto', minHeight: windowHeight * .1, maxHeight: windowHeight * .5}}>
                 <ScrollView contentContainerStyle={styles.allOrdersContainer}>
                     <View style={styles.itemsContainer}>
                         {allOrders?.filter((order) => order?.hasOwnProperty('delivererId') && order.status === "in-progress" && order.delivererId === user.id).map(order => {
@@ -39,20 +39,22 @@ function DriverView(props) {
             </View>
 
             <Text style={styles.featuredText}>Order Queue</Text>
-            <ScrollView contentContainerStyle={styles.allOrdersContainer}>
-                <View style={styles.itemsContainer}>
-                    {allOrders?.filter((order) => order?.status === "queued").map(order => {
-                        return (
-                            <TouchableHighlight key={order.id} style={styles.order} onPress={() => {setSelectedOrder(order); setModalVisible(!modalVisible)}}>
-                                <View>
-                                    <Text>{order.id}</Text>
-                                    <Text>${order.orderPaymentAmount/100}</Text>
-                                    <Text>Deliver to: {order.deliveryAddress}</Text>
-                                </View>
-                            </TouchableHighlight>)
-                    })}
-                </View>
-            </ScrollView>
+            <View style={{height: 'auto', maxHeight: windowHeight * .5}}>
+                <ScrollView contentContainerStyle={styles.allOrdersContainer}>
+                    <View style={styles.itemsContainer}>
+                        {allOrders?.filter((order) => order?.status === "queued").map(order => {
+                            return (
+                                <TouchableHighlight key={order.id} style={styles.order} onPress={() => {setSelectedOrder(order); setModalVisible(!modalVisible)}}>
+                                    <View>
+                                        <Text>{order.id}</Text>
+                                        <Text>${order.orderPaymentAmount/100}</Text>
+                                        <Text>Deliver to: {order.deliveryAddress}</Text>
+                                    </View>
+                                </TouchableHighlight>)
+                        })}
+                    </View>
+                </ScrollView>
+            </View>
             <Modal
                 animationType="slide"
                 visible={modalVisible}
@@ -224,7 +226,6 @@ const styles = StyleSheet.create({
     },
     allOrdersContainer:{
         alignItems: 'center',
-        height: 'auto',
     },
     image:{
         width: '100%',

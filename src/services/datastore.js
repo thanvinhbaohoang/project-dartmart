@@ -93,8 +93,8 @@ const API_URL = "http://localhost:3000";
           name: data.name,
         },
       );
-      // console.log("customer found:", customer.data)
-      const tempDoc = await setDoc(doc(db, "users", newUserId), {...data, id: newUserId, stripeId: customer.data.id});
+      console.log("customer found:", customer.data)
+      const tempDoc = await setDoc(doc(db, "users", newUserId), {...data, id: newUserId, stripeId: 100});
       // console.log('created user:', tempDoc);
       return tempDoc;
       // return null
