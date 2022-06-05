@@ -42,7 +42,7 @@ function Onboard(props){
             },
             gestureEnabled: false,
             headerTitleAlign: 'left',
-            headerTitle: 'DM',
+            headerTitle: 'Howdy!',
             headerTitleStyle:{
               marginLeft: 30,
               fontSize: 30,
