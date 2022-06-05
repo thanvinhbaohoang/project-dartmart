@@ -1,25 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, View, Dimensions, TextInput, TouchableOpacity } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+<<<<<<< HEAD
+=======
 import HomePage from '../screens/homePage';
 import Splash from '../screens/splashLogIn/splash'
+>>>>>>> 49ab6ba4db8fc4bf4a1b2ea6cbf4d11ed5b7117e
 import CartPage from '../screens/cartPage';
-import SSOLogin from '../screens/ssoLogin';
 import Shop from '../screens/shop';
 import DeliveryPage from '../screens/DeliveryPage';
 import ProfilePage from '../screens/profilePage';
 import DriverView from '../screens/DriverView';
 import { Ionicons } from "@expo/vector-icons";
+<<<<<<< HEAD
+import { connect, useSelector } from 'react-redux';
+import { fetchOrders } from '../actions/index';
+=======
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 
+>>>>>>> 49ab6ba4db8fc4bf4a1b2ea6cbf4d11ed5b7117e
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const Tab = createBottomTabNavigator();
 
 function MainTabBar(props){
+  useEffect(() => {
+    props.fetchOrders();
+  },[])
+  const user = useSelector((state) => state.user.user)
 
   let [themeFontLoad] = useFonts({
     'Poppins': require('../assets/fonts/Poppins-Medium.ttf'),
@@ -56,26 +66,15 @@ function MainTabBar(props){
           fontFamily: 'Poppins',
         },
       }}>
-        {/* TEMPORARY SIGN IN NAVIGATION */}
-        {/* <Tab.Screen name="Splash" component={Splash} /> */}
-        {/* <Tab.Screen name="SignIn" component={SignIn} /> */}
-        {/* <Tab.Screen name="SignUp" component={SignUp} /> */}
-        {/* <Tab.Screen name="SSOLogin" component={SSOLogin} /> */}
-        {/* =============================================== */}
-        {/* <Tab.Screen name="Home" options={{headerShown: false}} component={Shop} />
-        <Tab.Screen name="Cart" options={{headerShown: false}} component={CartPage} />
-        <Tab.Screen name="Delivery" component={DeliveryPage} />
-        <Tab.Screen name="Profile" component={ProfilePage} initialParams={{logout: logout}}/>
-        <Tab.Screen name="Driver" component={DriverView} /> */}
 
         <Tab.Screen name="Home" component={Shop}  options={{headerShown: false, tabBarLabel: 'Home', tabBarIcon: ({ color, size }) => (  <Ionicons name="home" color={color} size={size} />),}}/>   
         <Tab.Screen name="Cart" component={CartPage}  options={{headerShown: false, tabBarLabel: 'Cart', tabBarIcon: ({ color, size }) => (  <Ionicons name="cart" color={color} size={size} />),}}/>        
         <Tab.Screen name="Delivery" component={DeliveryPage}  options={{ tabBarLabel: 'Delivery', tabBarIcon: ({ color, size }) => (  <Ionicons name="bookmarks-outline" color={color} size={size} />),}}/>        
         <Tab.Screen name="Profile" component={ProfilePage} initialParams={{logout: logout}}  options={{ tabBarLabel: 'Profile', tabBarIcon: ({ color, size }) => (  <Ionicons name="person-circle-outline" color={color} size={size} />),}}/>        
-        <Tab.Screen name="Driver" component={DriverView}  options={{ tabBarLabel: 'Driver', tabBarIcon: ({ color, size }) => (  <Ionicons name="bicycle-outline" color={color} size={size} />),}}/>   
+        {user.isDriver === true ? <Tab.Screen name="Driver" component={DriverView}  options={{ tabBarLabel: 'Driver', tabBarIcon: ({ color, size }) => (  <Ionicons name="bicycle-outline" color={color} size={size} />),}}/> : null } 
         
       </Tab.Navigator>
   );
 };
 
-export default MainTabBar;
+export default connect(null, { fetchOrders })(MainTabBar);

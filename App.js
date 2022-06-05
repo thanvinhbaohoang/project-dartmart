@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useEffect } from 'react';
 import MainTabBar from './src/navigation/main_tab_bar';
 import { LogBox } from "react-native";
 import { Provider } from 'react-redux';

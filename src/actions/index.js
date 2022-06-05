@@ -13,6 +13,7 @@ export const ActionTypes = {
     FETCH_ORDER: "FETCH_ORDER",
     SUBMIT_ORDER: "SUBMIT_ORDER",
     UPDATE_ORDER: "UPDATE_ORDER",
+    FETCH_ORDERS: "FETCH_ORDERS",
     // INVENTORY MANAGEMENT
     FETCH_ITEMS: "FETCH_ITEMS",
     FETCH_ITEM: "FETCH_ITEM",
@@ -50,7 +51,6 @@ export const ActionTypes = {
 
   export function createUser(newUserId, userfields) {
     return(dispatch) => {
-      console.log("userfields", userfields);
       db.createUser(newUserId, userfields).then((response) => {
         dispatch({ type: ActionTypes.FETCH_USER, payload: response });
       }).catch((error) => {
@@ -69,23 +69,39 @@ export const ActionTypes = {
   // ORDER MANAGEMENT
 
   export function submitOrder(orderDetails) {
-    return {
-      type: ActionTypes.FETCH_ORDER,
-      payload: {orderDetails}
+    return(dispatch) => {
+      db.submitOrder(orderDetails).then((response) => {
+        dispatch({ type: ActionTypes.SUBMIT_ORDER, payload: response });
+      }).catch((error) => {
+        console.log(error);
+      })
     }
   }
 
   export function fetchOrder(orderId) {
     return {
       type: ActionTypes.FETCH_ORDER,
-      payload: {orderId}
+      payload: orderId
+    }
+  }
+
+  export function fetchOrders(){
+    return(dispatch) => {
+      db.fetchAllOrders().then((response) => {
+        dispatch({ type: ActionTypes.FETCH_ORDERS, payload: response });
+      }).catch((error) => {
+        console.log(error);
+      })
     }
   }
 
   export function updateOrder(orderId, updates) {
-    return {
-      type: ActionTypes.UPDATE_ORDER,
-      payload: {orderId, updates}
+    return(dispatch) => {
+      db.updateOrder(orderId, updates).then((response) => {
+        dispatch({ type: ActionTypes.UPDATE_ORDER, payload: response });
+      }).catch((error) => {
+        console.log(error);
+      })
     }
   }
 

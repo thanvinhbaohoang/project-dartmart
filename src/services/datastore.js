@@ -1,4 +1,4 @@
-import { doc, setDoc, updateDoc, getDoc, getFirestore, getDocs, collection, query, where, connectFirestoreEmulator } from "firebase/firestore"; 
+import { doc, setDoc, addDoc, updateDoc, getDoc, getFirestore, getDocs, collection, query, where, connectFirestoreEmulator } from "firebase/firestore"; 
 import axios from 'axios';
 import { initializeApp } from "firebase/app";
 //import Stripe from "stripe";
@@ -33,11 +33,6 @@ const API_URL = "http://localhost:3000";
   // INVENTORY FUNCTIONS
 
   // check if a user with a given email address already exists
-  export async function fetchUser(email){
-    const usersRef = collection(db, "users");
-    const userExistsQuery = query(usersRef, where("email", "==", email));
-    return getDocs(userExistsQuery);
-  }
   // initialize a user in the database
   
   // Fetch all items for displaying product options in menu
@@ -86,13 +81,10 @@ const API_URL = "http://localhost:3000";
   // initialize a user in the database
   export async function createUser(newUserId, data) {
 
-    fetchUser(data.email).then((response) => {
-
-      console.log('fetchingUser', response.docs);
-    
+    const response = await fetchUser(data.email);
     if (response.docs.length > 0){
       console.log("user found", response.docs[0].data());
-      return response.docs[0].data();
+      return { ...response.docs[0].data(), id: response.docs[0].id };
     } else {
        console.log('pulling customer')
        const customer = await axios.post(`${API_URL}/v1/customers`, 
@@ -102,12 +94,12 @@ const API_URL = "http://localhost:3000";
         },
       );
       // console.log("customer found:", customer.data)
-      const tempDoc = await setDoc(doc(db, "users", newUserId), {...data, stripeId: customer.data.id});
+      const tempDoc = await setDoc(doc(db, "users", newUserId), {...data, id: newUserId, stripeId: customer.data.id});
       // console.log('created user:', tempDoc);
       return tempDoc;
       // return null
   };
-});
+};
 
   // initialize a user in the databse
   //export async function createUser(newUserId, data) {
@@ -164,8 +156,10 @@ const API_URL = "http://localhost:3000";
   // FUNCTIONS FOR ORDERS
 
   // initialize an order in the database
-  export async function createOrder(newOrderId, data) {
-    await setDoc(doc(db, "orders", newOrderId), data);
+  export async function submitOrder(data) {
+    const docRef = await addDoc(collection(db, "orders"), {...data})
+    const snap = await getDoc(docRef);
+      return {...snap.data(), id: snap.id};
   }
 
   export async function fetchOrder(orderId, callback) {
@@ -183,15 +177,18 @@ const API_URL = "http://localhost:3000";
   // update the status of an order as it is being submitted and fulfilled
   export async function updateOrder(orderId, data) {
     const docRef = doc(db, "orders", orderId);
-    await updateDoc(docRef, {
+    await updateDoc(docRef, 
         data
-    });
+    );
+    const docSnap = await getDoc(docRef);
+    return {...docSnap.data(), id: docSnap.id}
   }
 
   // Fetch all orders in the database
   // Returns a promise; data can be accessed w/ querySnapshot.docs.map(doc => doc.data())
   export async function fetchAllOrders() { 
-    return getDocs(collection(db, "orders"));
+    const res = await getDocs(collection(db, "orders"));
+    return res.docs.map(doc => {return {...doc.data(), id: doc.id}});
   }
 
   // Fetch all orders in progress

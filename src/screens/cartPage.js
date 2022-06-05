@@ -5,12 +5,29 @@ import { CardField, useStripe, useConfirmPayment} from '@stripe/stripe-react-nat
 import { addItem, submitOrder, removeItem } from '../actions/index';
 import axios from "axios";
 
+
 import { Ionicons } from "@expo/vector-icons";
 
+const API_URL = "http://localhost:3000";
+
+
+function CheckoutScreen() {
+
+    return (
+      <Screen>
+        <Button
+          variant="primary"
+          disabled={!loading}
+          title="Checkout"
+          onPress={openPaymentSheet}
+        />
+      </Screen>
+    );
+  }
 function CartPage(props){
 
 
-    const stripeId = useSelector(state => state.user.user.stripeId);
+    const user = useSelector(state => state.user.user);
     const cart = useSelector((state) => state.item.cart);
 
     const [modalVisible, setModalVisible] = useState(false); 
@@ -29,7 +46,7 @@ function CartPage(props){
   const fetchPaymentSheetParams = async () => {
     const response = await axios.post(`${API_URL}/payment-sheet`, {
         amount: cartTotal,
-        stripeId: stripeId
+        stripeId: user.stripeId
     });
     const { paymentIntent, ephemeralKey, customer } = response.data;
 
@@ -60,6 +77,14 @@ function CartPage(props){
   };
 
    const openPaymentSheet = async () => {
+       if(cart.length > 0){
+           props.submitOrder({
+               customerId: user.id,
+               orderItems: cart,
+               status: "queued",
+               orderPaymentAmount: cartTotal
+           })
+       }
        const initialize = await initializePaymentSheet();
         const {clientSecret, errorWhatever} = await fetchPaymentIntentClientSecret();
     const { error } = await presentPaymentSheet({ clientSecret });
@@ -72,7 +97,13 @@ function CartPage(props){
   };
 
   useEffect(() => {
-    // initializePaymentSheet();
+    var tempSum = 0;
+        cart.forEach(({item, quantity}) => {
+            tempSum += quantity * item.cost;
+        })
+        setSum(Math.round(tempSum * 100) / 100);
+        setFees(Math.round((tempSum * .05 + 1.99) * 100) / 100)
+        setCartTotal(Math.round((tempSum + fees) * 100))
   }, []);
 
 

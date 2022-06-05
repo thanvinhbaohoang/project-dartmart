@@ -2,6 +2,8 @@ import express from 'express';
 import Stripe from 'stripe';
 //import 'dotenv/config';
 const app = express();
+var cors = require('cors');
+app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 3000;
@@ -59,6 +61,10 @@ app.post("/payment-success", async (req, res) => {
 })
 
 app.post('/payment-sheet', async (req, res) => {
+<<<<<<< HEAD
+  console.log('got request');
+=======
+>>>>>>> 49ab6ba4db8fc4bf4a1b2ea6cbf4d11ed5b7117e
   // Use an existing Customer ID if this is a returning customer.
   const customer = await stripe.customers.retrieve(req.body.stripeId);
   const ephemeralKey = await stripe.ephemeralKeys.create(
