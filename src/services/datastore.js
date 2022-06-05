@@ -87,13 +87,13 @@ const API_URL = "http://localhost:3000";
       return { ...response.docs[0].data(), id: response.docs[0].id };
     } else {
        console.log('pulling customer')
-       const customer = await axios.post(`${API_URL}/v1/customers`, 
-        {
-          email: data.email,
-          name: data.name,
-        },
-      );
-      console.log("customer found:", customer.data)
+      //  const customer = await axios.post(`${API_URL}/v1/customers`, 
+      //   {
+      //     email: data.email,
+      //     name: data.name,
+      //   },
+      // );
+      // console.log("customer found:", customer.data)
       const tempDoc = await setDoc(doc(db, "users", newUserId), {...data, id: newUserId, stripeId: 100});
       // console.log('created user:', tempDoc);
       return tempDoc;

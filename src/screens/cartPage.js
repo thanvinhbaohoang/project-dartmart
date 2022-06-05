@@ -11,19 +11,6 @@ import { Ionicons } from "@expo/vector-icons";
 const API_URL = "http://localhost:3000";
 
 
-function CheckoutScreen() {
-
-    return (
-      <Screen>
-        <Button
-          variant="primary"
-          disabled={!loading}
-          title="Checkout"
-          onPress={openPaymentSheet}
-        />
-      </Screen>
-    );
-  }
 function CartPage(props){
 
 
@@ -197,9 +184,15 @@ function CartPage(props){
             tempSum += quantity * item.cost;
         })
         setSum(Math.round(tempSum * 100) / 100);
-        setFees(Math.round((tempSum * .05 + 1.99) * 100) / 100)
-        setCartTotal(Math.round((tempSum + fees) * 100))
     }, [cart])
+
+    useEffect(() => {
+        setFees(Math.round((sum * .05 + 1.99) * 100) / 100)
+    }, [sum])
+
+    useEffect(() => {
+        setCartTotal(Math.round((sum + fees) * 100))
+    }, [fees])
     // useEffect(() => {
     //     setCartTotal(Math.round((sum + fees) * 100));
     // }, [fees, sum])
