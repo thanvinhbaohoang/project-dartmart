@@ -78,6 +78,13 @@ function CartPage(props){
 
    const openPaymentSheet = async () => {
        if(cart.length > 0){
+           const cartInfo = {
+            customerId: user.id,
+            orderItems: cart,
+            status: "queued",
+            orderPaymentAmount: cartTotal
+           }
+           console.log('cartPage.js || openPaymentSheet || cartInfo:', cartInfo);
            props.submitOrder({
                customerId: user.id,
                orderItems: cart,
