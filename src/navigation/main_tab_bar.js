@@ -1,25 +1,19 @@
 import React, { useEffect } from 'react';
 import { Text, View, Dimensions, TextInput, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-<<<<<<< HEAD
-=======
 import HomePage from '../screens/homePage';
 import Splash from '../screens/splashLogIn/splash'
->>>>>>> 49ab6ba4db8fc4bf4a1b2ea6cbf4d11ed5b7117e
 import CartPage from '../screens/cartPage';
 import Shop from '../screens/shop';
 import DeliveryPage from '../screens/DeliveryPage';
 import ProfilePage from '../screens/profilePage';
 import DriverView from '../screens/DriverView';
 import { Ionicons } from "@expo/vector-icons";
-<<<<<<< HEAD
 import { connect, useSelector } from 'react-redux';
 import { fetchOrders } from '../actions/index';
-=======
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 
->>>>>>> 49ab6ba4db8fc4bf4a1b2ea6cbf4d11ed5b7117e
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
