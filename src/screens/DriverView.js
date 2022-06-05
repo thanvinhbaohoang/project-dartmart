@@ -11,6 +11,7 @@ function DriverView(props) {
     const allOrders = useSelector((state) => state.order.all)
     const user = useSelector((state) => state.user.user)
     const [modalVisible, setModalVisible] = useState(false);
+    const [currModalVisible, setCurrModalVisible] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(false);
     useEffect(() => {
         props.fetchOrders();
@@ -20,17 +21,23 @@ function DriverView(props) {
     return (
         <View backgroundColor='#02604E' style={{height: windowHeight * .9}}>
             <Text style={styles.featuredText}>My Ongoing Orders</Text>
-            <ScrollView contentContainerStyle={styles.allOrdersContainer}>
-                <View style={styles.itemsContainer}>
-                    {allOrders?.filter((order) => order?.hasOwnProperty('delivererId') && order.status === "in-progress").map(order => {
-                        return (
-                            <View key={order.id} style={styles.order}>
-                                <Text>{order.id}</Text>
-                                <Text>Deliver to: {order.deliveryAddress}</Text>
-                            </View>)
-                    })}
-                </View>
-            </ScrollView>
+            <View style={{height: 'auto', maxHeight: windowHeight * .5}}>
+                <ScrollView contentContainerStyle={styles.allOrdersContainer}>
+                    <View style={styles.itemsContainer}>
+                        {allOrders?.filter((order) => order?.hasOwnProperty('delivererId') && order.status === "in-progress" && order.delivererId === user.id).map(order => {
+                            return (
+                                <TouchableHighlight key={order.id} style={styles.order} onPress={() => {setSelectedOrder(order); setCurrModalVisible(!currModalVisible)}}>
+                                    <View>
+                                        <Text>{order.id}</Text>
+                                        <Text>${order.orderPaymentAmount/100}</Text>
+                                        <Text>Deliver to: {order.deliveryAddress}</Text>
+                                    </View>
+                                </TouchableHighlight>)
+                        })}
+                    </View>
+                </ScrollView>
+            </View>
+
             <Text style={styles.featuredText}>Order Queue</Text>
             <ScrollView contentContainerStyle={styles.allOrdersContainer}>
                 <View style={styles.itemsContainer}>
@@ -39,7 +46,8 @@ function DriverView(props) {
                             <TouchableHighlight key={order.id} style={styles.order} onPress={() => {setSelectedOrder(order); setModalVisible(!modalVisible)}}>
                                 <View>
                                     <Text>{order.id}</Text>
-                                    <Text>{order.orderPaymentAmount}</Text>
+                                    <Text>${order.orderPaymentAmount/100}</Text>
+                                    <Text>Deliver to: {order.deliveryAddress}</Text>
                                 </View>
                             </TouchableHighlight>)
                     })}
@@ -56,17 +64,109 @@ function DriverView(props) {
                         <Pressable style={{position: 'absolute', top: 20, right: 20}} onPress={() => setModalVisible(!modalVisible)}>
                             <Ionicons name="close" size={25}/>
                         </Pressable>
+                        <View style={{height: windowHeight * .4}}>
+                            <ScrollView horizontal={false} contentContainerStyle={{alignItems: 'center'}}>
+                                {selectedOrder?.orderItems?.map(({item, quantity}) => {
+                                    return(
+                                        <View key={item.name} style={styles.itemContainer}>
+                                            <View style={styles.imageContainer}>
+                                                <Image source={{uri: item.imageURL}} style={styles.image} />
+                                            </View>
+                                            <View style={styles.itemInfoContainer}>
+                                                <View style={styles.itemNameContainer}>
+                                                    <Text style={styles.itemName}>{item.name} x{quantity}</Text>
+                                                </View>
+                                                <View style= {styles.costAndQuantity}>
+                                                    <View style = {styles.itemCostContainer}>
+                                                        <Text style={styles.itemCost}>${Math.round((item.cost * quantity) * 100) / 100}</Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    )
+                                })}
+                            </ScrollView>
+                        </View>
+                        <Text style={{fontWeight: 'bold', fontSize: 20, marginTop: 10}}>Order Total: ${selectedOrder.orderPaymentAmount/100}</Text>
+                        <Text style={{fontWeight: 'bold', fontSize: 20}}>Delivery Address:</Text>
+                        <Text style={{fontSize: 20}}>To be implemented</Text>
+
                         <View style={styles.cartButtons}>
-                            <Pressable onPress={() => setModalVisible(!modalVisible)}>
-                                <View style={styles.submitButton}>
-                                    <Ionicons name="close-circle" size={60} color={'red'}></Ionicons>
-                                </View>
-                            </Pressable>
-                            <Pressable onPress={() => {props.updateOrder(selectedOrder.id, {status: "in-progress", delivererId: user.id}); setModalVisible(!modalVisible)}}>
-                                <View style={styles.discardButton}>
-                                    <Ionicons name="checkmark-circle" size={60} color={'green'}></Ionicons>
-                                </View>
-                            </Pressable>
+                            <View style={{alignItems:'center'}}>
+                                <Pressable onPress={() => setModalVisible(!modalVisible)}>
+                                    <View style={styles.submitButton}>
+                                        <Ionicons name="close-circle" size={60} color={'red'}></Ionicons>
+                                    </View>
+                                </Pressable>
+                                <Text style={{fontWeight: 'bold', fontSize: 20}}>Pass</Text>
+                            </View>
+                            <View style={{alignItems:'center'}}>
+                                <Pressable onPress={() => {props.updateOrder(selectedOrder.id, {status: "in-progress", delivererId: user.id}); setModalVisible(!modalVisible)}}>
+                                    <View style={styles.discardButton}>
+                                        <Ionicons name="checkmark-circle" size={60} color={'green'}></Ionicons>
+                                    </View>
+                                </Pressable>
+                                <Text style={{fontWeight: 'bold', fontSize: 20}}>Accept</Text>
+                            </View>
+                        </View>
+                        
+                    </View>
+                </Modal>
+                <Modal
+                animationType="slide"
+                visible={currModalVisible}
+                transparent={true}
+                onRequestClose={() => setCurrModalVisible(!currModalVisible)}
+                >
+                    <View style={styles.itemModal}  >
+                        <Text style={styles.itemModalCost}>{selectedOrder?.id}</Text>
+                        <Pressable style={{position: 'absolute', top: 20, right: 20}} onPress={() => setCurrModalVisible(!setCurrModalVisible)}>
+                            <Ionicons name="close" size={25}/>
+                        </Pressable>
+                        <View style={{height: windowHeight * .4}}>
+                            <ScrollView horizontal={false} contentContainerStyle={{alignItems: 'center'}}>
+                                {selectedOrder?.orderItems?.map(({item, quantity}) => {
+                                    return(
+                                        <View key={item.name} style={styles.itemContainer}>
+                                            <View style={styles.imageContainer}>
+                                                <Image source={{uri: item.imageURL}} style={styles.image} />
+                                            </View>
+                                            <View style={styles.itemInfoContainer}>
+                                                <View style={styles.itemNameContainer}>
+                                                    <Text style={styles.itemName}>{item.name} x{quantity}</Text>
+                                                </View>
+                                                <View style= {styles.costAndQuantity}>
+                                                    <View style = {styles.itemCostContainer}>
+                                                        <Text style={styles.itemCost}>${Math.round((item.cost * quantity) * 100) / 100}</Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    )
+                                })}
+                            </ScrollView>
+                        </View>
+                        <Text style={{fontWeight: 'bold', fontSize: 20, marginTop: 10}}>Order Total: ${selectedOrder.orderPaymentAmount/100}</Text>
+                        <Text style={{fontWeight: 'bold', fontSize: 20}}>Delivery Address:</Text>
+                        <Text style={{fontSize: 20}}>To be implemented</Text>
+
+                        <View style={styles.cartButtons}>
+                            <View style={{alignItems:'center'}}>
+                                <Pressable onPress={() => {props.updateOrder(selectedOrder.id, {status: "cancelled", delivererId: user.id}); setCurrModalVisible(!currModalVisible)}}>
+                                    <View style={styles.submitButton}>
+                                        <Ionicons name="close-circle" size={60} color={'red'}></Ionicons>
+                                    </View>
+                                </Pressable>
+                                <Text style={{fontWeight: 'bold', fontSize: 15}}>Cancel Order</Text>
+                            </View>
+                            <View style={{alignItems:'center'}}>
+                                <Pressable onPress={() => {props.updateOrder(selectedOrder.id, {status: "complete", delivererId: user.id}); setCurrModalVisible(!currModalVisible)}}>
+                                    <View style={styles.discardButton}>
+                                        <Ionicons name="checkmark-circle" size={60} color={'green'}></Ionicons>
+                                    </View>
+                                </Pressable>
+                                <Text style={{fontWeight: 'bold', fontSize: 15}}>Complete Order</Text>
+                            </View>
                         </View>
                         
                     </View>
@@ -134,10 +234,10 @@ const styles = StyleSheet.create({
     itemContainer:{
         flexDirection:'row',
         justifyContent: 'space-between',
-        width: windowWidth,
+        width: windowWidth * .8,
         margin: windowWidth * .025,
         borderRadius: 8,
-        height: windowWidth * .35,
+        height: windowWidth * .25,
         backgroundColor: 'green',
         padding: 10,
     },
@@ -145,7 +245,8 @@ const styles = StyleSheet.create({
         borderWidth:2,
         borderRadius: 18,
         justifyContent: 'center',
-        width: windowWidth * 0.3,
+        width: windowWidth * 0.20,
+        height: windowWidth * .20,
         backgroundColor:'white',
     },
     itemInfoContainer:{
@@ -155,35 +256,33 @@ const styles = StyleSheet.create({
     },
     itemName: {
         color: 'white',
-        fontSize: 24,
-        height: 30,
+        fontSize: 15,
+        width: "70%",
         fontWeight: 'bold',
-        alignSelf: 'baseline',
+        // alignSelf: 'baseline',
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden'
     },
     costAndQuantity : {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems:'center',
-
+        width: '80%',
     },
     itemCostContainer: {
         borderWidth: 1, 
-        borderColor: 'white', 
         borderRadius: 22,
         paddingVertical: 5,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
         justifyContent: 'center',
         alignItems: 'center',
+        borderColor: 'white',
+        borderWidth: '1',
         margin: 0
     },
     itemCost: {
-        fontSize: 15,
-        position: 'absolute',
-        bottom: 13,
-        left: 13
+        fontSize: 12,
+        color: 'white',
     },
     itemModal:{
         height: 350,
@@ -228,7 +327,6 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 18,
         flexWrap: 'wrap',
         justifyContent: 'center',
-        // marginBottom: windowWidth * .22,
         opacity: 0.9,
         padding: 20,
     },
@@ -299,18 +397,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     itemModalCost:{
+        marginTop: 20,
         fontSize: 20,
         fontWeight: 'bold',
         backgroundColor: 'white',
-        position: 'relative', 
-        top: -25, 
-        right: -90,
         padding: 7,
         paddingLeft: 12,
         paddingRight: 12,
-        borderStyle: 'solid',
-        borderColor: 'darkgray',
-        borderWidth: 1,
         borderRadius: 20,
         overflow: 'hidden'
     },
