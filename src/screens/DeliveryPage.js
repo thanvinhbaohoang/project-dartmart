@@ -13,10 +13,10 @@ function DeliveryPage(props){
 
     const orderStatusCheck  = () => {
         console.log("DeliveryPage.js || OrderStatusCheck: ", orderInfo);
-        if (orderInfo != null) {
-            return orderConfirmedView()
-        } else {
+        if (!orderInfo) {
             return noOrderView()
+        } else {
+            return orderConfirmedView()
         }
     }
 
