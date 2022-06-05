@@ -71,13 +71,13 @@ function CartPage(props){
             status: "queued",
             orderPaymentAmount: cartTotal
            }
-           console.log('cartPage.js || openPaymentSheet || cartInfo:', cartInfo);
-           props.submitOrder({
-               customerId: user.id,
-               orderItems: cart,
-               status: "queued",
-               orderPaymentAmount: cartTotal
-           })
+        //    console.log('cartPage.js || openPaymentSheet || cartInfo:', cartInfo);
+        //    props.submitOrder({
+        //        customerId: user.id,
+        //        orderItems: cart,
+        //        status: "queued",
+        //        orderPaymentAmount: cartTotal
+        //    })
        
         const initialize = await initializePaymentSheet();
         const {clientSecret, errorWhatever} = await fetchPaymentIntentClientSecret();
@@ -93,7 +93,7 @@ function CartPage(props){
                     Alert('there was an error');
                   // Handle error here
                 } else{
-                  // Handle successful payment here
+                  //Handle successful payment here
                   props.submitOrder({
                     customerId: user.id,
                     orderItems: cart,
@@ -101,6 +101,7 @@ function CartPage(props){
                     orderPaymentAmount: cartTotal
                     })
                     Alert.alert('payment confirmed')
+                    props.navigation.navigate('Delivery');
                 }
             }
         } else {
@@ -268,7 +269,7 @@ function CartPage(props){
                 </View>
                 
                 <TouchableOpacity key="uniqueId1" style={styles.checkOutButton} onPress={openPaymentSheet}>
-                  <Text style={styles.text1} justifyContent='center'>Check Out</Text>
+                  <Text style={styles.text1} justifyContent='center'>Enter Payment Details</Text>
                 </TouchableOpacity>
                  {/* <CardField 
                   postalCodeEnabled={true}
@@ -279,6 +280,11 @@ function CartPage(props){
                         setCardDetails(cardDetails);
                     }}
                   /> */}
+
+                  {/* <TouchableOpacity key="uniqueId1" style={styles.checkOutButton} onPress={openPaymentSheet}>
+                  <Text style={styles.text1} justifyContent='center'>Submit Order</Text>
+                </TouchableOpacity> */}
+                  
             </View>
         </View>
         

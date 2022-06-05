@@ -34,7 +34,9 @@ function ProfilePage(props){
                         <Ionicons name='car' size={50} color={'white'}/>
                         <Text style={styles.text1}>Driver View</Text>
                     </TouchableOpacity> : null}
-                    {user?.isDriver === true ? <TouchableOpacity onPress={() => props.updateUser(user.id, {isDriver: false})} style={styles.profileButton}>
+                    {user?.isDriver === true ? <TouchableOpacity onPress={
+                        () => props.updateUser(user.id, {isDriver: false})} 
+                        style={styles.profileButton}>
                         <Ionicons name='arrow-back' size={50} color={'white'}/>
                         <Text style={styles.text1}>Customer View</Text>
                     </TouchableOpacity> : null}
@@ -42,6 +44,13 @@ function ProfilePage(props){
         </View>
     );
 }
+
+// function DriverStatusChange(props, user isDriver)
+// {
+//     props.updateUser(user.id, {isDriver})
+//     window.location.reload(true);
+
+// }
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
