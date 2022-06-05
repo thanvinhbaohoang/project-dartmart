@@ -7,35 +7,34 @@ import { Ionicons } from "@expo/vector-icons";
 function DeliveryPage({navigation}){
     const cart = useSelector((state) => state.item.cart);
     // CONNECT BACK END STRIPE STATUS HERE
-    const orderStatus = true;
+    const orderStatus = false;
 
     const orderStatusCheck  = () => {
         if (orderStatus) {
-            return orderConfirmed()
+            return orderConfirmedView()
         } else {
-            return orderFailed()
+            return noOrderView()
         }
     }
 
-    const orderFailed = () => {
+    const noOrderView = () => {
         return(
             <View style={styles.container}>
-
-            <Text style={styles.featuredText}>Order Failed</Text>
-            <Ionicons name="close-circle" style={styles.failedIcon}></Ionicons>
-            <Text style={styles.text2}> There Was A Problem With Your Order</Text>
+            <Text style={styles.featuredText}>No Order</Text>
+            <Ionicons name="fast-food-outline" style={styles.foodIcon}></Ionicons>
+            <Text style={styles.text2}> You Have Not Made Any Order Yet</Text>
         <View>
             <View style={styles.dividerLine}></View>
                     
             <TouchableOpacity style={styles.checkOutButton} onPress={()=>navigation.navigate('Home')}>
-              <Text style={styles.text1} justifyContent='center' >Return Home</Text>
+              <Text style={styles.text1} justifyContent='center'>Return Home</Text>
             </TouchableOpacity>
         </View>
 
     </View>
         )
     }
-    const orderConfirmed = () => {
+    const orderConfirmedView = () => {
         return(
             <View style={styles.container}>
 
@@ -130,8 +129,8 @@ const styles = StyleSheet.create({
         fontSize: 84,
         margin:20
     },
-    failedIcon : {
-        color: 'red',
+    foodIcon : {
+        color: 'white',
         fontSize: 84,
         margin:20
     },

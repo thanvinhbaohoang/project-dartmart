@@ -84,18 +84,22 @@ function CartPage(props){
                status: "queued",
                orderPaymentAmount: cartTotal
            })
-       }
-       const initialize = await initializePaymentSheet();
+       
+        const initialize = await initializePaymentSheet();
         const {clientSecret, errorWhatever} = await fetchPaymentIntentClientSecret();
-    const { error } = await presentPaymentSheet({ clientSecret });
+        const { error } = await presentPaymentSheet({ clientSecret });
 
-    if (error) {
-      Alert.alert(`Error code: ${error.code}`, error.message);
-    } else {
-      Alert.alert('Success', 'Your order is confirmed!');
-    }
+        if (error) {
+            Alert.alert(`Error code: ${error.code}`, error.message);
+        } else {
+        Alert.alert('Success', 'Your order is confirmed!');
+        }
+        } else {
+            Alert.alert('Hold on!', 'Your cart is empty!');
+        }
+
   };
-
+ 
   useEffect(() => {
     var tempSum = 0;
         cart.forEach(({item, quantity}) => {
