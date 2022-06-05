@@ -23,7 +23,6 @@ const ItemReducer = (state = initialState,  action = {}) => {
         var newList = state.cart.map(value => ({...value}));
         var index = -1
         for(let i = 0; i < newList.length; i++){
-          console.log(newList[i]);
           if(newList[i].item.name === action.payload.item.name){
             index = i;
             break;

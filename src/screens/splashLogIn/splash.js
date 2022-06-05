@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable } from 'react-native';
-import SignIn from './signIn';
-import SignUp from './signUp';
+import SSOLogin from '../ssoLogin';
 
 const Splash  = ({navigation}) => {
     return (
@@ -14,13 +13,13 @@ const Splash  = ({navigation}) => {
         <View style = {styles.footer}>
             <View style={styles.modalContainer}>
 
-              <TouchableOpacity onPress={()=>navigation.navigate('SignIn')}>
+              <TouchableOpacity onPress={()=>navigation.navigate('SSOLogin')}>
                   <Text style={styles.text1}>Sign In To Your Account</Text>
               </TouchableOpacity>
 
               <View style={styles.checkoutAsGuestSection}>
                 <Text style={styles.text2}>Don't Have An Account?</Text>
-                <TouchableOpacity style={styles.guestButton} onPress={()=>navigation.navigate('SignUp')}>
+                <TouchableOpacity style={styles.guestButton} onPress={()=>navigation.navigate('SSOLogin')}>
                   <Text style={styles.text1}>Sign Up</Text>
                 </TouchableOpacity>
               </View>

@@ -1,8 +1,12 @@
-import { doc, setDoc, updateDoc, getDoc, getFirestore, getDocs, collection, query, where } from "firebase/firestore"; 
+import { doc, setDoc, addDoc, updateDoc, getDoc, getFirestore, getDocs, collection, query, where, connectFirestoreEmulator } from "firebase/firestore"; 
+import axios from 'axios';
 import { initializeApp } from "firebase/app";
-
+//import Stripe from "stripe";
+//import 'dotenv/config';
 
 // FIREBASE CONFIGURATION
+
+const API_URL = "http://localhost:3000";
 
   // firebase config object
   const firebaseConfig = {
@@ -17,6 +21,9 @@ import { initializeApp } from "firebase/app";
   
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
+  // const SECRET_KEY = process.env.SECRET_KEY;
+  // const stripe = new Stripe(SECRET_KEY, { apiVersion: '2020-08-27' });
+  
   
   
   // Initialize Cloud Firestore and get a reference to the service
@@ -25,6 +32,10 @@ import { initializeApp } from "firebase/app";
 
   // INVENTORY FUNCTIONS
 
+  // check if a user with a given email address already exists
+
+  // initialize a user in the database
+  
   // Fetch all items for displaying product options in menu
   export async function fetchItems() { 
       const querySnapshot = await getDocs(collection(db, "items"));
@@ -61,18 +72,80 @@ import { initializeApp } from "firebase/app";
 
   // USER FUNCTIONS
 
-  // initialize a user in the databse
-  export async function createUser(newUserId, data) {
-
-    const usersRef = doc(db, "users");
-    const userExistsQuery = query(usersRef, where("email", "==", data.email));
-    const querySnapshot = await getDocs(userExistsQuery);
-
-    if (!querySnapshot.exists()){
-      await setDoc(doc(db, "users", newUserId), data);
-    }
+  // check if a user with a given email address already exists
+  export async function fetchUser(email){
+    const usersRef = collection(db, "users");
+    const userExistsQuery = query(usersRef, where("email", "==", email));
+    return getDocs(userExistsQuery);
   }
 
+  // initialize a user in the database
+  export async function createUser(newUserId, data) {
+
+    const response = await fetchUser(data.email);
+    if (response.docs.length > 0){
+      console.log("user found", response.docs[0].data());
+      return { ...response.docs[0].data(), id: response.docs[0].id };
+    } else {
+       console.log('pulling customer')
+       const customer = await axios.post(`${API_URL}/v1/customers`, 
+        {
+          email: data.email,
+          name: data.name,
+        },
+      );
+      // console.log("customer found:", customer.data)
+      const tempDoc = await setDoc(doc(db, "users", newUserId), {...data, id: newUserId, stripeId: customer.data.id});
+      // console.log('created user:', tempDoc);
+      return tempDoc;
+      // return null
+  };
+};
+
+  // initialize a user in the databse
+  //export async function createUser(newUserId, data) {
+
+    // const response = await fetchUser(data.email);
+    //   console.log('fetchingUser', response.docs);
+    // if (response.docs.length > 0){
+    //   console.log("user found", response.docs[0].data());
+    //   return response.docs[0].data();
+    // } else {
+    //   const customer = await stripe.customers.create({
+    //     email: data.email
+    //   });
+    //   const doc = await setDoc(doc(db, "users", newUserId), {...data, stripId: customer.id});
+    //   console.log('created user:', doc);
+    //   return doc;
+    // }
+
+   
+    // if (!querySnapshot.exists()){
+    //   const customer = await stripe.customers.create({
+    //     email: data.email
+    //   });
+    //   newData = {...data, customerId: customer.id};
+    //   const doc = await setDoc(doc(db, "users", newUserId), newData);
+    //   console.log("doc", doc);
+    //   return doc;
+      
+    // }
+
+    // return querySnapshot.data(); 
+
+  //   export async function createUser(newUserId, data) {
+  //   fetchUser(data.email).then((response) => {
+  //     console.log('fetchingUser', response.docs);
+  //   if (response.docs.length > 0){
+  //     console.log('existing user found!');
+  //   } else {
+  //     setDoc(doc(db, "users", newUserId), data);
+  //   }
+  // })
+  // }
+  //}
+
+   
   // update information about a user in the database
   export async function updateUser(userId, data) {
     const docRef = doc(db, "users", userId);
@@ -84,8 +157,10 @@ import { initializeApp } from "firebase/app";
   // FUNCTIONS FOR ORDERS
 
   // initialize an order in the database
-  export async function createOrder(newOrderId, data) {
-    await setDoc(doc(db, "orders", newOrderId), data);
+  export async function submitOrder(data) {
+    const docRef = await addDoc(collection(db, "orders"), {...data})
+    const snap = await getDoc(docRef);
+      return {...snap.data(), id: snap.id};
   }
 
   export async function fetchOrder(orderId, callback) {
@@ -103,15 +178,18 @@ import { initializeApp } from "firebase/app";
   // update the status of an order as it is being submitted and fulfilled
   export async function updateOrder(orderId, data) {
     const docRef = doc(db, "orders", orderId);
-    await updateDoc(docRef, {
+    await updateDoc(docRef, 
         data
-    });
+    );
+    const docSnap = await getDoc(docRef);
+    return {...docSnap.data(), id: docSnap.id}
   }
 
   // Fetch all orders in the database
   // Returns a promise; data can be accessed w/ querySnapshot.docs.map(doc => doc.data())
   export async function fetchAllOrders() { 
-    return getDocs(collection(db, "orders"));
+    const res = await getDocs(collection(db, "orders"));
+    return res.docs.map(doc => {return {...doc.data(), id: doc.id}});
   }
 
   // Fetch all orders in progress
