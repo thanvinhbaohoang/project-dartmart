@@ -100,7 +100,6 @@ app.post("/payment-success", async (req, res) => {
 })
 
 app.post('/payment-sheet', async (req, res) => {
-  console.log('got request');
   // Use an existing Customer ID if this is a returning customer.
   const customer = await stripe.customers.retrieve(req.body.stripeId);
   const ephemeralKey = await stripe.ephemeralKeys.create(

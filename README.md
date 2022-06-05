@@ -16,7 +16,7 @@ Uploading DartMartDemo.mov…
 ## Architecture
 
 Front End:  React Native W/Express, (tested with expo)
-Back End: Heroku (User Authentication), Firebase (User and order storage), Stripe (payment processing), Render.com (web service endpoints to hit stripe)
+Back End: Heroku (User Authentication), Firebase (User and order storage), Stripe (payment processing), Render.com (web service endpoints to hit stripe)(hosted here)[https://stripeserver.onrender.com]
 
 ## Setup
 

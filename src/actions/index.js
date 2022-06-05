@@ -9,6 +9,7 @@ export const ActionTypes = {
     // USER MANAGEMENT
     CREATE_USER: "CREATE_USER",
     FETCH_USER: "FETCH_USER",
+    UPDATE_USER: "UPDATE_USER",
     // ORDER MANAGEMENT
     FETCH_ORDER: "FETCH_ORDER",
     SUBMIT_ORDER: "SUBMIT_ORDER",
@@ -66,6 +67,16 @@ export const ActionTypes = {
     }
   }
 
+  export function updateUser(userId, updates) {
+    return(dispatch) => {
+      db.updateUser(userId, updates).then((response) => {
+        dispatch({ type: ActionTypes.UPDATE_USER, payload: response });
+      }).catch((error) => {
+        console.log(error);
+      })
+    }
+  }
+
   // ORDER MANAGEMENT
 
   export function submitOrder(orderDetails) {
@@ -97,7 +108,7 @@ export const ActionTypes = {
 
   export function updateOrder(orderId, updates) {
     return(dispatch) => {
-      db.updateOrder(orderId, updates).then((response) => {
+      db.updateOrder(userId, updates).then((response) => {
         dispatch({ type: ActionTypes.UPDATE_ORDER, payload: response });
       }).catch((error) => {
         console.log(error);
