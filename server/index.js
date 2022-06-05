@@ -1,7 +1,13 @@
 import express from 'express';
 import Stripe from 'stripe';
+// import cors
+import cors from 'cors';
+
 //import 'dotenv/config';
 const app = express();
+app.use(cors({
+    origin: '*'
+}));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 3000;
@@ -16,6 +22,41 @@ app.listen(port, "0.0.0.0", () => {
     }
 );
 //payment route from stripe to get user id from stripe
+
+
+app.post('/webhook', function(request, response) {
+  const sig = request.headers['stripe-signature'];
+  const body = request.body;
+
+  let event = null;
+
+  try {
+    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+  } catch (err) {
+    // invalid signature
+    response.status(400).end();
+    return;
+  }
+
+  let intent = null;
+  let success;
+  switch (event['type']) {
+    case 'payment_intent.succeeded':
+      intent = event.data.object;
+      console.log("Succeeded:", intent.id);
+      success = true;
+      break;
+    case 'payment_intent.payment_failed':
+      intent = event.data.object;
+      const message = intent.last_payment_error && intent.last_payment_error.message;
+      console.log('Failed:', intent.id, message);
+      success = false;
+      break;
+  }
+  res.json(success)
+
+  response.sendStatus(200);
+});
 
 app.post("/v1/customers", async (req, res) => {
 
