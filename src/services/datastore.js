@@ -6,7 +6,8 @@ import { initializeApp } from "firebase/app";
 
 // FIREBASE CONFIGURATION
 
-const API_URL = "http://localhost:3000";
+//const API_URL = "http://localhost:3000";
+const API_URL = "https://stripeserver.onrender.com";
 
   // firebase config object
   const firebaseConfig = {
