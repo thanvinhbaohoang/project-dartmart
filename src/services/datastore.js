@@ -76,10 +76,6 @@ const API_URL = "http://localhost:3000";
 
   // USER FUNCTIONS
 
-<<<<<<< HEAD
-   export async function createUser(newUserId, data){
-    const response = await fetchUser(data.email);
-=======
   // check if a user with a given email address already exists
   export async function fetchUser(email){
     const usersRef = collection(db, "users");
@@ -94,7 +90,6 @@ const API_URL = "http://localhost:3000";
 
       console.log('fetchingUser', response.docs);
     
->>>>>>> 15bc7c1a63868d8237630da0cd26a7ed629e378f
     if (response.docs.length > 0){
       console.log("user found", response.docs[0].data());
       return response.docs[0].data();
@@ -112,7 +107,7 @@ const API_URL = "http://localhost:3000";
       return tempDoc;
       // return null
   };
-};
+});
 
   // initialize a user in the databse
   //export async function createUser(newUserId, data) {
