@@ -2,6 +2,7 @@ import express from 'express';
 import Stripe from 'stripe';
 // import cors
 import cors from 'cors';
+import bodyParser from 'body-parser';
 
 //import 'dotenv/config';
 const app = express();
@@ -10,6 +11,7 @@ app.use(cors({
 }));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.raw({type: '*/*'}));
 const port = process.env.PORT || 3000;
 //const PUBLISHABLE_KEY = process.env.PUBLISHABLE_KEY;
 //const SECRET_KEY = process.env.SECRET_KEY;
@@ -23,27 +25,34 @@ app.listen(port, "0.0.0.0", () => {
 );
 //payment route from stripe to get user id from stripe
 
+const endpointSecret = "whsec_VWuchwdrks3eOEFhiByGIDGPc3p6SaN7";
+
+
 
 app.get('/test', (req, res) => {
     res.send('Hello World!');
 });
 
 
-app.post('/webhook', function(request, response) {
+app.post('/webhook', express.raw({type: 'application/json'}), function(request, response) {
   console.log("sup homie, stripe just called me");
+  console.log("AAAAAAAAAAAA", request.body);
   const sig = request.headers['stripe-signature'];
   const body = request.body;
+  console.log("signature from the homies:", sig);
+  console.log("secret key from the homies", endpointSecret);
 
-  let event = null;
+     let event = request.body;
 
-  try {
-    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-  } catch (err) {
-    // invalid signature
-    console.log("sup homie, I caught an error:", err);
-    response.status(400).end();
-    return;
-  }
+
+    // try {
+  //   event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+  // } catch (err) {
+  //   // invalid signature
+  //   console.log("sup homie, I caught an error:", err);
+  //   response.status(400).end();
+  //   return;
+  // }
 
   let intent = null;
   let success;
@@ -65,9 +74,9 @@ app.post('/webhook', function(request, response) {
       // Then define and call a function to handle the event payment_intent.processing
       break;
   }
-  res.json("success:", success)
+  response.json({success})
 
-  response.sendStatus(200);
+  //response.sendStatus(200);
 });
 
 app.post("/v1/customers", async (req, res) => {
@@ -136,7 +145,7 @@ app.post('/payment-sheet', async (req, res) => {
 });
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret = "whsec_VWuchwdrks3eOEFhiByGIDGPc3p6SaN7";
+
 
 // app.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
 //   const sig = request.headers['stripe-signature'];
