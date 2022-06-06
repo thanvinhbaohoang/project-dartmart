@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, SafeAreaView, Platform, StatusBar, View, Button } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { ROUTE_SSO_LOGOUT, SERVER_URL } from '../Constants';
+import { ROUTE_SSO_LOGOUT, SSO_LOGIN_SERVER_URL } from '../Constants';
 
 const styles = StyleSheet.create({
     AndroidSafeArea: {
@@ -16,7 +16,7 @@ export default function SSOLogout ({ navigation }) {
     return (
         <SafeAreaView style={styles.AndroidSafeArea}>
             <WebView 
-                source={{ uri: `${SERVER_URL}${ROUTE_SSO_LOGOUT}` }}
+                source={{ uri: `${SSO_LOGIN_SERVER_URL}${ROUTE_SSO_LOGOUT}` }}
                 startInLoadingState={true}
                 onMessage={(event) => {
                     console.log("onMessage event:", event.nativeEvent, "onMessage data:", event.nativeEvent.data)
