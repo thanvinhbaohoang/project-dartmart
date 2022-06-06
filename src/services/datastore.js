@@ -1,12 +1,11 @@
 import { doc, setDoc, addDoc, updateDoc, getDoc, getFirestore, getDocs, collection, query, where } from "firebase/firestore"; 
 import axios from 'axios';
 import { initializeApp } from "firebase/app";
+import { SERVER_URL_HEROKU } from "../Constants";
 //import Stripe from "stripe";
 //import 'dotenv/config';
 
 // FIREBASE CONFIGURATION
-
-const API_URL = "https://stripeserver.onrender.com";
 
   // firebase config object
   const firebaseConfig = {
@@ -87,7 +86,7 @@ const API_URL = "https://stripeserver.onrender.com";
       return { ...response.docs[0].data(), id: response.docs[0].id };
     } else {
        console.log('pulling customer')
-        const customer = await axios.post(`${API_URL}/v1/customers`, 
+        const customer = await axios.post(`${SERVER_URL_HEROKU}${ROUTE_CUSTOMERS}`, 
         {
           email: data.email,
           name: data.name,

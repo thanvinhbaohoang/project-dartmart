@@ -7,10 +7,7 @@ import axios from "axios";
 
 
 import { Ionicons } from "@expo/vector-icons";
-
-// const API_URL = "http://localhost:3000";
-const API_URL = "http://stripeserver.onrender.com";
-
+import { SERVER_URL_HEROKU } from '../Constants';
 
 function CartPage(props){
 
@@ -24,14 +21,11 @@ function CartPage(props){
     const [cartTotal, setCartTotal] = useState(0);
     const [fees, setFees] = useState(0);
     const [sum, setSum] = useState(0);
-    //const {confirmPayment, loading} = useConfirmPayment()
-     //const API_URL = "http://localhost:3000";
-    const API_URL = "https://stripeserver.onrender.com";
+   
     const { initPaymentSheet, presentPaymentSheet} = useStripe();
-    // const [loading, setLoading] = useState(false);
 
   const fetchPaymentSheetParams = async () => {
-    const response = await axios.post(`${API_URL}/payment-sheet`, {
+    const response = await axios.post(`${SERVER_URL_HEROKU}${ROUTE_PAYMENT_SHEET}`, {
         amount: cartTotal,
         stripeId: user.stripeId
     });
