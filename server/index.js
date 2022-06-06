@@ -36,9 +36,6 @@ httpServer.listen(port, "0.0.0.0", () => {
 
 const endpointSecret = "whsec_VWuchwdrks3eOEFhiByGIDGPc3p6SaN7";
 
-
-
-
 app.get('/test', (req, res) => {
     res.send('Hello World!');
 });
@@ -60,7 +57,6 @@ app.post('/webhook', express.raw({type: 'application/json'}), function(request, 
     response.status(400).end();
     return;
   }
-
 
   let intent = null;
   let success;
@@ -151,7 +147,6 @@ app.post('/payment-sheet', async (req, res) => {
 });
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
-
 app.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
   const sig = request.headers['stripe-signature'];
 
