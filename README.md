@@ -15,8 +15,14 @@ Uploading DartMartDemo.mov…
 
 ## Architecture
 
-Front End:  React Native W/Express, (tested with expo)
-Back End: Heroku (User Authentication), Firebase (User and order storage), Stripe (payment processing), Render.com (web service endpoints to hit stripe)(hosted here)[https://stripeserver.onrender.com]
+Front End:  
+* React Native W/Express, (tested with expo)
+
+Back End: 
+* Heroku (User Authentication)
+* Firebase (User and order storage)
+* Stripe (payment processing)
+* Render.com (web service endpoints to hit stripe)(hosted here)[https://stripeserver.onrender.com]
 
 ## Setup
 
@@ -31,14 +37,37 @@ Then
 node index.js `
 
 
+## GIFS of DartMart in Action
+
+Splash Screen to SSO Login:
+
+![Splash to SSO](gifs/DM_SplashToSSOLogin.gif)
+
+Browse Inventory:
+
+![Splash to SSO](gifs/DM_ScrollInventory.gif)
+
+Search Inventory:
+
+![Splash to SSO](gifs/DM_InventorySearch.gif)
+
+Switching Driver/Customer Roles + Logout:
+
+![Splash to SSO](gifs/DM_SwitchingViews_Logout.gif)
+
+Fulfilling Orders as a Driver:
+
+![Splash to SSO](gifs/DM_OrderScreen.gif)
+
+
 ## Authors
 
 {
+Edmund Aduse Poku,
 Camden Hao,
+Burke Jaeger,
+Garrett Johnston,
 Will McCall,
 Harold Than,
-Garrett Johnston,
-Edmund Aduse Poku,
-Burke Jaeger,
 }
 
