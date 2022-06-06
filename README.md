@@ -34,7 +34,9 @@ node index.js `
 
 Payment Flow:
 
-![Payment Flow](gifs/DM_PAymentFlow.gif)
+![Payment Flow](gifs/DM_PaymentFlow.gif)
+
+(Payment Flow is a long GIF so it is also available as a .mov file in this repo)
 
 Cancelled Payment:
 
