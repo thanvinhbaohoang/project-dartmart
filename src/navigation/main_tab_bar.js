@@ -13,6 +13,7 @@ import { connect, useSelector } from 'react-redux';
 import { fetchOrders } from '../actions/index';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
+import { useClientSocket } from '../components/clientSocket';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -20,6 +21,10 @@ const windowHeight = Dimensions.get('window').height;
 const Tab = createBottomTabNavigator();
 
 function MainTabBar(props){
+  const [joinRoomForOrder] = useClientSocket({
+    enabled: true
+  })
+
   useEffect(() => {
     props.fetchOrders();
   },[])

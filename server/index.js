@@ -1,4 +1,6 @@
 import express from 'express';
+import { Server } from "socket.io";
+import { createServer } from "http";
 import Stripe from 'stripe';
 // import cors
 import cors from 'cors';
@@ -19,7 +21,14 @@ const stripe = new Stripe('sk_test_51L2ihZH8XcWRx3ZXDdopoeHEEQGQN2mtcchVdxMazkyE
 
 var success = false;
 
-app.listen(port, "0.0.0.0", () => {
+const httpServer = createServer(app);
+const io = new Server(httpServer, {});
+
+io.on("connection", (socket) => {
+  console.log("socket connected");
+});
+
+httpServer.listen(port, "0.0.0.0", () => {
     console.log(`Server is listening on port ${port}`);
     }
 );
@@ -29,14 +38,13 @@ const endpointSecret = "whsec_VWuchwdrks3eOEFhiByGIDGPc3p6SaN7";
 
 
 
+
 app.get('/test', (req, res) => {
     res.send('Hello World!');
 });
 
 
 app.post('/webhook', express.raw({type: 'application/json'}), function(request, response) {
-  console.log("sup homie, stripe just called me");
-  console.log("AAAAAAAAAAAA", request.body);
   const sig = request.headers['stripe-signature'];
   const body = request.body;
   console.log("signature from the homies:", sig);
@@ -45,21 +53,21 @@ app.post('/webhook', express.raw({type: 'application/json'}), function(request, 
      let event = request.body;
 
 
-    // try {
-  //   event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-  // } catch (err) {
-  //   // invalid signature
-  //   console.log("sup homie, I caught an error:", err);
-  //   response.status(400).end();
-  //   return;
-  // }
+  try {
+    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+  } catch (err) {
+    // invalid signature
+    response.status(400).end();
+    return;
+  }
+
 
   let intent = null;
   let success;
   switch (event['type']) {
     case 'payment_intent.succeeded':
       intent = event.data.object;
-      console.log("Succeeded test:", intent.id);
+      console.log("Succeeded:", intent.id);
       success = true;
       break;
     case 'payment_intent.payment_failed':
@@ -68,13 +76,11 @@ app.post('/webhook', express.raw({type: 'application/json'}), function(request, 
       console.log('Failed:', intent.id, message);
       success = false;
       break;
-
-    case 'payment_intent.processing':
-      const paymentIntent = event.data.object;
-      // Then define and call a function to handle the event payment_intent.processing
-      break;
   }
+
   response.json({success})
+
+
 
   //response.sendStatus(200);
 });
@@ -146,33 +152,34 @@ app.post('/payment-sheet', async (req, res) => {
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
 
+const endpointSecret = "whsec_5e86c6e36d15de2025dbf2ed329247f494b17f6da8c3d024e42d998d3f45b0bf";
 
-// app.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
-//   const sig = request.headers['stripe-signature'];
+app.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
+  const sig = request.headers['stripe-signature'];
 
-//   let event;
+  let event;
 
-//   try {
-//     event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-//   } catch (err) {
-//     response.status(400).send(`Webhook Error: ${err.message}`);
-//     return;
-//   }
-//   // Handle the event
-//   switch (event.type) {
-//     case 'payment_intent.succeeded':
-//       const paymentIntent = event.data.object;
-//       success = true;
-//       console.log(`💰 Payment received!, ${paymentIntent.id}`);
-//       break;
-//     // ... handle other event types
-//     default:
-//       console.log(`Unhandled event type ${event.type}`);
-//   }
+  try {
+    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+  } catch (err) {
+    response.status(400).send(`Webhook Error: ${err.message}`);
+    return;
+  }
+  // Handle the event
+  switch (event.type) {
+    case 'payment_intent.succeeded':
+      const paymentIntent = event.data.object;
+      success = true;
+      console.log(`💰 Payment received!, ${paymentIntent.id}`);
+      break;
+    // ... handle other event types
+    default:
+      console.log(`Unhandled event type ${event.type}`);
+  }
 
-//   // Return a 200 response to acknowledge receipt of the event
-//   response.send();
-// });
+  // Return a 200 response to acknowledge receipt of the event
+  response.send();
+});
 
 app.listen(4242, () => console.log('Running on port 4242'));
 
