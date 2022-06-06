@@ -7,10 +7,13 @@ import axios from "axios";
 
 
 import { Ionicons } from "@expo/vector-icons";
-import { SERVER_URL_HEROKU } from '../Constants';
+import { ROUTE_PAYMENT_SHEET, SERVER_URL_HEROKU } from '../Constants';
+import { useClientSocket } from '../components/clientSocket';
 
 function CartPage(props){
-
+    const [joinRoomForPayment] = useClientSocket({
+        enabled: true
+    })
 
     const user = useSelector(state => state.user.user);
     const cart = useSelector((state) => state.item.cart);
@@ -29,7 +32,8 @@ function CartPage(props){
         amount: cartTotal,
         stripeId: user.stripeId
     });
-    const { paymentIntent, ephemeralKey, customer } = response.data;
+    const { paymentIntentId, paymentIntent, ephemeralKey, customer } = response.data;
+    joinRoomForPayment(paymentIntentId)
 
     return {
       paymentIntent,
@@ -116,7 +120,7 @@ function CartPage(props){
 
     const fetchSuccessCode = async () => 
     {
-        const response = axios.post(`${API_URL}/payment-success`, 
+        const response = axios.post(`${SERVER_URL_HEROKU}/payment-success`, 
         {
             method: "POST",
             headers: 
@@ -131,7 +135,7 @@ function CartPage(props){
 
     const fetchPaymentIntentClientSecret = async () => 
     {
-        const response = await axios.post(`${API_URL}/create-payment-intent`, 
+        const response = await axios.post(`${SERVER_URL_HEROKU}/create-payment-intent`, 
         {
                 amount: cartTotal
         });

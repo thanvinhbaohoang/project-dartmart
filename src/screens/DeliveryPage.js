@@ -17,7 +17,6 @@ function DeliveryPage(props){
     const orders = useSelector((state) => state.order.all)
     
     const currOrder = orders[orders?.length - 1]
-    console.log("LOL", currOrder)
 
     const orderStatusCheck  = () => {
         console.log("DeliveryPage.js || OrderStatusCheck || userID :", userId, typeof userId);
