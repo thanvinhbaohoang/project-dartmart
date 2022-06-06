@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, Image, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button, Alert} from 'react-native';
 import { CardField, useStripe} from '@stripe/stripe-react-native';
@@ -9,12 +10,16 @@ import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import { ROUTE_PAYMENT_SHEET, SERVER_URL_HEROKU } from '../Constants';
 import { useClientSocket } from '../components/clientSocket';
+import AppLoading from 'expo-app-loading';
 
 function CartPage(props){
     const [joinRoomForPayment] = useClientSocket({
         enabled: true
     })
 
+    const [paymentSubmitted, setPaymentSubmitted] = useState(false);
+
+    const paymentConfirmed = useSelector((state) => state.payment.paymentConfirmed);
     const user = useSelector(state => state.user.user);
     const cart = useSelector((state) => state.item.cart);
 
@@ -84,12 +89,6 @@ function CartPage(props){
         if (error) {
             Alert.alert(`Error code: ${error.code}`, error.message);
         } else {
-                // const { response } = await confirmPaymentSheetPayment();
-                // if (response) {
-                //     console.log('there was an error', response.message);
-                //     Alert('there was an error');
-                //   // Handle error here
-                // } else{
                   //Handle successful payment here
                   props.submitOrder({
                     customerId: user.id,
@@ -97,10 +96,14 @@ function CartPage(props){
                     status: "queued",
                     orderPaymentAmount: cartTotal
                     })
-                    Alert.alert('payment confirmed')
-                    props.navigation.navigate('Delivery');
+                    setPaymentSubmitted(true);
+
+                    if (paymentConfirmed) {
+                        Alert.alert('Payment confirmed! Your order has been created!');
+                        props.navigation.navigate('Delivery');
+                    }
+                    
                 }
-            //}
         } else {
             Alert.alert('Hold on!', 'Your cart is empty!');
         }
@@ -169,6 +172,23 @@ function CartPage(props){
     //     setCartTotal(Math.round((sum + fees) * 100));
     // }, [fees, sum])
 
+    if (paymentSubmitted && !paymentConfirmed) {
+        return (
+            <>
+            <View style={styles.container}>
+                <Text
+                    style={styles.featuredText}
+                >Waiting for Payment confirmation</Text>
+            </View>
+            <View style={{
+                flex: 1,
+                justifyContent: 'center',
+            }}> 
+                <ActivityIndicator size="large" color="green" />
+            </View>
+            </>
+        )
+    }
     return (
         <View backgroundColor='#02604E' style={{height: windowHeight * .9}}>
             {/* SCROLL VIEW FOR ITEMS IN CART */}
