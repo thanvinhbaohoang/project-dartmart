@@ -32,25 +32,34 @@ node index.js `
 
 ## GIFS of DartMart in Action
 
+Payment Flow:
+
+![Payment Flow](gifs/DM_PAymentFlow.gif)
+
+Cancelled Payment:
+
+![Cancelled Payment](gifs/DM_CancelledPayment.gif)
+
+
 Splash Screen to SSO Login:
 
 ![Splash to SSO](gifs/DM_SplashToSSOLogin.gif)
 
 Browse Inventory:
 
-![Splash to SSO](gifs/DM_ScrollInventory.gif)
+![Browse Inventory](gifs/DM_ScrollInventory.gif)
 
 Search Inventory:
 
-![Splash to SSO](gifs/DM_InventorySearch.gif)
+![Search Inventory](gifs/DM_InventorySearch.gif)
 
 Switching Driver/Customer Roles + Logout:
 
-![Splash to SSO](gifs/DM_SwitchingViews_Logout.gif)
+![Switch User Role](gifs/DM_SwitchingViews_Logout.gif)
 
 Fulfilling Orders as a Driver:
 
-![Splash to SSO](gifs/DM_OrderScreen.gif)
+![Fulfill Orders](gifs/DM_OrderScreen.gif)
 
 
 ## Authors
