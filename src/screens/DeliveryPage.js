@@ -5,11 +5,19 @@ import { addItem, fetchOrders } from '../actions/index';
 import { Ionicons } from "@expo/vector-icons";
 
 function DeliveryPage(props){
-    // const cart = useSelector((state) => state.item.cart);
+    //const cart = useSelector((state) => state.item.cart);
     const userId = useSelector((state) => state.user.user.id);
+
     
     // CONNECT BACK END STRIPE STATUS HERE
-    const userOrders = props.fetchOrders(); // Returning Undefined????????? ==> Need to fix this
+    // if there are orders, they have been paid for already.
+
+     // Returning Undefined????????? ==> Need to fix this
+    const userOrders = useSelector((state) => state.order?.all);
+    const orders = useSelector((state) => state.order.all)
+    
+    const currOrder = orders[orders?.length - 1]
+    console.log("LOL", currOrder)
 
     const orderStatusCheck  = () => {
         console.log("DeliveryPage.js || OrderStatusCheck || userID :", userId, typeof userId);
@@ -48,20 +56,20 @@ function DeliveryPage(props){
 
             <Text style={styles.featuredText}>Order Confirmed</Text>
             <Ionicons name="checkmark-circle" style={styles.checkIcon}></Ionicons>
-            <Text style={styles.text2}>Your Payment Of ${userOrders.orderPaymentAmount} Has Been Confirmed</Text>
+            <Text style={styles.text2}>Your Payment Of ${currOrder.orderPaymentAmount/100} Has Been Confirmed</Text>
         <View>
             <View style={styles.dividerLine}></View>
 
             <View style={styles.subtotal}>
                 <View style={styles.orderInfoContainer}>
                     <View style={styles.orderNumberAndEstimateTime}>
-                        <Text style={styles.text2} alignSelf='baseline'>Order Number</Text>
+                        <Text style={styles.text2} alignSelf='baseline'>Order Number:</Text>
                         <Text style={styles.text2}>Estimated Time</Text>
                     </View>
 
                     <View style={styles.orderInfo}>
-                        <Text style={styles.text1}>#{orderDetail.orderNumber}</Text>
-                        <Text style={styles.text1}>{orderDetail.estimatedTime}</Text>
+                        <Text style={styles.text1}>{currOrder.id}</Text>
+                        <Text style={styles.text1}>{"45 Minutes"}</Text>
                     </View>
 
                     <View style={styles.dividerLine}></View>
@@ -71,7 +79,7 @@ function DeliveryPage(props){
                             <Text style={styles.text2} alignSelf='baseline'>Order Summary</Text>
                         </View>
 
-                        {userOrders.orderItems.map( ({item, quantity}) => {
+                        {currOrder?.orderItems?.map( ({item, quantity}) => {
                             return(
                                 <View style={styles.itemLine}>
                                     <Text style={styles.text1}>{item.name} (x{quantity})</Text>

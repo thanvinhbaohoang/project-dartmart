@@ -209,7 +209,19 @@ const API_URL = "https://stripeserver.onrender.com";
 
   // Fetch all orders for a certain customer
   // Returns a promise; data can be accessed w/ querySnapshot.docs.map(doc => doc.data())
-  export async function fetchOrders(customer) {
-    customerOrderQuery = query(collection(db, "orders"), where ('customerId', '==', customer)); 
-    return getDocs(customerOrderQuery);
+  // export async function fetchOrders(customer) {
+  //   customerOrderQuery = query(collection(db, "orders"), where ('customerId', '==', customer)); 
+  //   return getDocs(customerOrderQuery);
+  // }
+
+
+  export async function fetchOrders(customerId) {
+    const ordersRef = collection(db, "orders");
+    const orderExistsQuery = query(ordersRef, where("customerId", "==", customerId), where("status", "==", "in-progress"));
+    const orders = getDocs(orderExistsQuery);
+    if(orders.docs.length > 0){
+      return {...orders.docs[0].data(), id: orders.docs[0].id}
+    } else{
+      return null
+    }
   }
