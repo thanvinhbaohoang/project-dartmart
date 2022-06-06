@@ -9,6 +9,8 @@ function DeliveryPage(props){
     const userId = useSelector((state) => state.user.user.id);
     
     // CONNECT BACK END STRIPE STATUS HERE
+    // if there are orders, they have been paid for already.
+
     const userOrders = props.fetchOrders(); // Returning Undefined????????? ==> Need to fix this
 
     const orderStatusCheck  = () => {

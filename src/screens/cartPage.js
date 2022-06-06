@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, Image, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button, Alert} from 'react-native';
-import { CardField, useStripe, useConfirmPayment} from '@stripe/stripe-react-native';
+import { CardField, useStripe} from '@stripe/stripe-react-native';
 import { addItem, submitOrder, removeItem } from '../actions/index';
 import axios from "axios";
 
@@ -24,10 +24,10 @@ function CartPage(props){
     const [cartTotal, setCartTotal] = useState(0);
     const [fees, setFees] = useState(0);
     const [sum, setSum] = useState(0);
-    const {confirmPayment, loading} = useConfirmPayment()
+    //const {confirmPayment, loading} = useConfirmPayment()
      //const API_URL = "http://localhost:3000";
     const API_URL = "https://stripeserver.onrender.com";
-    const { initPaymentSheet, presentPaymentSheet, confirmPaymentSheetPayment } = useStripe();
+    const { initPaymentSheet, presentPaymentSheet} = useStripe();
     // const [loading, setLoading] = useState(false);
 
   const fetchPaymentSheetParams = async () => {
@@ -56,7 +56,6 @@ function CartPage(props){
       customerId: customer,
       customerEphemeralKeySecret: ephemeralKey,
       paymentIntentClientSecret: paymentIntent,
-      customFlow: true,
     });;
     if (error) {
         console.log('error found:', error)
@@ -87,12 +86,12 @@ function CartPage(props){
         if (error) {
             Alert.alert(`Error code: ${error.code}`, error.message);
         } else {
-                const { response } = await confirmPaymentSheetPayment();
-                if (response) {
-                    console.log('there was an error', response.message);
-                    Alert('there was an error');
-                  // Handle error here
-                } else{
+                // const { response } = await confirmPaymentSheetPayment();
+                // if (response) {
+                //     console.log('there was an error', response.message);
+                //     Alert('there was an error');
+                //   // Handle error here
+                // } else{
                   //Handle successful payment here
                   props.submitOrder({
                     customerId: user.id,
@@ -103,7 +102,7 @@ function CartPage(props){
                     Alert.alert('payment confirmed')
                     props.navigation.navigate('Delivery');
                 }
-            }
+            //}
         } else {
             Alert.alert('Hold on!', 'Your cart is empty!');
         }
