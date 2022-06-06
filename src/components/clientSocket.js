@@ -6,9 +6,9 @@ export const useClientSocket = ({paymentIntentId, enabled}) => {
   const ref = useRef(null);
 
   const joinRoomForPayment = (paymentIntentId) => {
-    ref.current?.emit("join_payment_room", {
-        payment_intent_id: paymentIntentId, 
-        user_id: userId
+    ref.current?.emit("join_p_room", {
+        socket: ref.current, 
+        paymentIntentId: paymentIntentId
     }, (response) => {
         console.log("server join payment room response", response); 
     });
@@ -49,6 +49,11 @@ export const useClientSocket = ({paymentIntentId, enabled}) => {
 
     socket.on('message', (message) => {
       console.log('message:', message);
+    });
+
+    // FROM SERVER:STRIPE: announcements for customer 
+    socket.on('p_succeeded', (payload) => {
+        console.log("Your payment was successful", payload);
     });
 
     ref.current = socket;
