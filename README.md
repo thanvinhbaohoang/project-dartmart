@@ -1,15 +1,12 @@
-# DartMart:  A food delivery app for Dartmouth
+# DartMart:  On-Demand Food Delivery Anywhere on Dartmouth's Campus
 
+DartMart reimagines on-demand food delivery service in a viable manner for Dartmouth's remote college campus. Through a React Native mobile application (optimized currently for iOS), DartMart operates as a peer-run gig-style delivery application in which users may either place orders as a customer or register as a "driver" and fulfill orders. To ensure users are Dartmouth students (with access to secure campus buildings and a dedication to the betterment of their community), users are authenticated through Dartmouth's SSO Login (supported in our app by Heroku). Inventory, users, and orders are stored in a Cloud Firestore database (Firebase), which supports reading of data (such as inventory, user info, and order contents) as well as updating  data (such as order status, user roles). After perusing an inventory screen (browsable by category filters and search) and selecting desired items and quantities via popup modals, users may review cart items, taxes, and fees from the Cart Screen before completing Checkout. Payment is handled securely through a Stripe popup modal in the Cart Screen (with Stripe server hosted on Render). Order Status Updates are provided via input from the student delivering the food. Delivery View can be enabled in the Profile screen, and Delivery view displays orders available to be accepted, with detailed modals about each order providing additional information. Accepted orders are displayed with the option to cancel or complete an order via a popup modal. A user may revert from Driver view back to Customer view via the Profile Page. This application is designed with the intent of real-world use by the existing company (DartMart LLC) for future operations, and will be deployed in the near future with additional refinements.
 
-
-This React Native application will allow Authenticated Dartmouth students to order snacks on demand from anywhere on campus at the touch of a button.
-
-Uploading DartMartDemo.mov…
 
 ## Architecture
 
 Front End:  
-* React Native W/Express, (tested with expo)
+* React Native W/Express, (tested here with Expo)
 
 Back End: 
 * Heroku (User Authentication)
