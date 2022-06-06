@@ -52,7 +52,7 @@ function Onboard(props){
             },
           }}>
             <Stack.Screen name="Splash" component={Splash} options={{headerLeft: () => null}} />
-            <Stack.Screen name="SSOLogin" component={SSOLogin} />
+            <Stack.Screen name="SSOLogin" component={SSOLogin} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 }
