@@ -92,7 +92,7 @@ function DeliveryPage(props){
                 </View>
             </View>
                     
-            <TouchableOpacity style={styles.checkOutButton} onPress={()=>navigation.navigate('Home')}>
+            <TouchableOpacity style={styles.checkOutButton} onPress={()=> props.navigation.navigate('Home')}>
               <Text style={styles.text1} justifyContent='center' >Return Home</Text>
             </TouchableOpacity>
         </View>
