@@ -12,19 +12,6 @@ import { Ionicons } from "@expo/vector-icons";
 const API_URL = "http://stripeserver.onrender.com";
 
 
-function CheckoutScreen() {
-
-    return (
-      <Screen>
-        <Button
-          variant="primary"
-          disabled={!loading}
-          title="Checkout"
-          onPress={openPaymentSheet}
-        />
-      </Screen>
-    );
-  }
 function CartPage(props){
 
 
@@ -34,15 +21,14 @@ function CartPage(props){
     const [modalVisible, setModalVisible] = useState(false); 
     const [selectedItem, setSelectedItem] = useState(null);
     const [tempQuantity, setTempQuantity] = useState(1);
-    const [cardDetails, setCardDetails] = useState();
     const [cartTotal, setCartTotal] = useState(0);
     const [fees, setFees] = useState(0);
     const [sum, setSum] = useState(0);
-    //const {confirmPayment, loading} = useConfirmPayment()
+    const {confirmPayment, loading} = useConfirmPayment()
      //const API_URL = "http://localhost:3000";
     const API_URL = "https://stripeserver.onrender.com";
-    const { initPaymentSheet, presentPaymentSheet } = useStripe();
-    const [loading, setLoading] = useState(false);
+    const { initPaymentSheet, presentPaymentSheet, confirmPaymentSheetPayment } = useStripe();
+    // const [loading, setLoading] = useState(false);
 
   const fetchPaymentSheetParams = async () => {
     const response = await axios.post(`${API_URL}/payment-sheet`, {
@@ -70,10 +56,10 @@ function CartPage(props){
       customerId: customer,
       customerEphemeralKeySecret: ephemeralKey,
       paymentIntentClientSecret: paymentIntent,
-    });
-    console.log('error:', error);
-    if (!error) {
-      setLoading(true);
+      customFlow: true,
+    });;
+    if (error) {
+        console.log('error found:', error)
     }
   };
 
@@ -85,31 +71,39 @@ function CartPage(props){
             status: "queued",
             orderPaymentAmount: cartTotal
            }
-           console.log('cartPage.js || openPaymentSheet || cartInfo:', cartInfo);
-           props.submitOrder({
-               customerId: user.id,
-               orderItems: cart,
-               status: "queued",
-               orderPaymentAmount: cartTotal
-           })
+        //    console.log('cartPage.js || openPaymentSheet || cartInfo:', cartInfo);
+        //    props.submitOrder({
+        //        customerId: user.id,
+        //        orderItems: cart,
+        //        status: "queued",
+        //        orderPaymentAmount: cartTotal
+        //    })
        
         const initialize = await initializePaymentSheet();
         const {clientSecret, errorWhatever} = await fetchPaymentIntentClientSecret();
-        const { error } = await presentPaymentSheet({ clientSecret });
+        const { error } = await presentPaymentSheet({ clientSecret, confirmPayment: false });
         
 
         if (error) {
             Alert.alert(`Error code: ${error.code}`, error.message);
         } else {
-             props.submitOrder({
-               customerId: user.id,
-               orderItems: cart,
-               status: "queued",
-               orderPaymentAmount: cartTotal
-           })
-
-        Alert.alert('Success', 'Your order is confirmed!');
-        }
+                const { response } = await confirmPaymentSheetPayment();
+                if (response) {
+                    console.log('there was an error', response.message);
+                    Alert('there was an error');
+                  // Handle error here
+                } else{
+                  //Handle successful payment here
+                  props.submitOrder({
+                    customerId: user.id,
+                    orderItems: cart,
+                    status: "queued",
+                    orderPaymentAmount: cartTotal
+                    })
+                    Alert.alert('payment confirmed')
+                    props.navigation.navigate('Delivery');
+                }
+            }
         } else {
             Alert.alert('Hold on!', 'Your cart is empty!');
         }
@@ -153,54 +147,6 @@ function CartPage(props){
         console.log("client secret: ", clientSecret);
         return {clientSecret, error};
     }
-    const handlePayPress = async () => 
-    {
-        
-        //gather billing info
-
-        if(!cardDetails?.complete)
-        {
-            Alert.alert('please complete the card details!');
-            return;
-        }
-        try
-        {
-            const {clientSecret, error} = await fetchPaymentIntentClientSecret();
-            if(error)
-            {
-                Alert.alert('Payment failed. Check your card details.');
-            }
-            else
-            {
-                const paymentIntent = await confirmPayment(clientSecret, {type: 'Card', billingDetails: cardDetails});
-                console.log(paymentIntent);
-                console.log(clientSecret);
-                // console.log('HELLO WILLIAM');
-                if(paymentIntent) {
-                    while (true) {
-                        // success = fetchSuccessCode()
-                        // console.log("Success", success);
-                        // if(success) {
-                            Alert.alert('payment successful!');
-                            // break;
-                        // }
-                        await sleep(1000);
-                    }
-                    props.navigation.navigate('Home');
-                }
-                else
-                {
-                    Alert.alert('payment failed!');
-                    
-                }
-            }
-        }
-        catch(err)
-        {
-            console.log("error: ", err);
-            Alert.alert('error in fetching payment intent client secret');
-        }
-    }
     
 
     useEffect(() => {
@@ -213,22 +159,19 @@ function CartPage(props){
             tempSum += quantity * item.cost;
         })
         setSum(Math.round(tempSum * 100) / 100);
-        setFees(Math.round((tempSum * .05 + 1.99) * 100) / 100)
-        setCartTotal(Math.round((tempSum + fees) * 100))
     }, [cart])
+
+    useEffect(() => {
+        setFees(Math.round((sum * .05 + 1.99) * 100) / 100)
+    }, [sum])
+
+    useEffect(() => {
+        setCartTotal(Math.round((sum + fees) * 100))
+    }, [fees])
     // useEffect(() => {
     //     setCartTotal(Math.round((sum + fees) * 100));
     // }, [fees, sum])
 
-    const calcCartSum = () => {
-        
-        return Math.round(sum * 100) / 100;
-    }
-
-    const calcFees = () => {
-        if (!sum) return 0.00;
-        return fees;
-    }
     return (
         <View backgroundColor='#02604E' style={{height: windowHeight * .9}}>
             {/* SCROLL VIEW FOR ITEMS IN CART */}
@@ -326,7 +269,7 @@ function CartPage(props){
                 </View>
                 
                 <TouchableOpacity key="uniqueId1" style={styles.checkOutButton} onPress={openPaymentSheet}>
-                  <Text style={styles.text1} justifyContent='center'>Check Out</Text>
+                  <Text style={styles.text1} justifyContent='center'>Enter Payment Details</Text>
                 </TouchableOpacity>
                  {/* <CardField 
                   postalCodeEnabled={true}
@@ -337,6 +280,11 @@ function CartPage(props){
                         setCardDetails(cardDetails);
                     }}
                   /> */}
+
+                  {/* <TouchableOpacity key="uniqueId1" style={styles.checkOutButton} onPress={openPaymentSheet}>
+                  <Text style={styles.text1} justifyContent='center'>Submit Order</Text>
+                </TouchableOpacity> */}
+                  
             </View>
         </View>
         

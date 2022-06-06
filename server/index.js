@@ -1,4 +1,6 @@
 import express from 'express';
+import { Server } from "socket.io";
+import { createServer } from "http";
 import Stripe from 'stripe';
 // import cors
 import cors from 'cors';
@@ -17,7 +19,14 @@ const stripe = new Stripe('sk_test_51L2ihZH8XcWRx3ZXDdopoeHEEQGQN2mtcchVdxMazkyE
 
 var success = false;
 
-app.listen(port, "0.0.0.0", () => {
+const httpServer = createServer(app);
+const io = new Server(httpServer, {});
+
+io.on("connection", (socket) => {
+  console.log("socket connected");
+});
+
+httpServer.listen(port, "0.0.0.0", () => {
     console.log(`Server is listening on port ${port}`);
     }
 );
