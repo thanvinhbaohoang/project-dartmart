@@ -6,7 +6,7 @@ const initialState = {
 
 const PaymentReducer = (state = initialState,  action = {}) => {
   switch (action.type) {
-    case ActionTypes.UPDATE_PAYMENT_STATUS:
+    case ActionTypes.CONFIRM_PAYMENT:
         return {paymentConfirmed: action.payload}
     default:
       return state;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, Image, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button, Alert} from 'react-native';
-import { CardField, useStripe} from '@stripe/stripe-react-native';
+import { CardField, retrievePaymentIntent, useStripe} from '@stripe/stripe-react-native';
 import { addItem, submitOrder, removeItem } from '../actions/index';
 import axios from "axios";
 
@@ -10,7 +10,6 @@ import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import { ROUTE_PAYMENT_SHEET, SERVER_URL_HEROKU } from '../Constants';
 import { useClientSocket } from '../components/clientSocket';
-import AppLoading from 'expo-app-loading';
 
 function CartPage(props){
     const [joinRoomForPayment] = useClientSocket({
@@ -20,6 +19,7 @@ function CartPage(props){
     const [paymentSubmitted, setPaymentSubmitted] = useState(false);
 
     const paymentConfirmed = useSelector((state) => state.payment.paymentConfirmed);
+    console.log("paymentConfirmed:", paymentConfirmed);
     const user = useSelector(state => state.user.user);
     const cart = useSelector((state) => state.item.cart);
 
@@ -96,13 +96,8 @@ function CartPage(props){
                     status: "queued",
                     orderPaymentAmount: cartTotal
                     })
-                    setPaymentSubmitted(true);
 
-                    if (paymentConfirmed) {
-                        Alert.alert('Payment confirmed! Your order has been created!');
-                        props.navigation.navigate('Delivery');
-                    }
-                    
+                    setPaymentSubmitted(true);
                 }
         } else {
             Alert.alert('Hold on!', 'Your cart is empty!');
@@ -119,6 +114,12 @@ function CartPage(props){
         setFees(Math.round((tempSum * .05 + 1.99) * 100) / 100)
         setCartTotal(Math.round((tempSum + fees) * 100))
   }, []);
+
+  useEffect(() => {
+      if (paymentConfirmed) {
+        Alert.alert('Payment confirmed! Your order has been created!');
+        props.navigation.navigate('Delivery');
+    }}, [paymentConfirmed]);
 
 
     const fetchSuccessCode = async () => 

@@ -27,7 +27,7 @@ export const ActionTypes = {
     FETCH_CUSTOMER_ORDER: 'FETCH_CUSTOMER_ORDER',
 
     // PAYMENT SUCCESS UPDATE
-    UPDATE_PAYMENT_STATUS: 'UPDATE_PAYMENT_STATUS',
+    CONFIRM_PAYMENT: 'CONFIRM_PAYMENT',
   };
   
   // CART MANAGEMENT
@@ -160,5 +160,13 @@ export function fetchCustomerOrder()
     return {
       type: ActionTypes.DECREMENT,
       payload: null,
+    };
+  }
+
+  // PAYMENT SUCCESS UPDATE
+  export function confirmPayment() {
+    return {
+      type: ActionTypes.CONFIRM_PAYMENT,
+      payload: true,
     };
   }

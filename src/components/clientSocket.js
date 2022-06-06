@@ -1,9 +1,12 @@
 import { useEffect, useRef } from 'react';
+import { connect, useDispatch } from 'react-redux';
 import io from 'socket.io-client';
 import { SERVER_URL_HEROKU } from '../Constants';
+import { confirmPayment } from '../actions/index';
 
-export const useClientSocket = ({paymentIntentId, enabled}) => {
+export const useClientSocket = ({paymentIntentId, enabled }) => {
   const ref = useRef(null);
+  const dispatch = useDispatch();
 
   const joinRoomForPayment = (paymentIntentId) => {
     ref.current?.emit("join_p_room", {
@@ -53,6 +56,7 @@ export const useClientSocket = ({paymentIntentId, enabled}) => {
     // FROM SERVER:STRIPE: announcements for customer 
     socket.on('p_intent', (payload) => {
         console.log("Your payment was successful", payload);
+        dispatch(confirmPayment(payload));
     });
 
     ref.current = socket;
