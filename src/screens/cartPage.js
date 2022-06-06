@@ -3,7 +3,7 @@ import { ActivityIndicator } from 'react-native';
 import { connect, useSelector } from 'react-redux';
 import { StyleSheet, Text, Image, View, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, Button, Alert} from 'react-native';
 import { CardField, retrievePaymentIntent, useStripe} from '@stripe/stripe-react-native';
-import { addItem, submitOrder, removeItem } from '../actions/index';
+import { addItem, submitOrder, removeItem, confirmPayment } from '../actions/index';
 import axios from "axios";
 
 
@@ -116,9 +116,13 @@ function CartPage(props){
   }, []);
 
   useEffect(() => {
-      if (paymentConfirmed) {
+    if (paymentConfirmed) {
         Alert.alert('Payment confirmed! Your order has been created!');
-        props.navigation.navigate('Delivery');
+        props.navigation.navigate('Delivery')
+    }
+    
+    return () => {
+        props.confirmPayment(false);
     }}, [paymentConfirmed]);
 
 
@@ -500,4 +504,4 @@ const styles = StyleSheet.create({
       },
 });
 
-export default connect(null, { addItem, removeItem, submitOrder })(CartPage);
+export default connect(null, { addItem, removeItem, submitOrder, confirmPayment })(CartPage);
