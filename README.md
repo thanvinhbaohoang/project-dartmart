@@ -62,6 +62,13 @@ Fulfilling Orders as a Driver:
 
 ![Fulfill Orders](gifs/DM_OrderScreen.gif)
 
+Cart Notification Badge:
+
+https://user-images.githubusercontent.com/62917324/172121356-f1bfd94d-b9f0-45d4-86f6-8cf70b35043b.mov
+
+
+
+
 
 ## Authors
 
