@@ -15,7 +15,7 @@ Back End:
 * Heroku (User Authentication)
 * Firebase (User and order storage)
 * Stripe (payment processing)
-* Render.com (web service endpoints to hit stripe)(hosted here)[https://stripeserver.onrender.com]
+* Render.com (web service endpoints to hit stripe)[hosted Here](https://stripeserver.onrender.com)
 
 ## Setup
 
@@ -33,11 +33,6 @@ node index.js `
 ## GIFS of DartMart in Action
 
 Payment Flow:
-
-![Payment Flow](gifs/DM_PaymentFlow.gif)
-
-(Payment Flow is a long GIF so it is also available as a .mov file in this repo):
-
 
 https://user-images.githubusercontent.com/62917324/172093459-304a78db-3066-4f2d-b009-71251cd42503.mov
 

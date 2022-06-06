@@ -3,7 +3,7 @@ import { StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import { WebView } from 'react-native-webview';
-import { ROUTE_SSO_LOGIN, SERVER_URL } from '../Constants';
+import { ROUTE_SSO_LOGIN, SSO_LOGIN_SERVER_URL } from '../Constants';
 // import { createUser } from '../services/datastore';
 import { createUser } from '../actions/index'
 import { connect } from 'react-redux';
@@ -45,7 +45,7 @@ function SSOLogin (props) {
 }
     var ticketedURL;
     const isFocused = useIsFocused();
-    const [url, setUrl] = useState(`${SERVER_URL}${ROUTE_SSO_LOGIN}`);
+    const [url, setUrl] = useState(`${SSO_LOGIN_SERVER_URL}${ROUTE_SSO_LOGIN}`);
     const [tempKey, setTempKey] = useState(1);
     useEffect(() => {
         setUrl((` ` + url).slice(1));

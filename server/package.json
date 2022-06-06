@@ -1,14 +1,16 @@
 {
-<<<<<<< HEAD
-  "name": "server",
+  "name": "dartmart-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Main server for DartMart",
   "main": "index.js",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -17,37 +19,22 @@
     "express": "^4.18.1",
     "socket.io": "^4.5.1",
     "stripe": "^9.5.0"
-  }
-=======
-  "name": "dartmart-server",
-  "version": "1.0.0",
-  "description": "Main server for DartMart",
-  "engines": {
-    "node": "16.x"
   },
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "dependencies": {
-    "express": "^4.18.1",
-    "socket.io": "^4.5.1",
-    "stripe": "^9.6.0"
-  },
+
   "devDependencies": {
     "got": "^11.3.0",
     "tape": "^4.7.0"
   },
+
   "repository": {
     "type": "git",
     "url": "https://github.com/dartmouth-cs52-22S/project-dartmart-server"
   },
+  
   "keywords": [
     "node",
     "heroku",
     "express",
     "stripe"
   ]
->>>>>>> 956ddafe1ef216107657c248b2eb455bae68b7bd
 }
