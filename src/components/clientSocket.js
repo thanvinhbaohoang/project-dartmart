@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import io from 'socket.io-client';
-import { SERVER_URL, SERVER_URL_RENDER } from '../Constants';
+import { SERVER_URL_HEROKU } from '../Constants';
 
 export const useClientSocket = ({paymentIntentId, enabled}) => {
   const ref = useRef(null);
@@ -18,14 +18,14 @@ export const useClientSocket = ({paymentIntentId, enabled}) => {
     if (!enabled) {
       return;
     }
-    const socket = io(SERVER_URL_RENDER, { })
+    const socket = io(SERVER_URL_HEROKU, { })
 
     socket.on('disconnect', () => {
       console.log('disconnected');
     });
 
     socket.on("connect", () => {
-        console.log("socket id BBBB:", socket.id)
+        console.log("socket id:", socket.id)
 
         const engine = socket.io.engine;
         console.log("transport before upgrade:", engine.transport.name)
