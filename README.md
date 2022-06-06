@@ -15,7 +15,7 @@ Back End:
 * Heroku (User Authentication)
 * Firebase (User and order storage)
 * Stripe (payment processing)
-* Render.com (web service endpoints to hit stripe hoted here:)[https://stripeserver.onrender.com]
+* Render.com (web service endpoints to hit stripe)[hosted Here](https://stripeserver.onrender.com)
 
 ## Setup
 
