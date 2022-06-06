@@ -268,7 +268,7 @@ function CartPage(props){
                 </View>
                 
                 <TouchableOpacity key="uniqueId1" style={styles.checkOutButton} onPress={openPaymentSheet}>
-                  <Text style={styles.text1} justifyContent='center'>Enter Payment Details</Text>
+                  <Text style={styles.text1} justifyContent='center'>Check Out</Text>
                 </TouchableOpacity>
                  {/* <CardField 
                   postalCodeEnabled={true}

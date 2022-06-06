@@ -24,6 +24,8 @@ function MainTabBar(props){
     props.fetchOrders();
   },[])
   const user = useSelector((state) => state.user.user)
+  const order = useSelector((state) => state.order.customerOrder)
+  console.log("ZZZZZZ", order)
 
   let [themeFontLoad] = useFonts({
     'Poppins': require('../assets/fonts/Poppins-Medium.ttf'),

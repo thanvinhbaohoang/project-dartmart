@@ -23,6 +23,8 @@ export const ActionTypes = {
     // CARTPAGE UPDATE
     INCREMENT_QUANTITY: 'INCREMENT_QUANTITY',
     DECREMENT_QUANTITY: 'DECREMENT_QUANTITY',
+
+    FETCH_CUSTOMER_ORDER: 'FETCH_CUSTOMER_ORDER',
   };
   
   // CART MANAGEMENT
@@ -131,6 +133,17 @@ export const ActionTypes = {
     //   payload: {}
     // }
   }
+export function fetchCustomerOrder()
+{
+  return(dispatch) => {
+    db.fetchCustomerOrder().then((response) => {
+      dispatch({ type: ActionTypes.FETCH_CUSTOMER_ORDER, payload: response });
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+}
+
 
   // CARTPAGE QUANTITY CONTROL FOR EACH ITEM
   export function increment() {
