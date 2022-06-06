@@ -36,7 +36,11 @@ Payment Flow:
 
 ![Payment Flow](gifs/DM_PaymentFlow.gif)
 
-(Payment Flow is a long GIF so it is also available as a .mov file in this repo)
+(Payment Flow is a long GIF so it is also available as a .mov file in this repo):
+
+
+https://user-images.githubusercontent.com/62917324/172093459-304a78db-3066-4f2d-b009-71251cd42503.mov
+
 
 Cancelled Payment:
 
