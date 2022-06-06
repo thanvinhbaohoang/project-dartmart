@@ -55,8 +55,10 @@ export const useClientSocket = ({paymentIntentId, enabled }) => {
 
     // FROM SERVER:STRIPE: announcements for customer 
     socket.on('p_intent', (payload) => {
-        console.log("Your payment was successful", payload);
-        dispatch(confirmPayment(payload));
+        setTimeout(() => {
+            console.log("Your payment was successful", payload);
+            dispatch(confirmPayment(payload));
+        }, 3000);
     });
 
     ref.current = socket;
