@@ -11,7 +11,7 @@ function DeliveryPage(props){
     // CONNECT BACK END STRIPE STATUS HERE
     // if there are orders, they have been paid for already.
 
-    const userOrders = props.fetchOrders(); // Returning Undefined????????? ==> Need to fix this
+    const userOrders = props.fetchOrders(userId); // Returning Undefined????????? ==> Need to fix this
 
     const orderStatusCheck  = () => {
         console.log("DeliveryPage.js || OrderStatusCheck || userID :", userId, typeof userId);
